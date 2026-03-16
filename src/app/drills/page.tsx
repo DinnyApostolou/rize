@@ -135,7 +135,7 @@ export default function DrillsPage() {
                       </div>
                     ))}
                     <div style={{ display: "flex", gap: "10px", marginTop: "18px", flexWrap: "wrap" }}>
-                      <a href={`https://www.youtube.com/watch?v=${drill.youtube}`} target="_blank" rel="noopener noreferrer">
+                      <a href={`https://www.youtube.com/results?search_query=${encodeURIComponent(drill.title + ' basketball tutorial')}`} target="_blank" rel="noopener noreferrer">
                         <button style={{ background: "#FF0000", color: "#fff", padding: "9px 18px", borderRadius: "6px", fontSize: "13px", fontWeight: 700, display: "flex", alignItems: "center", gap: "6px" }}>
                           ▶ Watch Tutorial on YouTube
                         </button>

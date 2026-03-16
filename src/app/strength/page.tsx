@@ -133,7 +133,7 @@ export default function StrengthPage() {
                       </div>
                     ))}
                     <div style={{ marginTop: "16px" }}>
-                      <a href={`https://www.youtube.com/watch?v=${ex.youtube}`} target="_blank" rel="noopener noreferrer">
+                      <a href={`https://www.youtube.com/results?search_query=${encodeURIComponent(ex.name + ' exercise tutorial')}`} target="_blank" rel="noopener noreferrer">
                         <button style={{ background: "#FF0000", color: "#fff", padding: "9px 18px", borderRadius: "6px", fontSize: "13px", fontWeight: 700 }}>
                           ▶ Watch Tutorial on YouTube
                         </button>
