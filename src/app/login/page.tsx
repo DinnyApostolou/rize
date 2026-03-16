@@ -10,6 +10,19 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [resetSent, setResetSent] = useState(false);
+  const [resetLoading, setResetLoading] = useState(false);
+
+  async function handleForgotPassword() {
+    if (!email) { setError("Enter your email above first"); return; }
+    setResetLoading(true);
+    const supabase = getSupabase();
+    await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setResetSent(true);
+    setResetLoading(false);
+  }
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -44,11 +57,17 @@ export default function LoginPage() {
                 placeholder="••••••••" />
             </div>
             {error && <p style={{ color: "#ff4d4d", fontSize: "14px", marginBottom: "16px" }}>{error}</p>}
+            {resetSent && <p style={{ color: "var(--green)", fontSize: "14px", marginBottom: "16px" }}>✅ Reset link sent! Check your email.</p>}
             <button type="submit" disabled={loading} style={{ width: "100%", background: "var(--accent)", color: "#fff", padding: "14px", borderRadius: "10px", fontSize: "16px", fontWeight: 800, opacity: loading ? 0.7 : 1 }}>
               {loading ? "Logging in..." : "Log In →"}
             </button>
           </form>
-          <p style={{ textAlign: "center", marginTop: "24px", color: "var(--text2)", fontSize: "14px" }}>
+          <p style={{ textAlign: "center", marginTop: "16px", fontSize: "14px" }}>
+            <button onClick={handleForgotPassword} disabled={resetLoading} style={{ background: "none", color: "var(--text2)", fontSize: "14px", textDecoration: "underline", cursor: "pointer" }}>
+              {resetLoading ? "Sending..." : "Forgot password?"}
+            </button>
+          </p>
+          <p style={{ textAlign: "center", marginTop: "12px", color: "var(--text2)", fontSize: "14px" }}>
             Don't have an account? <Link href="/signup" style={{ color: "var(--accent)", fontWeight: 700 }}>Sign up free</Link>
           </p>
         </div>
