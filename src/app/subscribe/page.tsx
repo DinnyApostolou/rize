@@ -41,7 +41,7 @@ function SubscribeButton() {
       }}
         onMouseEnter={e => { if (!loading) (e.currentTarget as HTMLButtonElement).style.transform = "translateY(-2px)"; }}
         onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.transform = "translateY(0)"; }}>
-        {loading ? "Redirecting to checkout..." : "Start Pro — $8.99/month →"}
+        {loading ? "Redirecting to checkout..." : "Start Pro — $7.99/month →"}
       </button>
       {error && <p style={{ color: "#ff4d4d", fontSize: "14px", marginTop: "8px", textAlign: "center" }}>{error}</p>}
       <p style={{ color: "var(--text2)", fontSize: "13px", textAlign: "center", marginTop: "8px" }}>Cancel anytime. No long-term commitment.</p>
@@ -53,15 +53,15 @@ export default function SubscribePage() {
   const [faqOpen, setFaqOpen] = useState<number | null>(null);
 
   const benefits = [
-    { icon: "🏀", title: "100+ Basketball Drills", desc: "Full library across every skill area — handles, shooting, defense, IQ and more." },
-    { icon: "🏋️", title: "Gym Strength Programs", desc: "Periodized programs to build explosive power, speed and athletic durability." },
-    { icon: "🥗", title: "Athlete Nutrition Plans", desc: "Pre-game, post-game and daily meals designed to fuel peak performance." },
-    { icon: "📅", title: "Weekly Training Schedule", desc: "Structured week-by-week plans balancing court work, gym and recovery." },
-    { icon: "📊", title: "Progress Tracking", desc: "Log sessions, earn XP, level up and watch your athlete stats improve." },
-    { icon: "🎯", title: "Skill Assessment", desc: "Personalised training plan built around your specific position and weaknesses." },
-    { icon: "🏆", title: "Badges & Achievements", desc: "22 badges across 5 rarities. Earn them as your real-world skills improve." },
-    { icon: "📸", title: "Drill Camera (Coming Soon)", desc: "Film your drills and review your form. AI ball tracking coming soon." },
-    { icon: "🔄", title: "New Content Weekly", desc: "New drills, programs and meal plans added every week." },
+    { tag: "BASKETBALL", title: "100+ Basketball Drills", desc: "Full library across every skill area — ball handling, shooting, finishing, defense and basketball IQ." },
+    { tag: "STRENGTH", title: "Gym Strength Programs", desc: "Periodized programs built for athletes. Explosive power, lower body strength, speed and agility." },
+    { tag: "NUTRITION", title: "Athlete Nutrition Plans", desc: "Pre-game, post-game and daily meals designed to fuel peak performance and recovery." },
+    { tag: "SCHEDULE", title: "Weekly Training Plan", desc: "Structured week-by-week plans balancing court work, gym sessions and recovery." },
+    { tag: "TRACKING", title: "Progress & XP Tracking", desc: "Log every session, earn XP, level up and track your improvement over time." },
+    { tag: "BADGES", title: "Achievements System", desc: "22 badges across 5 rarities. Earn them as your real-world skills develop." },
+    { tag: "COMING SOON", title: "Drill Camera", desc: "Film your drills directly in the app and review your form. AI ball tracking in development." },
+    { tag: "WEEKLY", title: "New Content Added Weekly", desc: "New drills, programs and meal plans added every week to keep training fresh." },
+    { tag: "YOUTUBE", title: "Video Tutorials on Every Drill", desc: "Every drill and exercise links directly to a YouTube tutorial so you know exactly what to do." },
   ];
 
   return (
@@ -74,8 +74,8 @@ export default function SubscribePage() {
       <div style={{ maxWidth: "800px", margin: "0 auto", padding: "60px 24px" }}>
         {/* Hero */}
         <div style={{ textAlign: "center", marginBottom: "64px" }}>
-          <div style={{ display: "inline-block", background: "linear-gradient(135deg, rgba(255,77,0,0.15), rgba(255,140,0,0.15))", border: "1px solid rgba(255,77,0,0.3)", borderRadius: "100px", padding: "8px 20px", fontSize: "14px", fontWeight: 700, color: "var(--accent)", marginBottom: "24px" }}>
-            ⚡ Rize Pro
+          <div style={{ display: "inline-block", background: "rgba(14,165,233,0.1)", border: "1px solid rgba(14,165,233,0.3)", borderRadius: "6px", padding: "6px 16px", fontSize: "12px", fontWeight: 700, color: "var(--accent)", marginBottom: "24px", letterSpacing: "1px" }}>
+            RIZE PRO
           </div>
           <h1 style={{ fontSize: "clamp(36px, 6vw, 64px)", fontWeight: 900, letterSpacing: "-3px", lineHeight: 0.95, marginBottom: "20px" }}>
             Unlock your full{" "}
@@ -85,20 +85,24 @@ export default function SubscribePage() {
             Everything you need to train like a pro athlete — all for less than a coffee a week.
           </p>
           <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: "8px", marginBottom: "32px" }}>
-            <span style={{ fontSize: "64px", fontWeight: 900, letterSpacing: "-3px" }}>$8.99</span>
+            <span style={{ fontSize: "64px", fontWeight: 900, letterSpacing: "-3px" }}>$7.99</span>
             <span style={{ color: "var(--text2)", fontSize: "18px" }}>/ month</span>
           </div>
           <SubscribeButton />
         </div>
 
         {/* Benefits */}
-        <h2 style={{ fontSize: "24px", fontWeight: 800, marginBottom: "24px", letterSpacing: "-0.5px" }}>Everything included:</h2>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "16px", marginBottom: "64px" }}>
+        <h2 style={{ fontSize: "20px", fontWeight: 800, marginBottom: "4px", letterSpacing: "-0.5px" }}>Everything included</h2>
+        <p style={{ color: "var(--text2)", fontSize: "14px", marginBottom: "32px" }}>One subscription. Every tool you need to level up.</p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "1px", background: "var(--border)", border: "1px solid var(--border)", borderRadius: "12px", overflow: "hidden", marginBottom: "64px" }}>
           {benefits.map((b, i) => (
-            <div key={i} style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: "16px", padding: "24px 20px" }}>
-              <div style={{ fontSize: "28px", marginBottom: "10px" }}>{b.icon}</div>
-              <div style={{ fontWeight: 700, marginBottom: "6px", fontSize: "15px" }}>{b.title}</div>
-              <div style={{ color: "var(--text2)", fontSize: "13px", lineHeight: 1.5 }}>{b.desc}</div>
+            <div key={i} style={{ background: "var(--bg2)", padding: "20px 24px", display: "flex", gap: "16px", alignItems: "flex-start" }}>
+              <div style={{ width: "3px", height: "100%", minHeight: "40px", background: "var(--accent)", borderRadius: "2px", flexShrink: 0 }} />
+              <div>
+                <div style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "1.5px", color: "var(--accent)", marginBottom: "4px" }}>{b.tag}</div>
+                <div style={{ fontWeight: 700, fontSize: "14px", marginBottom: "4px" }}>{b.title}</div>
+                <div style={{ color: "var(--text2)", fontSize: "13px", lineHeight: 1.5 }}>{b.desc}</div>
+              </div>
             </div>
           ))}
         </div>

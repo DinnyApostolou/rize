@@ -116,7 +116,7 @@ export default function Home() {
 
         {/* Stats */}
         <div style={{ display: "flex", gap: "64px", marginTop: "96px", flexWrap: "wrap", justifyContent: "center", borderTop: "1px solid var(--border)", paddingTop: "48px" }}>
-          {[["500+", "Athletes"], ["100+", "Drills & Programs"], ["$8.99", "Per Month"], ["20+", "Meal Plans"]].map(([num, label]) => (
+          {[["500+", "Athletes"], ["100+", "Drills & Programs"], ["$7.99", "Per Month"], ["20+", "Meal Plans"]].map(([num, label]) => (
             <div key={label} style={{ textAlign: "center" }}>
               <div style={{ fontSize: "28px", fontWeight: 900, letterSpacing: "-1px" }}>{num}</div>
               <div style={{ fontSize: "12px", color: "var(--text2)", marginTop: "4px", textTransform: "uppercase", letterSpacing: "1px" }}>{label}</div>
@@ -247,7 +247,7 @@ export default function Home() {
             }}>PRO</div>
             <div style={{ fontSize: "11px", fontWeight: 700, color: "var(--accent)", letterSpacing: "1.5px", textTransform: "uppercase", marginBottom: "12px" }}>Pro</div>
             <div style={{ fontSize: "42px", fontWeight: 900, letterSpacing: "-2px", marginBottom: "4px" }}>
-              $8.99<span style={{ fontSize: "16px", fontWeight: 400, color: "var(--text2)" }}>/mo</span>
+              $7.99<span style={{ fontSize: "16px", fontWeight: 400, color: "var(--text2)" }}>/mo</span>
             </div>
             <div style={{ color: "var(--text2)", fontSize: "13px", marginBottom: "32px", paddingBottom: "32px", borderBottom: "1px solid var(--border)" }}>Cancel anytime</div>
             {[
