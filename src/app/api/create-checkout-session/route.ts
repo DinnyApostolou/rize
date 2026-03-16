@@ -5,6 +5,8 @@ export const runtime = "nodejs";
 export async function POST(request: NextRequest) {
   try {
     const origin = request.headers.get("origin") || "http://localhost:3000";
+    const body = await request.json().catch(() => ({}));
+    const { userId, email } = body;
 
     const params = new URLSearchParams();
     params.append("payment_method_types[0]", "card");
@@ -13,6 +15,10 @@ export async function POST(request: NextRequest) {
     params.append("line_items[0][quantity]", "1");
     params.append("success_url", `${origin}/dashboard?success=true`);
     params.append("cancel_url", `${origin}/subscribe?cancelled=true`);
+
+    // Attach user identity so webhook can update Supabase
+    if (userId) params.append("client_reference_id", userId);
+    if (email) params.append("customer_email", email);
 
     const response = await fetch("https://api.stripe.com/v1/checkout/sessions", {
       method: "POST",

@@ -1,6 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { supabase } from "@/lib/supabase";
 
 function SubscribeButton() {
   const [loading, setLoading] = useState(false);
@@ -10,7 +11,12 @@ function SubscribeButton() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("/api/create-checkout-session", { method: "POST" });
+      const { data: { user } } = await supabase.auth.getUser();
+      const res = await fetch("/api/create-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: user?.id, email: user?.email }),
+      });
       const data = await res.json();
       if (data.url) {
         window.location.href = data.url;
