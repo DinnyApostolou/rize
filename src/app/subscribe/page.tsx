@@ -73,7 +73,7 @@ export default function SubscribePage() {
           </div>
           <h1 style={{ fontSize: "clamp(36px, 6vw, 64px)", fontWeight: 900, letterSpacing: "-3px", lineHeight: 0.95, marginBottom: "20px" }}>
             Unlock your full{" "}
-            <span style={{ background: "linear-gradient(90deg, #0066FF, #0099FF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>potential</span>
+            <span style={{ background: "linear-gradient(90deg, #0EA5E9, #38BDF8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>potential</span>
           </h1>
           <p style={{ color: "var(--text2)", fontSize: "18px", maxWidth: "480px", margin: "0 auto 40px", lineHeight: 1.6 }}>
             Everything you need to train like a pro athlete — all for less than a coffee a week.

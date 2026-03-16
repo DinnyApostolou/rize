@@ -88,7 +88,7 @@ export default function Home() {
           maxWidth: "900px",
         }}>
           TRAIN SMARTER.{" "}
-          <span style={{ background: "linear-gradient(90deg, #0066FF, #0099FF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+          <span style={{ background: "linear-gradient(90deg, #0EA5E9, #38BDF8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
             PERFORM BETTER.
           </span>
         </h1>
@@ -279,7 +279,7 @@ export default function Home() {
       <section style={{ padding: "100px 24px", textAlign: "center", borderTop: "1px solid var(--border)" }}>
         <h2 style={{ fontSize: "clamp(36px, 6vw, 72px)", fontWeight: 900, letterSpacing: "-3px", marginBottom: "24px", lineHeight: 0.95 }}>
           READY TO{" "}
-          <span style={{ background: "linear-gradient(90deg, #0066FF, #0099FF)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>RIZE?</span>
+          <span style={{ background: "linear-gradient(90deg, #0EA5E9, #38BDF8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>RIZE?</span>
         </h2>
         <p style={{ color: "var(--text2)", fontSize: "18px", maxWidth: "400px", margin: "0 auto 40px" }}>
           Join hundreds of athletes already training smarter. Start free today.
