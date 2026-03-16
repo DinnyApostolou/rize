@@ -48,7 +48,7 @@ export default function DrillsPage() {
     setLockedMsg(false);
   }
 
-  const diffColor = (d: string) => d === "Beginner" ? "#00e676" : d === "Intermediate" ? "#ff8c00" : "#ff4d00";
+  const diffColor = (d: string) => d === "Beginner" ? "#00e676" : d === "Intermediate" ? "#0099FF" : "#0066FF";
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", color: "var(--text)" }}>
@@ -109,7 +109,7 @@ export default function DrillsPage() {
                         <span style={{ fontSize: "12px", color: "var(--text2)" }}>{drill.category}</span>
                         <span style={{ fontSize: "12px", color: diffColor(drill.difficulty), fontWeight: 600 }}>{drill.difficulty}</span>
                         <span style={{ fontSize: "12px", color: "var(--text3)" }}>⏱ {drill.duration}</span>
-                        <span style={{ fontSize: "12px", color: "#ff8c00" }}>+{drill.xp} XP</span>
+                        <span style={{ fontSize: "12px", color: "#0099FF" }}>+{drill.xp} XP</span>
                       </div>
                     </div>
                   </div>

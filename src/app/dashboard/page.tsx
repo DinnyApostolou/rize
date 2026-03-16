@@ -120,7 +120,7 @@ export default function Dashboard() {
           {navItems.map((n, i) => (
             <Link key={i} href={n.href}>
               <div style={{
-                background: n.label === "Go Pro" ? "linear-gradient(135deg, #ff4d00, #ff8c00)" : "var(--bg2)",
+                background: n.label === "Go Pro" ? "linear-gradient(135deg, #0066FF, #0099FF)" : "var(--bg2)",
                 border: `1px solid ${n.label === "Go Pro" ? "transparent" : "var(--border)"}`,
                 borderRadius: "16px", padding: "24px 20px", cursor: "pointer",
                 transition: "transform 0.2s, border-color 0.2s",

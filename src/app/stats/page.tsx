@@ -29,8 +29,8 @@ export default function StatsPage() {
   const level = Math.floor(xp / 1000) + 1;
 
   const attrs = [
-    { name: "Ball Handling", value: Math.min(99, 40 + drills * 3), color: "#ff4d00" },
-    { name: "Shooting", value: Math.min(99, 35 + drills * 2), color: "#ff8c00" },
+    { name: "Ball Handling", value: Math.min(99, 40 + drills * 3), color: "#0066FF" },
+    { name: "Shooting", value: Math.min(99, 35 + drills * 2), color: "#0099FF" },
     { name: "Consistency", value: Math.min(99, 30 + streak * 5), color: "#ffd700" },
     { name: "Athleticism", value: Math.min(99, 45 + Math.floor(xp / 100)), color: "#00e676" },
     { name: "Defense", value: Math.min(99, 38 + drills * 2), color: "#00bcd4" },
