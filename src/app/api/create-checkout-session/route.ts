@@ -32,7 +32,8 @@ export async function POST(request: NextRequest) {
     const session = await response.json();
 
     if (!response.ok) {
-      return NextResponse.json({ error: session.error?.message || "Stripe error" }, { status: 400 });
+      console.error("Stripe error:", JSON.stringify(session));
+      return NextResponse.json({ error: session.error?.message || "Stripe error", details: session }, { status: 400 });
     }
 
     return NextResponse.json({ url: session.url });
