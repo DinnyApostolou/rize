@@ -12,6 +12,23 @@ interface Profile {
   drills_completed: number;
 }
 
+const NAV = [
+  { href: "/drills", label: "Drills" },
+  { href: "/strength", label: "Strength" },
+  { href: "/nutrition", label: "Nutrition" },
+  { href: "/schedule", label: "Schedule" },
+  { href: "/assessment", label: "Assessment" },
+  { href: "/stats", label: "My Stats" },
+  { href: "/badges", label: "Badges" },
+  { href: "/subscribe", label: "Upgrade" },
+];
+
+const TODAY = [
+  { category: "Court", title: "Crossover Series", duration: "20 min", type: "drills" },
+  { category: "Gym", title: "Lower Body Power", duration: "45 min", type: "strength" },
+  { category: "Nutrition", title: "Pre-workout meal", duration: "30 min before", type: "nutrition" },
+];
+
 export default function Dashboard() {
   const router = useRouter();
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -37,117 +54,119 @@ export default function Dashboard() {
 
   if (loading) return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <div style={{ color: "var(--text2)" }}>Loading...</div>
+      <div style={{ color: "var(--text2)", fontSize: "14px" }}>Loading...</div>
     </div>
   );
 
-  const xpToNext = 1000;
-  const xpProgress = ((profile?.xp || 0) % xpToNext) / xpToNext * 100;
-  const level = Math.floor((profile?.xp || 0) / xpToNext) + 1;
-
-  const navItems = [
-    { href: "/drills", icon: "🏀", label: "Drills" },
-    { href: "/strength", icon: "🏋️", label: "Strength" },
-    { href: "/nutrition", icon: "🥗", label: "Nutrition" },
-    { href: "/schedule", icon: "📅", label: "Schedule" },
-    { href: "/assessment", icon: "🎯", label: "Assessment" },
-    { href: "/stats", icon: "📊", label: "My Stats" },
-    { href: "/badges", icon: "🏆", label: "Badges" },
-    { href: "/subscribe", icon: "⚡", label: "Go Pro" },
-  ];
+  const xp = profile?.xp || 0;
+  const level = Math.floor(xp / 1000) + 1;
+  const xpProgress = (xp % 1000) / 1000 * 100;
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", color: "var(--text)" }}>
-      {/* NAV */}
-      <nav style={{ background: "var(--bg2)", borderBottom: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 32px", height: "64px" }}>
-        <div style={{ fontSize: "20px", fontWeight: 900, letterSpacing: "-1px" }}>RZ<span style={{ color: "var(--accent)" }}>.</span></div>
-        <div style={{ display: "flex", gap: "8px" }}>
-          {navItems.slice(0, 5).map(n => (
-            <Link key={n.href} href={n.href}>
-              <button style={{ background: "none", color: "var(--text2)", fontSize: "13px", padding: "6px 12px", borderRadius: "8px", border: "1px solid transparent" }}
-                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "var(--bg3)"; (e.currentTarget as HTMLButtonElement).style.color = "#fff"; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "none"; (e.currentTarget as HTMLButtonElement).style.color = "var(--text2)"; }}>
-                {n.icon} {n.label}
+    <div style={{ minHeight: "100vh", background: "var(--bg)", color: "var(--text)", display: "flex", flexDirection: "column" }}>
+      {/* TOP NAV */}
+      <nav style={{ background: "var(--bg2)", borderBottom: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 40px", height: "60px", position: "sticky", top: 0, zIndex: 50 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "40px" }}>
+          <div style={{ fontSize: "18px", fontWeight: 900, letterSpacing: "-0.5px" }}>RZ<span style={{ color: "var(--accent)" }}>.</span></div>
+          <div style={{ display: "flex", gap: "4px" }}>
+            {NAV.slice(0, 6).map(n => (
+              <Link key={n.href} href={n.href}>
+                <button style={{ background: "none", color: "var(--text2)", fontSize: "13px", padding: "6px 12px", borderRadius: "6px", fontWeight: 500 }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "var(--bg3)"; (e.currentTarget as HTMLButtonElement).style.color = "#fff"; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "none"; (e.currentTarget as HTMLButtonElement).style.color = "var(--text2)"; }}>
+                  {n.label}
+                </button>
+              </Link>
+            ))}
+          </div>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          {!profile?.is_subscribed && (
+            <Link href="/subscribe">
+              <button style={{ background: "var(--accent)", color: "#fff", fontSize: "12px", fontWeight: 700, padding: "6px 14px", borderRadius: "6px", letterSpacing: "0.3px" }}>
+                UPGRADE TO PRO
               </button>
             </Link>
-          ))}
+          )}
+          <button onClick={handleLogout} style={{ background: "none", color: "var(--text2)", fontSize: "13px", padding: "6px 12px", border: "1px solid var(--border)", borderRadius: "6px" }}>
+            Sign out
+          </button>
         </div>
-        <button onClick={handleLogout} style={{ background: "none", color: "var(--text2)", fontSize: "13px", padding: "6px 14px", border: "1px solid var(--border)", borderRadius: "8px" }}>
-          Log out
-        </button>
       </nav>
 
-      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "40px 24px" }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "40px 40px", width: "100%" }}>
         {/* Header */}
         <div style={{ marginBottom: "40px" }}>
-          <h1 style={{ fontSize: "32px", fontWeight: 900, letterSpacing: "-1px" }}>
-            Welcome back, <span style={{ color: "var(--accent)" }}>{profile?.username}</span> 👋
+          <p style={{ color: "var(--text2)", fontSize: "13px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: "8px" }}>Dashboard</p>
+          <h1 style={{ fontSize: "28px", fontWeight: 800, letterSpacing: "-0.5px" }}>
+            Good {new Date().getHours() < 12 ? "morning" : new Date().getHours() < 17 ? "afternoon" : "evening"}, {profile?.username}
           </h1>
-          <p style={{ color: "var(--text2)", marginTop: "8px" }}>Keep the momentum going. Every session counts.</p>
         </div>
 
         {/* Stats row */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "16px", marginBottom: "40px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "16px", marginBottom: "40px" }}>
           {[
-            { label: "Level", value: level, icon: "⚡", accent: true },
-            { label: "Total XP", value: (profile?.xp || 0).toLocaleString(), icon: "🔥", accent: false },
-            { label: "Day Streak", value: profile?.streak || 0, icon: "📅", accent: false },
-            { label: "Drills Done", value: profile?.drills_completed || 0, icon: "✅", accent: false },
+            { label: "Level", value: level, sub: `${xp.toLocaleString()} XP total` },
+            { label: "Day Streak", value: profile?.streak || 0, sub: "days in a row" },
+            { label: "Drills Done", value: profile?.drills_completed || 0, sub: "total completed" },
+            { label: "XP to Next", value: 1000 - (xp % 1000), sub: "until level " + (level + 1) },
           ].map((s, i) => (
-            <div key={i} style={{ background: "var(--bg2)", border: `1px solid ${s.accent ? "var(--accent)" : "var(--border)"}`, borderRadius: "16px", padding: "24px" }}>
-              <div style={{ fontSize: "24px", marginBottom: "8px" }}>{s.icon}</div>
-              <div style={{ fontSize: "28px", fontWeight: 900, letterSpacing: "-1px", color: s.accent ? "var(--accent)" : "var(--text)" }}>{s.value}</div>
-              <div style={{ fontSize: "13px", color: "var(--text2)", marginTop: "4px" }}>{s.label}</div>
+            <div key={i} style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: "12px", padding: "24px" }}>
+              <div style={{ fontSize: "11px", color: "var(--text2)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "1px", marginBottom: "8px" }}>{s.label}</div>
+              <div style={{ fontSize: "32px", fontWeight: 900, letterSpacing: "-1px", color: i === 0 ? "var(--accent)" : "var(--text)" }}>{s.value}</div>
+              <div style={{ fontSize: "12px", color: "var(--text3)", marginTop: "4px" }}>{s.sub}</div>
             </div>
           ))}
         </div>
 
-        {/* XP Progress */}
-        <div style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: "16px", padding: "24px", marginBottom: "40px" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
-            <span style={{ fontWeight: 700 }}>Level {level} Progress</span>
-            <span style={{ color: "var(--text2)", fontSize: "14px" }}>{(profile?.xp || 0) % xpToNext} / {xpToNext} XP</span>
+        {/* XP Bar */}
+        <div style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: "12px", padding: "20px 24px", marginBottom: "40px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "10px", fontSize: "13px" }}>
+            <span style={{ fontWeight: 600 }}>Level {level} → Level {level + 1}</span>
+            <span style={{ color: "var(--text2)" }}>{xp % 1000} / 1000 XP</span>
           </div>
-          <div style={{ background: "var(--bg3)", borderRadius: "100px", height: "10px" }}>
-            <div style={{ background: "linear-gradient(90deg, var(--accent), var(--accent2))", height: "100%", borderRadius: "100px", width: `${xpProgress}%`, transition: "width 1s ease" }} />
+          <div style={{ background: "var(--bg3)", borderRadius: "4px", height: "6px" }}>
+            <div style={{ background: "var(--accent)", height: "100%", borderRadius: "4px", width: `${xpProgress}%`, transition: "width 1s ease" }} />
           </div>
-          <p style={{ color: "var(--text2)", fontSize: "13px", marginTop: "8px" }}>{xpToNext - ((profile?.xp || 0) % xpToNext)} XP until Level {level + 1}</p>
         </div>
 
-        {/* Quick links */}
-        <h2 style={{ fontSize: "20px", fontWeight: 800, marginBottom: "20px", letterSpacing: "-0.5px" }}>Quick Access</h2>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "16px" }}>
-          {navItems.map((n, i) => (
-            <Link key={i} href={n.href}>
-              <div style={{
-                background: n.label === "Go Pro" ? "linear-gradient(135deg, #0EA5E9, #38BDF8)" : "var(--bg2)",
-                border: `1px solid ${n.label === "Go Pro" ? "transparent" : "var(--border)"}`,
-                borderRadius: "16px", padding: "24px 20px", cursor: "pointer",
-                transition: "transform 0.2s, border-color 0.2s",
-              }}
-                onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.transform = "translateY(-4px)"; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)"; }}>
-                <div style={{ fontSize: "28px", marginBottom: "10px" }}>{n.icon}</div>
-                <div style={{ fontWeight: 700, fontSize: "16px" }}>{n.label}</div>
-              </div>
-            </Link>
-          ))}
-        </div>
-
-        {/* Pro banner */}
-        {!profile?.is_subscribed && (
-          <div style={{ marginTop: "40px", background: "var(--bg2)", border: "1px solid var(--accent)", borderRadius: "16px", padding: "28px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "16px" }}>
-            <div>
-              <div style={{ fontWeight: 800, fontSize: "18px", marginBottom: "6px" }}>⚡ Unlock everything for $8.99/month</div>
-              <div style={{ color: "var(--text2)", fontSize: "14px" }}>100+ drills, full gym programs, nutrition plans and weekly schedules.</div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }}>
+          {/* Today's Plan */}
+          <div style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: "12px", padding: "24px" }}>
+            <div style={{ fontSize: "11px", color: "var(--text2)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "1px", marginBottom: "20px" }}>Today&apos;s Plan</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              {TODAY.map((t, i) => (
+                <Link key={i} href={"/" + t.type}>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 16px", background: "var(--bg3)", borderRadius: "8px", cursor: "pointer", transition: "border-color 0.2s", border: "1px solid transparent" }}
+                    onMouseEnter={e => (e.currentTarget as HTMLDivElement).style.borderColor = "var(--border)"}
+                    onMouseLeave={e => (e.currentTarget as HTMLDivElement).style.borderColor = "transparent"}>
+                    <div>
+                      <div style={{ fontSize: "11px", color: "var(--accent)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "4px" }}>{t.category}</div>
+                      <div style={{ fontSize: "15px", fontWeight: 600 }}>{t.title}</div>
+                    </div>
+                    <div style={{ fontSize: "12px", color: "var(--text2)" }}>{t.duration}</div>
+                  </div>
+                </Link>
+              ))}
             </div>
-            <Link href="/subscribe">
-              <button style={{ background: "var(--accent)", color: "#fff", padding: "12px 28px", borderRadius: "10px", fontSize: "15px", fontWeight: 800 }}>
-                Go Pro →
-              </button>
-            </Link>
           </div>
-        )}
+
+          {/* Quick Access */}
+          <div style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: "12px", padding: "24px" }}>
+            <div style={{ fontSize: "11px", color: "var(--text2)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "1px", marginBottom: "20px" }}>Quick Access</div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+              {NAV.map((n, i) => (
+                <Link key={i} href={n.href}>
+                  <div style={{ padding: "12px 16px", background: "var(--bg3)", borderRadius: "8px", fontSize: "14px", fontWeight: 600, cursor: "pointer", border: "1px solid transparent", transition: "border-color 0.2s, color 0.2s" }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.borderColor = "var(--accent)"; (e.currentTarget as HTMLDivElement).style.color = "var(--accent)"; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.borderColor = "transparent"; (e.currentTarget as HTMLDivElement).style.color = "var(--text)"; }}>
+                    {n.label}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

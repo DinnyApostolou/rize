@@ -4,28 +4,55 @@ import Link from "next/link";
 
 const MEALS = {
   "Pre-Game": [
-    { name: "Oats + Banana + Honey", time: "2-3 hrs before", macros: "65g carbs · 8g protein · 3g fat", why: "Slow-release carbs for sustained energy. No crashes mid-game.", ingredients: ["1 cup rolled oats", "1 banana", "1 tbsp honey", "Pinch of salt"] },
-    { name: "Chicken & White Rice", time: "3 hrs before", macros: "70g carbs · 35g protein · 5g fat", why: "Classic athlete pre-game meal. Easy to digest, high energy.", ingredients: ["150g chicken breast", "1.5 cups white rice", "Light seasoning", "Steamed vegetables"] },
-    { name: "Turkey & Whole Grain Toast", time: "2 hrs before", macros: "45g carbs · 30g protein · 8g fat", why: "Lean protein with moderate carbs — good for lighter pre-game meals.", ingredients: ["3-4 slices turkey", "2 slices whole grain toast", "Mustard or avocado"] },
-    { name: "Greek Yogurt Parfait", time: "1.5 hrs before", macros: "40g carbs · 20g protein · 4g fat", why: "Light on the stomach, quick protein and carbs without heaviness.", ingredients: ["1 cup Greek yogurt", "1/2 cup granola", "Mixed berries", "Drizzle of honey"] },
+    { name: "Oats + Banana + Honey", time: "2-3 hrs before", macros: "65g carbs · 8g protein · 3g fat · 320 cal", why: "Slow-release carbs for sustained energy. No crashes mid-game.", ingredients: ["1 cup rolled oats", "1 banana", "1 tbsp honey", "Pinch of salt", "250ml milk or water"] },
+    { name: "Chicken & White Rice", time: "3 hrs before", macros: "70g carbs · 35g protein · 5g fat · 470 cal", why: "Classic athlete pre-game meal. Easy to digest, loads glycogen.", ingredients: ["150g chicken breast", "1.5 cups white rice", "Light seasoning", "Steamed broccoli"] },
+    { name: "Turkey & Whole Grain Toast", time: "2 hrs before", macros: "45g carbs · 30g protein · 8g fat · 370 cal", why: "Lean protein with moderate carbs for lighter pre-game fuelling.", ingredients: ["3-4 slices turkey breast", "2 slices whole grain toast", "Mustard or avocado", "Sliced tomato"] },
+    { name: "Greek Yogurt Parfait", time: "1.5 hrs before", macros: "40g carbs · 20g protein · 4g fat · 280 cal", why: "Light on the stomach, quick protein and carbs without heaviness.", ingredients: ["1 cup Greek yogurt (0%)", "1/2 cup granola", "Mixed berries", "Drizzle of honey"] },
+    { name: "Bagel + Peanut Butter + Banana", time: "2 hrs before", macros: "75g carbs · 14g protein · 12g fat · 460 cal", why: "High carb, moderate fat — classic pre-game combo used by pro athletes.", ingredients: ["1 whole grain bagel", "2 tbsp peanut butter", "1 banana"] },
+    { name: "Pasta with Tomato Sauce", time: "3 hrs before", macros: "85g carbs · 18g protein · 6g fat · 470 cal", why: "Carb loading classic. High glycogen stores for extended energy.", ingredients: ["2 cups cooked pasta", "Lean turkey mince", "Tomato sauce", "Parmesan"] },
+    { name: "Rice Cakes + Almond Butter + Honey", time: "1 hr before", macros: "35g carbs · 7g protein · 9g fat · 250 cal", why: "Fast digesting, light on the stomach. Won't slow you down.", ingredients: ["3-4 rice cakes", "2 tbsp almond butter", "Drizzle of honey"] },
+    { name: "Sweet Potato + Chicken Bowl", time: "2-3 hrs before", macros: "60g carbs · 38g protein · 5g fat · 440 cal", why: "Complex carbs + lean protein. Steady energy release through the game.", ingredients: ["1 large sweet potato", "180g chicken breast", "Olive oil", "Salt, pepper, paprika"] },
   ],
   "Post-Game": [
-    { name: "Protein Shake + Banana", time: "Within 30 min", macros: "40g carbs · 30g protein · 5g fat", why: "Fastest way to start muscle recovery. Simple and effective.", ingredients: ["1 scoop whey protein", "250ml milk or water", "1 banana", "Ice"] },
-    { name: "Salmon & Sweet Potato", time: "1 hr after", macros: "55g carbs · 38g protein · 12g fat", why: "Omega-3s in salmon reduce inflammation and accelerate recovery.", ingredients: ["180g salmon fillet", "1 large sweet potato", "Lemon + herbs", "Asparagus or broccoli"] },
-    { name: "Chicken Stir Fry & Rice", time: "1 hr after", macros: "65g carbs · 40g protein · 8g fat", why: "Replenishes glycogen stores and provides amino acids for muscle repair.", ingredients: ["200g chicken breast", "2 cups jasmine rice", "Mixed vegetables", "Soy sauce + sesame oil"] },
-    { name: "Eggs & Whole Grain Toast", time: "1 hr after", macros: "35g carbs · 24g protein · 14g fat", why: "Complete protein from eggs supports muscle synthesis. Quick to prepare.", ingredients: ["3 whole eggs", "2 slices whole grain toast", "Avocado", "Spinach or tomato"] },
+    { name: "Protein Shake + Banana", time: "Within 30 min", macros: "40g carbs · 30g protein · 5g fat · 325 cal", why: "Fastest recovery window. Replenish glycogen and start muscle repair immediately.", ingredients: ["1 scoop whey protein", "250ml milk", "1 banana", "Ice"] },
+    { name: "Salmon & Sweet Potato", time: "1 hr after", macros: "55g carbs · 38g protein · 12g fat · 480 cal", why: "Omega-3s in salmon reduce muscle inflammation and accelerate recovery.", ingredients: ["180g salmon fillet", "1 large sweet potato", "Lemon + dill", "Asparagus"] },
+    { name: "Chicken Stir Fry & Rice", time: "1 hr after", macros: "65g carbs · 40g protein · 8g fat · 496 cal", why: "Replenishes glycogen stores and amino acids for muscle repair.", ingredients: ["200g chicken breast", "2 cups jasmine rice", "Mixed vegetables", "Soy sauce + sesame oil"] },
+    { name: "Eggs & Whole Grain Toast", time: "45 min after", macros: "35g carbs · 24g protein · 14g fat · 360 cal", why: "Complete protein from eggs supports muscle protein synthesis.", ingredients: ["3 whole eggs", "2 slices whole grain toast", "Avocado", "Spinach"] },
+    { name: "Tuna Rice Bowl", time: "1 hr after", macros: "60g carbs · 35g protein · 5g fat · 420 cal", why: "Lean protein + carbs. Budget-friendly and highly effective.", ingredients: ["2 cans tuna (in water)", "1.5 cups rice", "Lemon", "Cucumber, corn"] },
+    { name: "Beef & Vegetable Stir Fry", time: "1 hr after", macros: "50g carbs · 42g protein · 10g fat · 456 cal", why: "Creatine in beef supports muscle recovery and strength regeneration.", ingredients: ["200g lean beef strips", "Mixed vegetables", "Brown rice", "Oyster sauce"] },
+    { name: "Cottage Cheese & Fruit Bowl", time: "Before bed after game", macros: "30g carbs · 28g protein · 4g fat · 268 cal", why: "Casein protein feeds muscles overnight. Perfect night-after-game meal.", ingredients: ["1 cup cottage cheese", "Mixed berries", "Peach slices", "Honey"] },
+    { name: "Turkey Meatballs & Pasta", time: "1.5 hrs after", macros: "70g carbs · 38g protein · 9g fat · 510 cal", why: "High protein, high carb combo for full glycogen and muscle restoration.", ingredients: ["200g turkey mince", "Pasta", "Tomato sauce", "Herbs"] },
   ],
   "Daily Meals": [
-    { name: "Overnight Oats", time: "Breakfast", macros: "60g carbs · 15g protein · 8g fat", why: "Prep the night before — zero effort, high nutrition breakfast.", ingredients: ["1 cup oats", "1 cup milk", "Chia seeds", "Fruit of choice", "Protein powder (optional)"] },
-    { name: "Chicken Burrito Bowl", time: "Lunch", macros: "75g carbs · 42g protein · 10g fat", why: "Balanced macros to fuel your afternoon training session.", ingredients: ["200g chicken breast", "Rice", "Black beans", "Corn, salsa, guac", "Greek yogurt instead of sour cream"] },
-    { name: "Tuna Pasta", time: "Lunch", macros: "70g carbs · 35g protein · 6g fat", why: "High protein, budget-friendly and quick. Perfect for athletes.", ingredients: ["1 can tuna", "Pasta", "Olive oil", "Lemon", "Cherry tomatoes"] },
-    { name: "Steak & Baked Potato", time: "Dinner", macros: "60g carbs · 45g protein · 15g fat", why: "Red meat provides creatine and iron — crucial for athletic performance.", ingredients: ["200g lean steak (sirloin)", "1 large baked potato", "Butter + sour cream", "Side salad"] },
+    { name: "Overnight Oats", time: "Breakfast", macros: "60g carbs · 22g protein · 8g fat · 400 cal", why: "Prep the night before. Zero effort, sustained energy all morning.", ingredients: ["1 cup oats", "1 cup milk", "1 scoop protein powder", "Chia seeds", "Fruit"] },
+    { name: "Chicken Burrito Bowl", time: "Lunch", macros: "75g carbs · 42g protein · 10g fat · 566 cal", why: "Balanced macros to fuel afternoon training. High protein keeps you full.", ingredients: ["200g chicken breast", "Rice", "Black beans", "Corn, salsa, guac"] },
+    { name: "Tuna Pasta Salad", time: "Lunch", macros: "65g carbs · 35g protein · 8g fat · 472 cal", why: "High protein, budget-friendly and quick. Perfect for athletes on the go.", ingredients: ["2 cans tuna", "Pasta", "Olive oil", "Lemon", "Cherry tomatoes", "Cucumber"] },
+    { name: "Steak & Baked Potato", time: "Dinner", macros: "60g carbs · 45g protein · 15g fat · 555 cal", why: "Red meat provides creatine and iron — crucial for athletic performance.", ingredients: ["200g lean sirloin", "1 large baked potato", "Greek yogurt instead of sour cream", "Side salad"] },
+    { name: "Salmon & Brown Rice", time: "Dinner", macros: "55g carbs · 40g protein · 14g fat · 508 cal", why: "Anti-inflammatory omega-3s + complex carbs. Excellent recovery dinner.", ingredients: ["180g salmon", "1.5 cups brown rice", "Steamed broccoli", "Lemon butter"] },
+    { name: "Chicken & Vegetable Soup", time: "Lunch or Dinner", macros: "30g carbs · 35g protein · 6g fat · 314 cal", why: "Light, anti-inflammatory, hydrating. Great on rest days.", ingredients: ["200g chicken breast", "Mixed vegetables", "Chicken broth", "Noodles or rice"] },
+    { name: "Ground Turkey Tacos", time: "Dinner", macros: "50g carbs · 38g protein · 12g fat · 460 cal", why: "Lean protein + moderate carbs. Versatile and easy to meal prep.", ingredients: ["200g turkey mince", "Corn tortillas", "Salsa", "Avocado", "Greek yogurt"] },
+    { name: "Egg White Omelette", time: "Breakfast", macros: "10g carbs · 30g protein · 8g fat · 230 cal", why: "Low calorie, high protein. Perfect for morning before a later workout.", ingredients: ["5 egg whites", "1 whole egg", "Spinach", "Mushrooms", "Feta"] },
+    { name: "Protein Pancakes", time: "Breakfast", macros: "55g carbs · 28g protein · 8g fat · 408 cal", why: "High protein breakfast that feels like a treat but fuels like a meal.", ingredients: ["1 scoop protein powder", "1 cup oat flour", "2 eggs", "Milk", "Banana"] },
+    { name: "Quinoa Power Bowl", time: "Lunch", macros: "50g carbs · 28g protein · 12g fat · 420 cal", why: "Complete protein from quinoa + healthy fats. Excellent anti-inflammatory lunch.", ingredients: ["1 cup quinoa", "Chickpeas", "Avocado", "Cucumber", "Feta", "Lemon dressing"] },
   ],
   "Snacks": [
-    { name: "Rice Cakes + Peanut Butter", time: "Anytime", macros: "25g carbs · 8g protein · 10g fat", why: "Quick energy with healthy fats. Great pre-workout snack.", ingredients: ["2-3 rice cakes", "2 tbsp peanut butter"] },
-    { name: "Protein Bar", time: "On the go", macros: "30g carbs · 20g protein · 8g fat", why: "Convenient option when you can't prepare food. Look for 20g+ protein.", ingredients: ["Choose bars with <10g sugar", "20g+ protein", "Avoid artificial fillers"] },
-    { name: "Apple + Almonds", time: "Between meals", macros: "25g carbs · 6g protein · 14g fat", why: "Sustained energy without the crash. Keeps hunger away between meals.", ingredients: ["1 medium apple", "30g almonds (small handful)"] },
-    { name: "Cottage Cheese + Fruit", time: "Before bed", macros: "20g carbs · 25g protein · 4g fat", why: "Casein protein in cottage cheese feeds your muscles overnight while you sleep.", ingredients: ["1 cup cottage cheese", "Mixed berries or peach", "Drizzle of honey"] },
+    { name: "Rice Cakes + Peanut Butter", time: "Pre-workout", macros: "25g carbs · 8g protein · 10g fat · 220 cal", why: "Quick energy with healthy fats. Great 45-60 min before training.", ingredients: ["3 rice cakes", "2 tbsp peanut butter"] },
+    { name: "Protein Bar", time: "On the go", macros: "30g carbs · 20g protein · 8g fat · 272 cal", why: "Convenient when you can't prepare food. Look for 20g+ protein.", ingredients: ["Choose bars with <10g sugar", "20g+ protein target"] },
+    { name: "Apple + Almonds", time: "Between meals", macros: "25g carbs · 6g protein · 14g fat · 242 cal", why: "Sustained energy without a crash. Keeps hunger at bay for hours.", ingredients: ["1 medium apple", "30g almonds"] },
+    { name: "Cottage Cheese + Fruit", time: "Before bed", macros: "20g carbs · 25g protein · 4g fat · 212 cal", why: "Casein protein feeds your muscles while you sleep.", ingredients: ["1 cup cottage cheese", "Mixed berries", "Honey"] },
+    { name: "Hard Boiled Eggs + Fruit", time: "Mid-morning", macros: "20g carbs · 18g protein · 10g fat · 238 cal", why: "Complete protein snack. Easy to prep in bulk.", ingredients: ["2 hard boiled eggs", "1 piece of fruit"] },
+    { name: "Greek Yogurt + Granola", time: "Morning snack", macros: "35g carbs · 18g protein · 5g fat · 253 cal", why: "Protein + carbs. Great after a morning workout.", ingredients: ["3/4 cup Greek yogurt", "1/4 cup granola", "Berries"] },
+    { name: "Banana + Whey Shake", time: "Post-workout", macros: "45g carbs · 28g protein · 3g fat · 319 cal", why: "Fast digesting. Hit this within 30 minutes of finishing training.", ingredients: ["1 banana", "1 scoop whey", "Water or milk"] },
+    { name: "Edamame", time: "Anytime", macros: "12g carbs · 17g protein · 8g fat · 188 cal", why: "Complete plant protein snack. Underrated by most athletes.", ingredients: ["1 cup edamame (shelled)", "Sea salt"] },
+    { name: "Tuna on Rice Cakes", time: "Afternoon", macros: "20g carbs · 25g protein · 3g fat · 207 cal", why: "High protein, very low fat. Excellent cutting or lean bulk snack.", ingredients: ["1 can tuna", "3 rice cakes", "Lemon juice", "Black pepper"] },
+    { name: "Smoothie Bowl", time: "Breakfast or snack", macros: "55g carbs · 15g protein · 7g fat · 343 cal", why: "Nutrient dense and fast. Load with toppings for extra fuel.", ingredients: ["Frozen mixed berries", "Banana", "Protein powder", "Almond milk", "Granola topping"] },
+  ],
+  "Hydration": [
+    { name: "Pre-Training Hydration", time: "2 hrs before", macros: "0g carbs · 0g protein · 0g fat · 0 cal", why: "Pre-loading fluids prevents early dehydration and maintains performance.", ingredients: ["500ml water 2 hours before", "Add electrolytes if hot weather", "Avoid caffeine 30 min before if sensitive"] },
+    { name: "During Training", time: "Every 20 min", macros: "15g carbs · 0g protein · 0g fat · 60 cal", why: "Replacing sweat prevents cramping and performance drops.", ingredients: ["200-300ml water every 20 minutes", "Sports drink if session over 60 min", "Electrolytes (sodium, potassium) in hot conditions"] },
+    { name: "Post-Training Rehydration", time: "After training", macros: "0g carbs · 0g protein · 0g fat · 0 cal", why: "Replacing fluid lost through sweat is critical for recovery.", ingredients: ["500-750ml water post-session", "Add pinch of salt for electrolytes", "Coconut water is also excellent"] },
+    { name: "Morning Hydration Routine", time: "First thing AM", macros: "0g carbs · 0g protein · 0g fat · 0 cal", why: "You wake up dehydrated after 8 hours. This fixes it immediately.", ingredients: ["500ml water immediately on waking", "Add lemon juice optionally", "Before coffee or food"] },
+    { name: "Electrolyte Drink", time: "Long sessions", macros: "20g carbs · 0g protein · 0g fat · 80 cal", why: "For sessions over 90 minutes. Prevents cramping and fatigue.", ingredients: ["Water", "Pinch of salt", "Pinch of sugar or honey", "Lemon juice", "Or use a sports drink"] },
   ],
 };
 
@@ -36,66 +63,62 @@ export default function NutritionPage() {
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", color: "var(--text)" }}>
-      <nav style={{ background: "var(--bg2)", borderBottom: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 32px", height: "64px" }}>
-        <Link href="/dashboard" style={{ fontSize: "20px", fontWeight: 900, letterSpacing: "-1px" }}>RZ<span style={{ color: "var(--accent)" }}>.</span></Link>
-        <span style={{ fontWeight: 700 }}>🥗 Athlete Nutrition</span>
-        <Link href="/dashboard"><button style={{ background: "none", border: "1px solid var(--border)", color: "var(--text2)", padding: "6px 16px", borderRadius: "8px", fontSize: "13px" }}>← Dashboard</button></Link>
+      <nav style={{ background: "var(--bg2)", borderBottom: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 32px", height: "60px", position: "sticky", top: 0, zIndex: 50 }}>
+        <Link href="/dashboard" style={{ fontSize: "18px", fontWeight: 900, letterSpacing: "-0.5px" }}>RZ<span style={{ color: "var(--accent)" }}>.</span></Link>
+        <span style={{ fontWeight: 700, fontSize: "15px" }}>Athlete Nutrition</span>
+        <Link href="/dashboard"><button style={{ background: "none", border: "1px solid var(--border)", color: "var(--text2)", padding: "6px 14px", borderRadius: "6px", fontSize: "13px" }}>← Back</button></Link>
       </nav>
 
-      <div style={{ maxWidth: "900px", margin: "0 auto", padding: "40px 24px" }}>
-        <h1 style={{ fontSize: "32px", fontWeight: 900, letterSpacing: "-1px", marginBottom: "8px" }}>Fuel Like An Athlete</h1>
-        <p style={{ color: "var(--text2)", marginBottom: "32px" }}>What you eat determines how you perform. Follow these plans to maximise your energy, recovery and gains.</p>
-
-        {/* Hydration tip */}
-        <div style={{ background: "var(--bg2)", border: "1px solid #1a4a6e", borderRadius: "16px", padding: "20px 24px", marginBottom: "32px", display: "flex", gap: "16px", alignItems: "flex-start" }}>
-          <span style={{ fontSize: "24px" }}>💧</span>
-          <div>
-            <div style={{ fontWeight: 700, marginBottom: "6px" }}>Hydration Rule</div>
-            <p style={{ color: "var(--text2)", fontSize: "14px", lineHeight: 1.6 }}>Drink <strong>500ml water 2 hours before</strong> training, sip <strong>200-300ml every 20 mins during</strong>, and drink <strong>500-750ml post-game</strong>. Add electrolytes if training over 60 minutes.</p>
-          </div>
+      <div style={{ maxWidth: "860px", margin: "0 auto", padding: "40px 24px" }}>
+        <div style={{ marginBottom: "32px" }}>
+          <p style={{ fontSize: "11px", color: "var(--text2)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: "8px" }}>Nutrition</p>
+          <h1 style={{ fontSize: "26px", fontWeight: 800, letterSpacing: "-0.5px", marginBottom: "8px" }}>Fuel Like An Athlete</h1>
+          <p style={{ color: "var(--text2)", fontSize: "14px" }}>What you eat determines how you perform. {Object.values(MEALS).flat().length}+ meals across every training need.</p>
         </div>
 
         {/* Tabs */}
-        <div style={{ display: "flex", gap: "8px", marginBottom: "32px", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "6px", marginBottom: "28px", flexWrap: "wrap" }}>
           {tabs.map(t => (
             <button key={t} onClick={() => { setTab(t); setExpanded(null); }} style={{
-              padding: "10px 22px", borderRadius: "100px", fontSize: "14px", fontWeight: 600,
+              padding: "8px 16px", borderRadius: "6px", fontSize: "13px", fontWeight: 600,
               background: tab === t ? "var(--accent)" : "var(--bg2)",
               border: `1px solid ${tab === t ? "var(--accent)" : "var(--border)"}`,
               color: tab === t ? "#fff" : "var(--text2)",
-            }}>{t}</button>
+            }}>{t} <span style={{ opacity: 0.7, fontWeight: 400 }}>({MEALS[t].length})</span></button>
           ))}
         </div>
 
+        <div style={{ fontSize: "13px", color: "var(--text2)", marginBottom: "16px" }}>{MEALS[tab].length} options</div>
+
         {/* Meals */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
           {MEALS[tab].map((meal, i) => {
             const isOpen = expanded === i;
             return (
               <div key={i} onClick={() => setExpanded(isOpen ? null : i)} style={{
                 background: "var(--bg2)", border: `1px solid ${isOpen ? "var(--accent)" : "var(--border)"}`,
-                borderRadius: "16px", padding: "20px 24px", cursor: "pointer",
+                borderRadius: "10px", padding: "18px 20px", cursor: "pointer", transition: "border-color 0.2s",
               }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <div>
-                    <div style={{ fontWeight: 700, fontSize: "17px" }}>{meal.name}</div>
-                    <div style={{ display: "flex", gap: "12px", marginTop: "6px", flexWrap: "wrap" }}>
-                      <span style={{ fontSize: "12px", color: "var(--accent)", fontWeight: 600 }}>⏰ {meal.time}</span>
+                    <div style={{ fontWeight: 700, fontSize: "15px" }}>{meal.name}</div>
+                    <div style={{ display: "flex", gap: "10px", marginTop: "5px", flexWrap: "wrap" }}>
+                      <span style={{ fontSize: "12px", color: "var(--accent)", fontWeight: 600 }}>{meal.time}</span>
                       <span style={{ fontSize: "12px", color: "var(--text2)" }}>{meal.macros}</span>
                     </div>
                   </div>
-                  <span style={{ color: "var(--text2)", fontSize: "20px" }}>{isOpen ? "−" : "+"}</span>
+                  <span style={{ color: "var(--text2)", fontSize: "18px" }}>{isOpen ? "−" : "+"}</span>
                 </div>
                 {isOpen && (
-                  <div style={{ marginTop: "20px", paddingTop: "20px", borderTop: "1px solid var(--border)" }}>
-                    <div style={{ background: "var(--bg3)", borderRadius: "10px", padding: "12px 16px", marginBottom: "16px" }}>
-                      <span style={{ fontSize: "13px", fontWeight: 700, color: "var(--accent)" }}>Why this meal? </span>
+                  <div style={{ marginTop: "18px", paddingTop: "18px", borderTop: "1px solid var(--border)" }}>
+                    <div style={{ background: "var(--bg3)", borderRadius: "8px", padding: "12px 14px", marginBottom: "14px" }}>
+                      <span style={{ fontSize: "12px", fontWeight: 700, color: "var(--accent)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Why this meal: </span>
                       <span style={{ fontSize: "13px", color: "var(--text2)" }}>{meal.why}</span>
                     </div>
-                    <div style={{ fontWeight: 700, marginBottom: "10px", fontSize: "14px" }}>Ingredients:</div>
+                    <div style={{ fontWeight: 700, marginBottom: "10px", fontSize: "12px", textTransform: "uppercase", letterSpacing: "0.5px" }}>Ingredients:</div>
                     {meal.ingredients.map((ing, ii) => (
-                      <div key={ii} style={{ display: "flex", gap: "8px", marginBottom: "6px", fontSize: "14px", color: "var(--text2)" }}>
-                        <span style={{ color: "var(--green)" }}>✓</span> {ing}
+                      <div key={ii} style={{ display: "flex", gap: "8px", marginBottom: "6px", fontSize: "14px", color: "var(--text2)", alignItems: "flex-start" }}>
+                        <span style={{ color: "var(--green)", flexShrink: 0 }}>✓</span> {ing}
                       </div>
                     ))}
                   </div>
