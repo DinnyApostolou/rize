@@ -172,13 +172,15 @@ export default function Dashboard() {
             </div>
             <span style={{ fontSize: "12px", color: "var(--text2)" }}>{xpInLevel} / 1000 XP — <span style={{ color: "var(--accent)", fontWeight: 700 }}>{1000 - xpInLevel} to go</span></span>
           </div>
-          <div style={{ background: "var(--bg2)", borderRadius: "4px", height: "8px", position: "relative", overflow: "hidden" }}>
+          <div style={{ background: "var(--bg2)", borderRadius: "8px", height: "14px", position: "relative", overflow: "hidden" }}>
             <div style={{
-              background: "linear-gradient(90deg, #0EA5E9, #38BDF8)",
-              height: "100%", borderRadius: "4px",
+              background: "linear-gradient(90deg, #7C3AED, #6366F1, #3B82F6, #0EA5E9, #38BDF8)",
+              backgroundSize: "200% 100%",
+              animation: "flowGradient 3s ease infinite",
+              height: "100%", borderRadius: "8px",
               width: `${xpProgress}%`,
               transition: "width 1.2s cubic-bezier(0.4,0,0.2,1)",
-              boxShadow: "0 0 12px rgba(14,165,233,0.5)",
+              boxShadow: "0 0 16px rgba(99,102,241,0.6), 0 0 32px rgba(14,165,233,0.3)",
             }} />
           </div>
         </div>
@@ -304,5 +306,12 @@ export default function Dashboard() {
 
       </div>
     </div>
+    <style>{`
+      @keyframes flowGradient {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+    `}</style>
   );
 }
