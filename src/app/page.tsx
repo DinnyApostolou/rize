@@ -65,16 +65,6 @@ export default function Home() {
           pointerEvents: "none",
         }} />
 
-        <div style={{
-          display: "inline-flex", alignItems: "center", gap: "8px",
-          background: "var(--bg2)", border: "1px solid var(--border)",
-          borderRadius: "4px", padding: "6px 14px", fontSize: "12px",
-          color: "var(--text2)", marginBottom: "40px", letterSpacing: "0.5px",
-        }}>
-          <span style={{ width: "5px", height: "5px", borderRadius: "50%", background: "var(--green)", display: "inline-block" }} />
-          NOW IN BETA — FREE TO JOIN
-        </div>
-
         <h1 style={{
           fontSize: "clamp(48px, 8vw, 96px)", fontWeight: 900,
           lineHeight: 0.92, letterSpacing: "-4px", marginBottom: "32px",
