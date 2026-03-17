@@ -113,7 +113,7 @@ export default function SubscribePage() {
           { q: "Can I cancel anytime?", a: "Yes, absolutely. Cancel anytime from your account settings. You won't be charged again after cancelling." },
           { q: "Is there a free trial?", a: "Yes — you can try 5 drills and the skill assessment for free before upgrading to Pro." },
           { q: "What payment methods are accepted?", a: "All major credit and debit cards via Stripe — the most trusted payment platform online." },
-          { q: "What age is this for?", a: "Rize is designed for athletes aged 16–25, but anyone serious about their game can benefit." },
+          { q: "What age is this for?", a: "Rize is for any athlete who wants to get better — middle school, high school, college or beyond. If you're serious about your game, this is for you." },
         ].map((f, i) => (
           <div key={i} style={{ borderBottom: "1px solid var(--border)", padding: "18px 0" }}>
             <button onClick={() => setFaqOpen(faqOpen === i ? null : i)} style={{

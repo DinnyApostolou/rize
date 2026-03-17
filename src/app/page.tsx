@@ -6,11 +6,11 @@ export default function Home() {
   const [faqOpen, setFaqOpen] = useState<number | null>(null);
 
   const faqs = [
-    { q: "Who is Rize for?", a: "Rize is built for serious athletes aged 16–25 who want to level up their basketball and gym training. Whether you're playing school ball, rec league or aiming for college — Rize is built for you." },
+    { q: "Who is Rize for?", a: "Rize is built for any athlete who wants to level up their basketball and gym training. Whether you're in middle school, high school or playing at a higher level — if you're serious about improving, Rize is for you." },
     { q: "Do I need a gym membership?", a: "No. Many programs can be done at home or on the court. The gym programs are optional — you can focus purely on basketball if that's your goal." },
     { q: "How is Rize different from YouTube?", a: "YouTube gives you random videos with no structure or accountability. Rize gives you a personalised program, progress tracking, nutrition plans and scheduling — all in one place." },
     { q: "Can I cancel anytime?", a: "Yes. No contracts, no commitments. Cancel anytime and you won't be charged again." },
-    { q: "When is the camera feature coming?", a: "We're building it now. Drill camera with AI form tracking will be included in your subscription at no extra cost when it launches." },
+    { q: "What is the drill camera?", a: "Every drill has a Start Drill button that opens your camera and tracks your basketball in real time. It detects the ball using colour recognition, counts your dribbles and overlays your body position — all included in Pro." },
   ];
 
   return (
@@ -248,7 +248,7 @@ export default function Home() {
               "XP and progress tracking",
               "22 achievement badges",
               "YouTube tutorials on every drill",
-              "Drill camera — coming soon",
+              "Live camera with ball tracking",
             ].map(f => (
               <div key={f} style={{ display: "flex", gap: "10px", marginBottom: "11px", fontSize: "14px", alignItems: "center" }}>
                 <div style={{ width: "4px", height: "4px", borderRadius: "50%", background: "var(--accent)", flexShrink: 0 }} />
