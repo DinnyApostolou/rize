@@ -45,8 +45,7 @@ export default function CameraPage() {
   // Load TF.js scripts from CDN once
   useEffect(() => {
     const urls = [
-      "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core@4.11.0/dist/tf-core.min.js",
-      "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-webgl@4.11.0/dist/tf-backend-webgl.min.js",
+      "https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.11.0/dist/tf.min.js",
       "https://cdn.jsdelivr.net/npm/@tensorflow-models/pose-detection@2.1.3/dist/pose-detection.min.js",
     ];
 
@@ -105,9 +104,9 @@ export default function CameraPage() {
     });
   };
 
-  const countDribble = (wristY: number, canvasH: number) => {
+  const countDribble = (y: number, canvasH: number) => {
     const history = wristHistoryRef.current;
-    history.push(wristY);
+    history.push(y);
     if (history.length > 10) history.shift();
     if (history.length < 6) return;
 
@@ -115,14 +114,69 @@ export default function CameraPage() {
     const threshold = canvasH * 0.035;
     const now = Date.now();
 
-    if (dribbleStateRef.current === "up" && wristY > avg + threshold) {
+    if (dribbleStateRef.current === "up" && y > avg + threshold) {
       dribbleStateRef.current = "down";
-    } else if (dribbleStateRef.current === "down" && wristY < avg - threshold && now - lastDribbleRef.current > 250) {
+    } else if (dribbleStateRef.current === "down" && y < avg - threshold && now - lastDribbleRef.current > 250) {
       dribbleStateRef.current = "up";
       lastDribbleRef.current = now;
       dribbleCountRef.current += 1;
       setDribbleCount(dribbleCountRef.current);
     }
+  };
+
+  // Detect basketball by colour (orange pixel cluster)
+  const detectBall = (ctx: CanvasRenderingContext2D, w: number, h: number): { x: number; y: number; r: number } | null => {
+    const step = 4; // sample every 4th pixel for performance
+    const imageData = ctx.getImageData(0, 0, w, h);
+    const data = imageData.data;
+    let sumX = 0, sumY = 0, count = 0;
+
+    for (let py = 0; py < h; py += step) {
+      for (let px = 0; px < w; px += step) {
+        const i = (py * w + px) * 4;
+        const r = data[i], g = data[i + 1], b = data[i + 2];
+        // Basketball orange: high red, medium green, low blue, red significantly > green
+        if (r > 150 && g > 60 && g < 145 && b < 70 && r > g * 1.4 && r > b * 2.5) {
+          sumX += px;
+          sumY += py;
+          count++;
+        }
+      }
+    }
+
+    // Need enough orange pixels to be confident it's a ball
+    const minPixels = 80 / (step * step);
+    if (count < minPixels) return null;
+
+    return {
+      x: sumX / count,
+      y: sumY / count,
+      r: Math.sqrt((count * step * step) / Math.PI) * 1.2,
+    };
+  };
+
+  const drawBall = (ctx: CanvasRenderingContext2D, ball: { x: number; y: number; r: number }) => {
+    // Outer glow ring
+    ctx.beginPath();
+    ctx.arc(ball.x, ball.y, ball.r + 6, 0, Math.PI * 2);
+    ctx.strokeStyle = "rgba(14,165,233,0.4)";
+    ctx.lineWidth = 8;
+    ctx.stroke();
+    // Main ring
+    ctx.beginPath();
+    ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI * 2);
+    ctx.strokeStyle = "#0EA5E9";
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
+    // Center dot
+    ctx.beginPath();
+    ctx.arc(ball.x, ball.y, 3, 0, Math.PI * 2);
+    ctx.fillStyle = "#38BDF8";
+    ctx.fill();
+    // Label
+    ctx.font = "bold 11px sans-serif";
+    ctx.fillStyle = "#0EA5E9";
+    ctx.fillText("BALL", ball.x - 14, ball.y - ball.r - 8);
   };
 
   const runDetection = useCallback(async () => {
@@ -147,6 +201,14 @@ export default function CameraPage() {
       ctx.drawImage(video, 0, 0);
       ctx.restore();
 
+      // Ball tracking (runs every frame, no ML needed)
+      const ball = detectBall(ctx, canvas.width, canvas.height);
+      if (ball) {
+        drawBall(ctx, ball);
+        // Use ball Y position for dribble counting (more accurate than wrist)
+        countDribble(ball.y, canvas.height);
+      }
+
       try {
         const poses = await detector.estimatePoses(video);
         if (poses.length > 0) {
@@ -154,9 +216,12 @@ export default function CameraPage() {
           const mirrored = kps.map((kp: any) => ({ ...kp, x: canvas.width - kp.x }));
           drawSkeleton(ctx, mirrored);
           setPoseReady(true);
-          const rightWrist = kps[10];
-          if (rightWrist?.score > 0.35) {
-            countDribble(rightWrist.y, canvas.height);
+          // Only use wrist if no ball detected
+          if (!ball) {
+            const rightWrist = kps[10];
+            if (rightWrist?.score > 0.35) {
+              countDribble(rightWrist.y, canvas.height);
+            }
           }
         } else {
           setPoseReady(false);
