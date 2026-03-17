@@ -59,7 +59,7 @@ export default function SubscribePage() {
     { tag: "SCHEDULE", title: "Weekly Training Plan", desc: "Structured week-by-week plans balancing court work, gym sessions and recovery." },
     { tag: "TRACKING", title: "Progress & XP Tracking", desc: "Log every session, earn XP, level up and track your improvement over time." },
     { tag: "BADGES", title: "Achievements System", desc: "22 badges across 5 rarities. Earn them as your real-world skills develop." },
-    { tag: "COMING SOON", title: "Drill Camera", desc: "Film your drills directly in the app and review your form. AI ball tracking in development." },
+    { tag: "CAMERA", title: "Live Drill Camera with Ball Tracking", desc: "Start any drill and the camera activates automatically. Tracks your basketball in real time using colour detection, counts your dribbles and overlays your body position." },
     { tag: "WEEKLY", title: "New Content Added Weekly", desc: "New drills, programs and meal plans added every week to keep training fresh." },
     { tag: "YOUTUBE", title: "Video Tutorials on Every Drill", desc: "Every drill and exercise links directly to a YouTube tutorial so you know exactly what to do." },
   ];

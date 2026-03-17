@@ -16,7 +16,6 @@ const NAV = [
   { href: "/drills", label: "Drills" },
   { href: "/strength", label: "Strength" },
   { href: "/nutrition", label: "Nutrition" },
-  { href: "/camera", label: "📷 Camera" },
   { href: "/schedule", label: "Schedule" },
   { href: "/assessment", label: "Assessment" },
   { href: "/stats", label: "My Stats" },
