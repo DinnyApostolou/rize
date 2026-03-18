@@ -49,17 +49,28 @@ export async function POST(request: NextRequest) {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
     const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
-    let updateUrl = `${supabaseUrl}/rest/v1/profiles`;
     let filterParam = "";
 
     if (userId) {
       filterParam = `?id=eq.${userId}`;
     } else if (email) {
-      // Fall back to email match if no userId
-      filterParam = `?email=eq.${encodeURIComponent(email)}`;
+      // Look up user ID from Supabase auth by email
+      const userLookup = await fetch(`${supabaseUrl}/auth/v1/admin/users?email=${encodeURIComponent(email)}`, {
+        headers: {
+          apikey: serviceKey,
+          Authorization: `Bearer ${serviceKey}`,
+        },
+      });
+      const userData = await userLookup.json();
+      const foundId = userData?.users?.[0]?.id;
+      if (foundId) {
+        filterParam = `?id=eq.${foundId}`;
+      } else {
+        return NextResponse.json({ error: "User not found" }, { status: 404 });
+      }
     }
 
-    const res = await fetch(`${updateUrl}${filterParam}`, {
+    const res = await fetch(`${supabaseUrl}/rest/v1/profiles${filterParam}`, {
       method: "PATCH",
       headers: {
         apikey: serviceKey,
