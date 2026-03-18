@@ -28,11 +28,11 @@ export default function Home() {
           RZ<span style={{ color: "var(--accent)" }}>.</span>
         </div>
         <div style={{ display: "flex", gap: "32px", fontSize: "13px", color: "var(--text2)" }}>
-          {["#features", "#pricing", "#faq"].map((href, i) => (
+          {["#features", "#how-it-works", "#pricing", "#faq"].map((href, i) => (
             <a key={i} href={href}
               onMouseEnter={e => (e.currentTarget.style.color = "#fff")}
               onMouseLeave={e => (e.currentTarget.style.color = "var(--text2)")}>
-              {["Features", "Pricing", "FAQ"][i]}
+              {["Features", "How it works", "Pricing", "FAQ"][i]}
             </a>
           ))}
         </div>
@@ -112,6 +112,27 @@ export default function Home() {
               <div style={{ fontSize: "12px", color: "var(--text2)", marginTop: "4px", textTransform: "uppercase", letterSpacing: "1px" }}>{label}</div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* HOW IT WORKS */}
+      <section id="how-it-works" style={{ paddingTop: "80px", paddingBottom: "80px", paddingLeft: "24px", paddingRight: "24px" }}>
+        <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
+          <h2 style={{ fontSize: "28px", fontWeight: 900, textAlign: "left", marginBottom: "8px" }}>How it works</h2>
+          <p style={{ color: "var(--text2)", fontSize: "15px", marginBottom: "40px" }}>Three steps to becoming the athlete you want to be.</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "24px" }}>
+            {[
+              { n: "1", title: "Sign up free", desc: "Create your account in under a minute. No credit card needed to get started." },
+              { n: "2", title: "Get your programme", desc: "Complete a quick skill assessment and get a personalised plan built around your position and goals." },
+              { n: "3", title: "Train, track, level up", desc: "Complete drills, earn XP, unlock badges and watch your stats improve in real time." },
+            ].map((s) => (
+              <div key={s.n} style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: "12px", padding: "28px" }}>
+                <div style={{ fontSize: "48px", fontWeight: 900, color: "var(--accent)", opacity: 0.4, lineHeight: 1, marginBottom: "20px" }}>{s.n}</div>
+                <div style={{ fontSize: "16px", fontWeight: 800, marginBottom: "8px" }}>{s.title}</div>
+                <div style={{ fontSize: "14px", color: "var(--text2)", lineHeight: 1.6 }}>{s.desc}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

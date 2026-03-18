@@ -20,6 +20,7 @@ const NAV = [
   { href: "/assessment", label: "Assessment" },
   { href: "/stats", label: "My Stats" },
   { href: "/badges", label: "Badges" },
+  { href: "/profile", label: "Profile" },
   { href: "/subscribe", label: "Upgrade" },
 ];
 
@@ -47,10 +48,20 @@ const TODAY = [
   { category: "Nutrition", title: "Pre-workout meal", duration: "30 min before", type: "nutrition" },
 ];
 
+function getStreakBadge(streak: number): string | null {
+  if (streak >= 100) return "LEGEND";
+  if (streak >= 30) return "IRON ATHLETE";
+  if (streak >= 7) return "WEEK WARRIOR";
+  return null;
+}
+
 export default function Dashboard() {
   const router = useRouter();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
+  const [weekDrills, setWeekDrills] = useState(0);
+  const [position, setPosition] = useState<string | null>(null);
+  const [skillLevel, setSkillLevel] = useState<string | null>(null);
   const quote = QUOTES[new Date().getDay() % QUOTES.length];
   const hour = new Date().getHours();
   const greeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
@@ -63,6 +74,30 @@ export default function Dashboard() {
       const { data } = await supabase.from("profiles").select("*").eq("id", user.id).single();
       setProfile(data || { username: user.email?.split("@")[0] || "Athlete", xp: 0, streak: 0, is_subscribed: false, drills_completed: 0 });
       setLoading(false);
+
+      if (typeof window !== "undefined" && !localStorage.getItem("rize_onboarded")) {
+        router.push("/onboarding");
+        return;
+      }
+
+      // Weekly challenge tracking
+      const today = new Date();
+      const dayOfWeek = today.getDay();
+      const monday = new Date(today);
+      monday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+      monday.setHours(0, 0, 0, 0);
+      const weekKey = monday.toISOString().split("T")[0];
+      const storedWeekKey = localStorage.getItem("rize_week_key");
+      if (storedWeekKey !== weekKey) {
+        localStorage.setItem("rize_week_key", weekKey);
+        localStorage.setItem("rize_week_drills", "0");
+      }
+      const wd = parseInt(localStorage.getItem("rize_week_drills") || "0");
+      setWeekDrills(wd);
+
+      // Personalized position / skill level
+      setPosition(localStorage.getItem("rize_position"));
+      setSkillLevel(localStorage.getItem("rize_skill_level"));
     }
     load();
   }, [router]);
@@ -72,16 +107,49 @@ export default function Dashboard() {
     router.push("/");
   }
 
-  if (loading) return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-      <div style={{ color: "var(--text2)", fontSize: "14px", letterSpacing: "2px", textTransform: "uppercase" }}>Loading</div>
-    </div>
-  );
+  if (loading) {
+    const skeletonStyle = {
+      background: "var(--bg2)" as const,
+      animation: "pulse 1.5s ease infinite",
+    };
+    return (
+      <div style={{ minHeight: "100vh", background: "var(--bg)" }}>
+        {/* Fake nav */}
+        <div style={{ ...skeletonStyle, height: "60px", borderRadius: 0 }} />
+
+        <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "48px 40px 32px" }}>
+          {/* Fake hero */}
+          <div style={{ marginBottom: "40px" }}>
+            <div style={{ ...skeletonStyle, height: "48px", width: "200px", borderRadius: "8px", marginBottom: "16px" }} />
+            <div style={{ ...skeletonStyle, height: "300px", width: "100%", borderRadius: "12px" }} />
+          </div>
+
+          {/* Fake stat cards */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "12px", marginBottom: "24px" }}>
+            {[0, 1, 2, 3].map(i => (
+              <div key={i} style={{ ...skeletonStyle, height: "120px", borderRadius: "10px" }} />
+            ))}
+          </div>
+
+          {/* Fake cards row */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
+            <div style={{ ...skeletonStyle, height: "220px", borderRadius: "12px" }} />
+            <div style={{ ...skeletonStyle, height: "220px", borderRadius: "12px" }} />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const xp = profile?.xp || 0;
   const level = Math.floor(xp / 1000) + 1;
   const xpProgress = (xp % 1000) / 1000 * 100;
   const xpInLevel = xp % 1000;
+  const streak = profile?.streak || 0;
+  const streakBadge = getStreakBadge(streak);
+  const weekGoal = 5;
+  const weekProgress = Math.min(weekDrills, weekGoal);
+  const weekComplete = weekDrills >= weekGoal;
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", color: "var(--text)" }}>
@@ -143,6 +211,11 @@ export default function Dashboard() {
             <h1 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 900, letterSpacing: "-2px", lineHeight: 1, marginBottom: "16px" }}>
               {profile?.username || "Athlete"}<span style={{ color: "var(--accent)" }}>.</span>
             </h1>
+            {(position || skillLevel) && (
+              <div style={{ color: "var(--text2)", fontSize: "13px", marginTop: "8px", marginBottom: "12px" }}>
+                {[position, skillLevel].filter(Boolean).join(" · ")}
+              </div>
+            )}
             <p style={{ color: "var(--text2)", fontSize: "14px", maxWidth: "480px", lineHeight: 1.6, fontStyle: "italic" }}>
               &ldquo;{quote}&rdquo;
             </p>
@@ -188,7 +261,7 @@ export default function Dashboard() {
         {/* Stats row */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "12px", marginBottom: "32px" }}>
           {[
-            { label: "Day Streak", value: profile?.streak || 0, unit: "days", accent: false },
+            { label: "Day Streak", value: streak, unit: "days", accent: false },
             { label: "Drills Done", value: profile?.drills_completed || 0, unit: "total", accent: false },
             { label: "XP Earned", value: xp.toLocaleString(), unit: "points", accent: true },
             { label: "Next Level", value: 1000 - xpInLevel, unit: "XP away", accent: false },
@@ -199,10 +272,47 @@ export default function Dashboard() {
               borderTop: `2px solid ${s.accent ? "var(--accent)" : "var(--border)"}`,
             }}>
               <div style={{ fontSize: "10px", color: "var(--text3)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: "10px" }}>{s.label}</div>
-              <div style={{ fontSize: "30px", fontWeight: 900, letterSpacing: "-1px", color: s.accent ? "var(--accent)" : "var(--text)", lineHeight: 1 }}>{s.value}</div>
+              <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
+                <div style={{ fontSize: "30px", fontWeight: 900, letterSpacing: "-1px", color: s.accent ? "var(--accent)" : "var(--text)", lineHeight: 1 }}>{s.value}</div>
+                {i === 0 && streakBadge && (
+                  <span style={{
+                    fontSize: "9px", fontWeight: 800, letterSpacing: "1px",
+                    background: "rgba(14,165,233,0.15)", border: "1px solid rgba(14,165,233,0.3)",
+                    borderRadius: "4px", padding: "2px 8px", color: "var(--accent)",
+                  }}>{streakBadge}</span>
+                )}
+              </div>
               <div style={{ fontSize: "11px", color: "var(--text3)", marginTop: "6px" }}>{s.unit}</div>
             </div>
           ))}
+        </div>
+
+        {/* Weekly Challenge */}
+        <div style={{
+          background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: "12px",
+          padding: "20px 24px", marginBottom: "24px",
+        }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px" }}>
+            <div>
+              <div style={{ fontSize: "10px", color: "var(--accent)", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "4px" }}>Weekly Challenge</div>
+              <div style={{ fontSize: "16px", fontWeight: 800 }}>Complete 5 drills this week</div>
+            </div>
+            <div style={{ textAlign: "right" }}>
+              {weekComplete ? (
+                <div style={{ fontSize: "13px", fontWeight: 700, color: "var(--accent)" }}>Challenge complete!</div>
+              ) : (
+                <div style={{ fontSize: "13px", color: "var(--text2)" }}>{weekDrills} / {weekGoal} drills</div>
+              )}
+            </div>
+          </div>
+          <div style={{ background: "var(--bg3)", borderRadius: "6px", height: "6px", overflow: "hidden" }}>
+            <div style={{
+              height: "100%", borderRadius: "6px",
+              background: weekComplete ? "var(--accent)" : "linear-gradient(90deg, var(--accent), var(--accent2))",
+              width: `${(weekProgress / weekGoal) * 100}%`,
+              transition: "width 0.6s cubic-bezier(0.4,0,0.2,1)",
+            }} />
+          </div>
         </div>
 
         {/* Main grid */}
@@ -246,16 +356,25 @@ export default function Dashboard() {
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
             {/* Streak */}
             <div style={{
-              background: profile?.streak ? "rgba(14,165,233,0.06)" : "var(--bg2)",
-              border: `1px solid ${profile?.streak ? "rgba(14,165,233,0.2)" : "var(--border)"}`,
+              background: streak ? "rgba(14,165,233,0.06)" : "var(--bg2)",
+              border: `1px solid ${streak ? "rgba(14,165,233,0.2)" : "var(--border)"}`,
               borderRadius: "12px", padding: "24px", flex: 1,
             }}>
               <div style={{ fontSize: "10px", color: "var(--text3)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "2px", marginBottom: "12px" }}>Training Streak</div>
-              <div style={{ fontSize: "48px", fontWeight: 900, letterSpacing: "-2px", color: profile?.streak ? "var(--accent)" : "var(--text3)", lineHeight: 1, marginBottom: "6px" }}>
-                {profile?.streak || 0}
+              <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "6px", flexWrap: "wrap" }}>
+                <div style={{ fontSize: "48px", fontWeight: 900, letterSpacing: "-2px", color: streak ? "var(--accent)" : "var(--text3)", lineHeight: 1 }}>
+                  {streak}
+                </div>
+                {streakBadge && (
+                  <span style={{
+                    fontSize: "9px", fontWeight: 800, letterSpacing: "1px",
+                    background: "rgba(14,165,233,0.15)", border: "1px solid rgba(14,165,233,0.3)",
+                    borderRadius: "4px", padding: "2px 8px", color: "var(--accent)",
+                  }}>{streakBadge}</span>
+                )}
               </div>
               <div style={{ fontSize: "13px", color: "var(--text2)" }}>
-                {profile?.streak ? `${profile.streak} day${profile.streak > 1 ? "s" : ""} in a row — keep it up` : "Start training to build your streak"}
+                {streak ? `${streak} day${streak > 1 ? "s" : ""} in a row — keep it up` : "Start training to build your streak"}
               </div>
             </div>
 
