@@ -68,45 +68,31 @@ export default function Home() {
         {/* Left image — basketball player dribbling */}
         <div style={{
           position: "absolute", left: 0, top: "50%", transform: "translateY(-50%)",
-          width: "340px", height: "520px", pointerEvents: "none",
+          width: "260px", height: "480px", pointerEvents: "none", overflow: "hidden",
         }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="https://images.unsplash.com/photo-1546519638405-a1bcbd3a5f8b?w=400&h=600&fit=crop&q=80"
             alt=""
-            style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.35, borderRadius: "0 16px 16px 0" }}
+            style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.18 }}
           />
-          <div style={{
-            position: "absolute", inset: 0,
-            background: "linear-gradient(to right, rgba(10,10,10,0.2) 0%, rgba(10,10,10,0.95) 100%)",
-            borderRadius: "0 16px 16px 0",
-          }} />
-          <div style={{
-            position: "absolute", inset: 0,
-            background: "linear-gradient(to bottom, rgba(10,10,10,0.6) 0%, transparent 30%, transparent 70%, rgba(10,10,10,0.6) 100%)",
-          }} />
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, transparent 0%, #0a0a0a 75%)" }} />
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, #0a0a0a 0%, transparent 25%, transparent 75%, #0a0a0a 100%)" }} />
         </div>
 
         {/* Right image — gym/strength training */}
         <div style={{
           position: "absolute", right: 0, top: "50%", transform: "translateY(-50%)",
-          width: "340px", height: "520px", pointerEvents: "none",
+          width: "260px", height: "480px", pointerEvents: "none", overflow: "hidden",
         }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&h=600&fit=crop&q=80"
             alt=""
-            style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.35, borderRadius: "16px 0 0 16px" }}
+            style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.18 }}
           />
-          <div style={{
-            position: "absolute", inset: 0,
-            background: "linear-gradient(to left, rgba(10,10,10,0.2) 0%, rgba(10,10,10,0.95) 100%)",
-            borderRadius: "16px 0 0 16px",
-          }} />
-          <div style={{
-            position: "absolute", inset: 0,
-            background: "linear-gradient(to bottom, rgba(10,10,10,0.6) 0%, transparent 30%, transparent 70%, rgba(10,10,10,0.6) 100%)",
-          }} />
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to left, transparent 0%, #0a0a0a 75%)" }} />
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, #0a0a0a 0%, transparent 25%, transparent 75%, #0a0a0a 100%)" }} />
         </div>
 
         <h1 style={{
