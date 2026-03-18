@@ -68,31 +68,31 @@ export default function Home() {
         {/* Left image — basketball player dribbling */}
         <div style={{
           position: "absolute", left: 0, top: "50%", transform: "translateY(-50%)",
-          width: "320px", height: "560px", pointerEvents: "none", overflow: "hidden",
+          width: "300px", height: "100%", pointerEvents: "none", overflow: "hidden",
         }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="https://images.unsplash.com/photo-1519861531473-9200262188bf?w=500&h=700&fit=crop&q=80"
             alt=""
-            style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.55 }}
+            style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.4 }}
           />
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, transparent 30%, #0a0a0a 100%)" }} />
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, #0a0a0a 0%, transparent 20%, transparent 80%, #0a0a0a 100%)" }} />
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(10,10,10,0) 0%, #0a0a0a 65%)" }} />
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, #0a0a0a 0%, transparent 15%, transparent 85%, #0a0a0a 100%)" }} />
         </div>
 
         {/* Right image — gym/strength training */}
         <div style={{
           position: "absolute", right: 0, top: "50%", transform: "translateY(-50%)",
-          width: "320px", height: "560px", pointerEvents: "none", overflow: "hidden",
+          width: "300px", height: "100%", pointerEvents: "none", overflow: "hidden",
         }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=500&h=700&fit=crop&q=80"
             alt=""
-            style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.55 }}
+            style={{ width: "100%", height: "100%", objectFit: "cover", opacity: 0.4 }}
           />
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to left, transparent 30%, #0a0a0a 100%)" }} />
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, #0a0a0a 0%, transparent 20%, transparent 80%, #0a0a0a 100%)" }} />
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to left, rgba(10,10,10,0) 0%, #0a0a0a 65%)" }} />
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, #0a0a0a 0%, transparent 15%, transparent 85%, #0a0a0a 100%)" }} />
         </div>
 
         <h1 style={{
