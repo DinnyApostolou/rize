@@ -11,6 +11,25 @@ export default function ResetPasswordPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [ready, setReady] = useState(false); // true once Supabase confirms recovery session
+
+  useEffect(() => {
+    const supabase = getSupabase();
+
+    // Listen for the PASSWORD_RECOVERY event fired when the email link is clicked
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "PASSWORD_RECOVERY") {
+        setReady(true);
+      }
+    });
+
+    // Also check if there's already an active session (user refreshed the page)
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) setReady(true);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   async function handleReset(e: React.FormEvent) {
     e.preventDefault();
@@ -22,7 +41,7 @@ export default function ResetPasswordPage() {
     const { error } = await supabase.auth.updateUser({ password });
     if (error) { setError(error.message); setLoading(false); return; }
     setSuccess(true);
-    setTimeout(() => router.push("/dashboard"), 2000);
+    setTimeout(() => router.push("/login"), 2500);
   }
 
   return (
@@ -36,7 +55,16 @@ export default function ResetPasswordPage() {
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: "48px", marginBottom: "16px" }}>✅</div>
               <h2 style={{ fontSize: "22px", fontWeight: 800, marginBottom: "8px" }}>Password updated!</h2>
-              <p style={{ color: "var(--text2)" }}>Redirecting to dashboard...</p>
+              <p style={{ color: "var(--text2)" }}>Redirecting to login...</p>
+            </div>
+          ) : !ready ? (
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: "32px", marginBottom: "16px" }}>🔐</div>
+              <h2 style={{ fontSize: "20px", fontWeight: 700, marginBottom: "8px" }}>Verifying link...</h2>
+              <p style={{ color: "var(--text2)", fontSize: "14px", lineHeight: 1.6 }}>
+                Please wait — if this takes more than a few seconds, your reset link may have expired.{" "}
+                <Link href="/login" style={{ color: "var(--accent)" }}>Request a new one</Link>.
+              </p>
             </div>
           ) : (
             <>
