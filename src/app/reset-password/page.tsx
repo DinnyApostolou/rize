@@ -1,12 +1,11 @@
 "use client";
-import { useState, useEffect, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { getSupabase } from "@/lib/supabase";
 
-function ResetPasswordForm() {
+export default function ResetPasswordPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [error, setError] = useState("");
@@ -17,37 +16,30 @@ function ResetPasswordForm() {
 
   useEffect(() => {
     const supabase = getSupabase();
-    const code = searchParams.get("code");
 
-    if (code) {
-      // PKCE flow — exchange the code for a session
-      supabase.auth.exchangeCodeForSession(code).then(({ error }) => {
-        if (error) {
-          setLinkExpired(true);
-        } else {
-          setReady(true);
-        }
-      });
-    } else {
-      // Implicit flow — listen for PASSWORD_RECOVERY event from hash
-      const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
-        if (event === "PASSWORD_RECOVERY") setReady(true);
-      });
+    // Implicit flow: Supabase puts the token in the URL hash
+    // The client automatically picks it up and fires PASSWORD_RECOVERY
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "PASSWORD_RECOVERY") {
+        setReady(true);
+      }
+    });
 
-      // Fallback: if there's already an active session
-      supabase.auth.getSession().then(({ data: { session } }) => {
-        if (session) setReady(true);
-      });
+    // If the user already has a valid session (e.g. page refresh)
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) setReady(true);
+    });
 
-      // If nothing fires in 6s, the link is probably invalid/expired
-      const timeout = setTimeout(() => setLinkExpired(true), 6000);
+    // After 8 seconds with no recovery event, assume link is expired/bad
+    const timeout = setTimeout(() => {
+      setLinkExpired(true);
+    }, 8000);
 
-      return () => {
-        subscription.unsubscribe();
-        clearTimeout(timeout);
-      };
-    }
-  }, [searchParams]);
+    return () => {
+      subscription.unsubscribe();
+      clearTimeout(timeout);
+    };
+  }, []);
 
   async function handleReset(e: React.FormEvent) {
     e.preventDefault();
@@ -75,12 +67,12 @@ function ResetPasswordForm() {
               <h2 style={{ fontSize: "22px", fontWeight: 800, marginBottom: "8px" }}>Password updated!</h2>
               <p style={{ color: "var(--text2)" }}>Redirecting to login...</p>
             </div>
-          ) : linkExpired ? (
+          ) : linkExpired && !ready ? (
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: "40px", marginBottom: "16px" }}>⏱️</div>
               <h2 style={{ fontSize: "20px", fontWeight: 700, marginBottom: "8px" }}>Link expired</h2>
               <p style={{ color: "var(--text2)", fontSize: "14px", lineHeight: 1.7, marginBottom: "24px" }}>
-                This reset link has expired or already been used. Request a new one.
+                This reset link has expired or already been used. Request a new one from the login page.
               </p>
               <Link href="/login" style={{
                 display: "inline-block", background: "var(--accent)", color: "#fff",
@@ -122,17 +114,5 @@ function ResetPasswordForm() {
         </div>
       </div>
     </div>
-  );
-}
-
-export default function ResetPasswordPage() {
-  return (
-    <Suspense fallback={
-      <div style={{ minHeight: "100vh", background: "var(--bg)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <p style={{ color: "var(--text2)" }}>Loading...</p>
-      </div>
-    }>
-      <ResetPasswordForm />
-    </Suspense>
   );
 }

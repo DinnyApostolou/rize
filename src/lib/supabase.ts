@@ -7,7 +7,9 @@ let client: ReturnType<typeof createClient> | null = null;
 
 export function getSupabase() {
   if (!client) {
-    client = createClient(supabaseUrl, supabaseAnonKey);
+    client = createClient(supabaseUrl, supabaseAnonKey, {
+      auth: { flowType: "implicit" },
+    });
   }
   return client;
 }
