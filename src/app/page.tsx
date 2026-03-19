@@ -58,21 +58,13 @@ export default function Home() {
         minHeight: "100vh", display: "flex", flexDirection: "column",
         alignItems: "center", justifyContent: "center", textAlign: "center",
         padding: "140px 24px 100px", position: "relative", overflow: "hidden",
+        backgroundImage: "url('https://images.unsplash.com/photo-1546519638405-a1bcbd3a5f8b?w=1600&h=900&fit=crop&q=80')",
+        backgroundSize: "cover", backgroundPosition: "center",
       }}>
-        {/* Full-width background image */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="https://images.unsplash.com/photo-1546519638405-a1bcbd3a5f8b?w=1600&h=900&fit=crop&q=80"
-          alt=""
-          style={{
-            position: "absolute", inset: 0, width: "100%", height: "100%",
-            objectFit: "cover", opacity: 0.75, pointerEvents: "none", zIndex: 0,
-          }}
-        />
         {/* Dark overlay — Nike style, moody */}
         <div style={{
           position: "absolute", inset: 0, zIndex: 1,
-          background: "linear-gradient(to bottom, rgba(10,10,10,0.5) 0%, rgba(10,10,10,0.2) 40%, rgba(10,10,10,0.75) 100%)",
+          background: "linear-gradient(to bottom, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0.25) 40%, rgba(10,10,10,0.8) 100%)",
           pointerEvents: "none",
         }} />
         {/* Subtle blue glow */}
