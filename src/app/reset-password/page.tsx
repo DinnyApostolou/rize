@@ -1,11 +1,12 @@
 "use client";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { getSupabase } from "@/lib/supabase";
 
-export default function ResetPasswordPage() {
+function ResetPasswordForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [error, setError] = useState("");
@@ -17,29 +18,45 @@ export default function ResetPasswordPage() {
   useEffect(() => {
     const supabase = getSupabase();
 
-    // Implicit flow: Supabase puts the token in the URL hash
-    // The client automatically picks it up and fires PASSWORD_RECOVERY
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "PASSWORD_RECOVERY") {
-        setReady(true);
+    async function verify() {
+      // Method 1: token_hash in URL (from our custom email template)
+      const tokenHash = searchParams.get("token_hash");
+      const type = searchParams.get("type");
+
+      if (tokenHash && type === "recovery") {
+        const { error } = await supabase.auth.verifyOtp({
+          token_hash: tokenHash,
+          type: "recovery",
+        });
+        if (error) {
+          setLinkExpired(true);
+        } else {
+          setReady(true);
+        }
+        return;
       }
-    });
 
-    // If the user already has a valid session (e.g. page refresh)
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) setReady(true);
-    });
+      // Method 2: implicit flow — token comes in URL hash (#access_token=...&type=recovery)
+      // Supabase client picks this up automatically and fires PASSWORD_RECOVERY
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+        if (event === "PASSWORD_RECOVERY") setReady(true);
+      });
 
-    // After 8 seconds with no recovery event, assume link is expired/bad
-    const timeout = setTimeout(() => {
-      setLinkExpired(true);
-    }, 8000);
+      // Method 3: already have a valid session (page refresh)
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) { setReady(true); return; }
 
-    return () => {
-      subscription.unsubscribe();
-      clearTimeout(timeout);
-    };
-  }, []);
+      // If nothing works after 8s, link is expired
+      const timeout = setTimeout(() => setLinkExpired(true), 8000);
+
+      return () => {
+        subscription.unsubscribe();
+        clearTimeout(timeout);
+      };
+    }
+
+    verify();
+  }, [searchParams]);
 
   async function handleReset(e: React.FormEvent) {
     e.preventDefault();
@@ -67,12 +84,12 @@ export default function ResetPasswordPage() {
               <h2 style={{ fontSize: "22px", fontWeight: 800, marginBottom: "8px" }}>Password updated!</h2>
               <p style={{ color: "var(--text2)" }}>Redirecting to login...</p>
             </div>
-          ) : linkExpired && !ready ? (
+          ) : linkExpired ? (
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: "40px", marginBottom: "16px" }}>⏱️</div>
               <h2 style={{ fontSize: "20px", fontWeight: 700, marginBottom: "8px" }}>Link expired</h2>
               <p style={{ color: "var(--text2)", fontSize: "14px", lineHeight: 1.7, marginBottom: "24px" }}>
-                This reset link has expired or already been used. Request a new one from the login page.
+                This reset link has expired or already been used. Request a new one.
               </p>
               <Link href="/login" style={{
                 display: "inline-block", background: "var(--accent)", color: "#fff",
@@ -114,5 +131,17 @@ export default function ResetPasswordPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={
+      <div style={{ minHeight: "100vh", background: "var(--bg)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <p style={{ color: "var(--text2)" }}>Loading...</p>
+      </div>
+    }>
+      <ResetPasswordForm />
+    </Suspense>
   );
 }
