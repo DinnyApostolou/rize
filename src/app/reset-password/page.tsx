@@ -1,35 +1,53 @@
 "use client";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { getSupabase } from "@/lib/supabase";
 
-export default function ResetPasswordPage() {
+function ResetPasswordForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [ready, setReady] = useState(false); // true once Supabase confirms recovery session
+  const [ready, setReady] = useState(false);
+  const [linkExpired, setLinkExpired] = useState(false);
 
   useEffect(() => {
     const supabase = getSupabase();
+    const code = searchParams.get("code");
 
-    // Listen for the PASSWORD_RECOVERY event fired when the email link is clicked
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "PASSWORD_RECOVERY") {
-        setReady(true);
-      }
-    });
+    if (code) {
+      // PKCE flow — exchange the code for a session
+      supabase.auth.exchangeCodeForSession(code).then(({ error }) => {
+        if (error) {
+          setLinkExpired(true);
+        } else {
+          setReady(true);
+        }
+      });
+    } else {
+      // Implicit flow — listen for PASSWORD_RECOVERY event from hash
+      const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+        if (event === "PASSWORD_RECOVERY") setReady(true);
+      });
 
-    // Also check if there's already an active session (user refreshed the page)
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) setReady(true);
-    });
+      // Fallback: if there's already an active session
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        if (session) setReady(true);
+      });
 
-    return () => subscription.unsubscribe();
-  }, []);
+      // If nothing fires in 6s, the link is probably invalid/expired
+      const timeout = setTimeout(() => setLinkExpired(true), 6000);
+
+      return () => {
+        subscription.unsubscribe();
+        clearTimeout(timeout);
+      };
+    }
+  }, [searchParams]);
 
   async function handleReset(e: React.FormEvent) {
     e.preventDefault();
@@ -57,14 +75,25 @@ export default function ResetPasswordPage() {
               <h2 style={{ fontSize: "22px", fontWeight: 800, marginBottom: "8px" }}>Password updated!</h2>
               <p style={{ color: "var(--text2)" }}>Redirecting to login...</p>
             </div>
+          ) : linkExpired ? (
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: "40px", marginBottom: "16px" }}>⏱️</div>
+              <h2 style={{ fontSize: "20px", fontWeight: 700, marginBottom: "8px" }}>Link expired</h2>
+              <p style={{ color: "var(--text2)", fontSize: "14px", lineHeight: 1.7, marginBottom: "24px" }}>
+                This reset link has expired or already been used. Request a new one.
+              </p>
+              <Link href="/login" style={{
+                display: "inline-block", background: "var(--accent)", color: "#fff",
+                padding: "12px 28px", borderRadius: "10px", fontWeight: 700, fontSize: "14px",
+              }}>
+                Back to Login →
+              </Link>
+            </div>
           ) : !ready ? (
             <div style={{ textAlign: "center" }}>
               <div style={{ fontSize: "32px", marginBottom: "16px" }}>🔐</div>
               <h2 style={{ fontSize: "20px", fontWeight: 700, marginBottom: "8px" }}>Verifying link...</h2>
-              <p style={{ color: "var(--text2)", fontSize: "14px", lineHeight: 1.6 }}>
-                Please wait — if this takes more than a few seconds, your reset link may have expired.{" "}
-                <Link href="/login" style={{ color: "var(--accent)" }}>Request a new one</Link>.
-              </p>
+              <p style={{ color: "var(--text2)", fontSize: "14px" }}>Just a second...</p>
             </div>
           ) : (
             <>
@@ -93,5 +122,17 @@ export default function ResetPasswordPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={
+      <div style={{ minHeight: "100vh", background: "var(--bg)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <p style={{ color: "var(--text2)" }}>Loading...</p>
+      </div>
+    }>
+      <ResetPasswordForm />
+    </Suspense>
   );
 }
