@@ -625,6 +625,29 @@ export default function ProfilePage() {
           )}
         </div>
 
+        {/* Sign out */}
+        <button
+          onClick={async () => {
+            const supabase = getSupabase();
+            await supabase.auth.signOut();
+            router.push("/");
+          }}
+          style={{
+            width: "100%",
+            background: "transparent",
+            border: "1px solid #3a1a1a",
+            borderRadius: "12px",
+            color: "#ef4444",
+            fontSize: "14px",
+            fontWeight: 600,
+            padding: "14px",
+            cursor: "pointer",
+            marginBottom: "32px",
+          }}
+        >
+          Sign Out
+        </button>
+
         {/* Footer */}
         <div
           style={{

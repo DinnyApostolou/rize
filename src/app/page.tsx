@@ -17,7 +17,7 @@ export default function Home() {
     <div style={{ background: "var(--bg)", color: "var(--text)", minHeight: "100vh" }}>
 
       {/* NAV */}
-      <nav style={{
+      <nav className="landing-nav" style={{
         position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
         background: "rgba(10,10,10,0.9)", backdropFilter: "blur(16px)",
         borderBottom: "1px solid var(--border)",
@@ -27,7 +27,7 @@ export default function Home() {
         <div style={{ fontSize: "18px", fontWeight: 900, letterSpacing: "-0.5px" }}>
           RZ<span style={{ color: "var(--accent)" }}>.</span>
         </div>
-        <div style={{ display: "flex", gap: "32px", fontSize: "13px", color: "var(--text2)" }}>
+        <div className="landing-nav-links" style={{ display: "flex", gap: "32px", fontSize: "13px", color: "var(--text2)" }}>
           {["#features", "#how-it-works", "#pricing", "#faq"].map((href, i) => (
             <a key={i} href={href}
               style={{ transition: "color 0.2s" }}
@@ -37,7 +37,7 @@ export default function Home() {
             </a>
           ))}
         </div>
-        <div style={{ display: "flex", gap: "10px" }}>
+        <div className="landing-nav-actions" style={{ display: "flex", gap: "10px" }}>
           <Link href="/login">
             <button style={{ background: "transparent", border: "1px solid var(--border)", color: "var(--text2)", padding: "7px 18px", borderRadius: "6px", fontSize: "13px", cursor: "pointer", transition: "all 0.2s" }}
               onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = "#555"; (e.currentTarget as HTMLButtonElement).style.color = "#fff"; }}
@@ -54,7 +54,7 @@ export default function Home() {
       </nav>
 
       {/* HERO */}
-      <section style={{
+      <section className="hero-section" style={{
         minHeight: "100vh", display: "flex", flexDirection: "column",
         alignItems: "center", justifyContent: "center", textAlign: "center",
         padding: "140px 24px 100px", position: "relative", overflow: "hidden",
@@ -117,7 +117,7 @@ export default function Home() {
           </div>
 
           {/* Stats bar */}
-          <div style={{
+          <div className="stats-bar" style={{
             display: "flex", gap: "64px", marginTop: "96px", flexWrap: "wrap",
             justifyContent: "center", borderTop: "1px solid var(--border)", paddingTop: "56px",
           }}>
@@ -136,7 +136,7 @@ export default function Home() {
       </section>
 
       {/* FEATURES */}
-      <section id="features" style={{ padding: "140px 48px", maxWidth: "1100px", margin: "0 auto" }}>
+      <section id="features" className="features-section" style={{ padding: "140px 48px", maxWidth: "1100px", margin: "0 auto" }}>
         <div style={{ marginBottom: "96px" }}>
           <p style={{ color: "var(--accent)", fontSize: "11px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "16px" }}>Platform</p>
           <h2 style={{ fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 900, letterSpacing: "-2px", maxWidth: "500px" }}>Everything a serious athlete needs</h2>
@@ -177,7 +177,7 @@ export default function Home() {
             display: "grid", gridTemplateColumns: "1fr 1fr", gap: "80px",
             alignItems: "center", marginBottom: "120px",
             direction: i % 2 === 1 ? "rtl" : "ltr",
-          }}>
+          }} className="feature-row">
             <div style={{ direction: "ltr" }}>
               <p style={{ color: "var(--accent)", fontSize: "11px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "16px" }}>{f.label}</p>
               <h3 style={{ fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 900, letterSpacing: "-1px", marginBottom: "16px" }}>{f.title}</h3>
@@ -202,7 +202,7 @@ export default function Home() {
               minHeight: "220px",
               display: "flex", alignItems: "center", justifyContent: "center",
               boxShadow: "inset 0 0 40px rgba(14,165,233,0.05), 0 0 0 1px rgba(14,165,233,0.04)",
-            }}>
+            }} className="stat-box">
               <div style={{ textAlign: "center" }}>
                 <div style={{
                   fontSize: "56px", fontWeight: 900, letterSpacing: "-3px", marginBottom: "10px",
@@ -221,11 +221,11 @@ export default function Home() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section id="how-it-works" style={{ padding: "120px 48px", background: "var(--bg2)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)" }}>
+      <section id="how-it-works" className="how-it-works-section" style={{ padding: "120px 48px", background: "var(--bg2)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)" }}>
         <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
           <p style={{ color: "var(--accent)", fontSize: "11px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "16px" }}>Process</p>
           <h2 style={{ fontSize: "clamp(28px, 4vw, 42px)", fontWeight: 900, letterSpacing: "-2px", marginBottom: "72px", maxWidth: "400px" }}>Up and running in minutes</h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "48px" }}>
+          <div className="how-works-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "48px" }}>
             {[
               { n: "01", title: "Sign up free", desc: "Create an account — no credit card required." },
               { n: "02", title: "Take the assessment", desc: "Tell us your position, goals and weaknesses." },
@@ -244,7 +244,7 @@ export default function Home() {
       </section>
 
       {/* PRICING */}
-      <section id="pricing" style={{ padding: "140px 48px", maxWidth: "860px", margin: "0 auto" }}>
+      <section id="pricing" className="pricing-section" style={{ padding: "140px 48px", maxWidth: "860px", margin: "0 auto" }}>
         <div style={{ marginBottom: "72px" }}>
           <p style={{ color: "var(--accent)", fontSize: "11px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "16px" }}>Pricing</p>
           <h2 style={{ fontSize: "clamp(28px, 4vw, 42px)", fontWeight: 900, letterSpacing: "-2px" }}>No hidden fees. No BS.</h2>
@@ -304,7 +304,7 @@ export default function Home() {
       </section>
 
       {/* TESTIMONIALS */}
-      <section style={{ padding: "120px 48px", background: "var(--bg2)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)" }}>
+      <section className="testimonials-section" style={{ padding: "120px 48px", background: "var(--bg2)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)" }}>
         <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
           <p style={{ color: "var(--accent)", fontSize: "11px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "16px" }}>Reviews</p>
           <h2 style={{ fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 900, letterSpacing: "-1px", marginBottom: "56px" }}>What athletes say</h2>
@@ -336,7 +336,7 @@ export default function Home() {
       </section>
 
       {/* FAQ */}
-      <section id="faq" style={{ padding: "120px 48px", maxWidth: "680px", margin: "0 auto" }}>
+      <section id="faq" className="faq-section" style={{ padding: "120px 48px", maxWidth: "680px", margin: "0 auto" }}>
         <p style={{ color: "var(--accent)", fontSize: "11px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "16px" }}>FAQ</p>
         <h2 style={{ fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 900, letterSpacing: "-1px", marginBottom: "56px" }}>Common questions</h2>
         {faqs.map((f, i) => (
@@ -355,7 +355,7 @@ export default function Home() {
       </section>
 
       {/* FINAL CTA */}
-      <section style={{ padding: "140px 48px", textAlign: "center", borderTop: "1px solid var(--border)" }}>
+      <section className="cta-section" style={{ padding: "140px 48px", textAlign: "center", borderTop: "1px solid var(--border)" }}>
         <h2 style={{ fontSize: "clamp(32px, 5vw, 64px)", fontWeight: 900, letterSpacing: "-3px", marginBottom: "20px", lineHeight: 0.95 }}>
           READY TO RIZE?
         </h2>
@@ -372,7 +372,7 @@ export default function Home() {
       </section>
 
       {/* FOOTER */}
-      <footer style={{ borderTop: "1px solid var(--border)", padding: "28px 48px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <footer className="landing-footer" style={{ borderTop: "1px solid var(--border)", padding: "28px 48px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <div style={{ fontSize: "16px", fontWeight: 900, letterSpacing: "-0.5px" }}>
           RZ<span style={{ color: "var(--accent)" }}>.</span>
         </div>

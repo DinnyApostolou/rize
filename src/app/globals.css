@@ -43,3 +43,27 @@ input, textarea { font-family: inherit; outline: none; }
   0%, 100% { opacity: 0.4; }
   50% { opacity: 0.8; }
 }
+
+/* ── Mobile responsive ─────────────────────── */
+@media (max-width: 768px) {
+  .landing-nav { padding: 0 16px !important; }
+  .landing-nav-links { display: none !important; }
+  .landing-nav-actions { gap: 6px !important; }
+  .landing-nav-actions a button { padding: 6px 12px !important; font-size: 12px !important; }
+
+  .hero-section { padding: 110px 20px 70px !important; }
+  .stats-bar { gap: 24px !important; margin-top: 56px !important; padding-top: 32px !important; }
+
+  .features-section { padding: 72px 20px !important; }
+  .feature-row { grid-template-columns: 1fr !important; gap: 28px !important; direction: ltr !important; margin-bottom: 64px !important; }
+  .stat-box { display: none !important; }
+
+  .how-it-works-section { padding: 72px 20px !important; }
+  .how-works-grid { grid-template-columns: 1fr 1fr !important; gap: 28px !important; }
+
+  .pricing-section { padding: 72px 20px !important; }
+  .testimonials-section { padding: 72px 20px !important; }
+  .faq-section { padding: 72px 20px !important; }
+  .cta-section { padding: 72px 20px !important; }
+  .landing-footer { padding: 24px 20px !important; flex-direction: column !important; gap: 8px !important; text-align: center; }
+}
