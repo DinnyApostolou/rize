@@ -66,13 +66,13 @@ export default function Home() {
           alt=""
           style={{
             position: "absolute", inset: 0, width: "100%", height: "100%",
-            objectFit: "cover", opacity: 0.45, pointerEvents: "none", zIndex: 0,
+            objectFit: "cover", opacity: 0.75, pointerEvents: "none", zIndex: 0,
           }}
         />
         {/* Dark overlay — Nike style, moody */}
         <div style={{
           position: "absolute", inset: 0, zIndex: 1,
-          background: "linear-gradient(to bottom, rgba(10,10,10,0.65) 0%, rgba(10,10,10,0.45) 40%, rgba(10,10,10,0.85) 100%)",
+          background: "linear-gradient(to bottom, rgba(10,10,10,0.5) 0%, rgba(10,10,10,0.2) 40%, rgba(10,10,10,0.75) 100%)",
           pointerEvents: "none",
         }} />
         {/* Subtle blue glow */}
