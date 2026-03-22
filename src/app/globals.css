@@ -201,12 +201,8 @@ input, textarea { font-family: inherit; outline: none; }
 
   /* ─ Features ─ */
   .features-section { padding: 56px 20px !important; }
-  .feature-row {
-    grid-template-columns: 1fr !important;
-    gap: 20px !important;
-    direction: ltr !important;
-    margin-bottom: 40px !important;
-  }
+  .features-mobile { display: flex !important; }
+  .features-desktop { display: none !important; }
   .stat-box { display: none !important; }
   .feature-bullet-extra { display: none !important; }
 

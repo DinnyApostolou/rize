@@ -370,62 +370,89 @@ export default function Home() {
           </h2>
         </div>
 
-        {[
-          { label: "BASKETBALL", color: "#0074FF", title: "100+ structured drills", desc: "Ball handling, shooting, finishing, defense and IQ — every drill has coaching cues, difficulty rating and a YouTube tutorial. New drills added every week.", points: ["Beginner to advanced levels", "Categorised by skill area", "YouTube tutorials on every drill", "Track completions and earn XP"] },
-          { label: "STRENGTH", color: "#8B5CF6", title: "Athlete-specific gym programs", desc: "Periodised lifting programs built for basketball athletes. Explosive power, vertical jump, sprint speed and injury prevention — not generic bodybuilder workouts.", points: ["5 training categories", "30+ exercises with coaching cues", "Sets, reps and rest periods included", "YouTube form guides on every exercise"] },
-          { label: "NUTRITION", color: "#10B981", title: "Fuel and recovery plans", desc: "Pre-game, post-game, daily meals and snacks with exact macros, ingredient lists and explanations of why each meal helps your performance.", points: ["50+ meals with full macros", "Pre-game and post-game specific", "Hydration guides included", "Designed for athletic performance"] },
-          { label: "TRACKING", color: "#F59E0B", title: "Progress that actually means something", desc: "XP system, skill assessment, stats card, weekly schedule and 22 collectible badges. See yourself improve week over week.", points: ["Skill assessment quiz", "XP and level system", "Day streak tracking", "22 achievement badges"] },
-        ].map((f, i) => (
-          <div key={i} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "80px", alignItems: "center", marginBottom: "120px", direction: i % 2 === 1 ? "rtl" : "ltr", position: "relative", zIndex: 1 }} className="feature-row">
-            <div style={{ direction: "ltr" }}>
-              <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: `${f.color}15`, border: `1px solid ${f.color}40`, borderRadius: "999px", padding: "5px 14px", marginBottom: "20px" }}>
-                <div style={{ width: "5px", height: "5px", borderRadius: "50%", background: f.color, boxShadow: `0 0 6px ${f.color}` }} />
-                <span style={{ color: f.color, fontSize: "10px", fontWeight: 800, letterSpacing: "2px" }}>{f.label}</span>
-              </div>
-              <h3 style={{ fontSize: "clamp(24px, 3vw, 38px)", fontWeight: 900, letterSpacing: "-1px", marginBottom: "16px", lineHeight: 1.1 }}>{f.title}</h3>
-              <p style={{ color: "var(--text2)", fontSize: "15px", lineHeight: 1.8, marginBottom: "28px" }}>{f.desc}</p>
-              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                {f.points.map((p, pi) => (
-                  <div key={pi} className={pi >= 2 ? "feature-bullet-extra" : ""} style={{ display: "flex", gap: "12px", alignItems: "center", fontSize: "14px", color: "var(--text2)" }}>
-                    <div style={{ width: "16px", height: "16px", borderRadius: "50%", background: `${f.color}20`, border: `1px solid ${f.color}60`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                      <div style={{ width: "5px", height: "5px", borderRadius: "50%", background: f.color }} />
+        {(() => {
+          const features = [
+            { label: "BASKETBALL", color: "#0074FF", icon: "BB", stat: "100+", statLabel: "drills", title: "100+ structured drills", shortTitle: "Structured Drills", desc: "Ball handling, shooting, finishing, defense and IQ — every drill has coaching cues, difficulty rating and a YouTube tutorial. New drills added every week.", shortDesc: "Coaching cues, difficulty ratings and YouTube tutorials on every drill.", points: ["Beginner to advanced levels", "Categorised by skill area", "YouTube tutorials on every drill", "Track completions and earn XP"] },
+            { label: "STRENGTH", color: "#8B5CF6", icon: "GY", stat: "30+", statLabel: "exercises", title: "Athlete-specific gym programs", shortTitle: "Gym Programs", desc: "Periodised lifting programs built for basketball athletes. Explosive power, vertical jump, sprint speed and injury prevention — not generic bodybuilder workouts.", shortDesc: "Built for basketball — vertical jump, sprint speed, explosive power.", points: ["5 training categories", "30+ exercises with coaching cues", "Sets, reps and rest periods included", "YouTube form guides on every exercise"] },
+            { label: "NUTRITION", color: "#10B981", icon: "NU", stat: "50+", statLabel: "meals", title: "Fuel and recovery plans", shortTitle: "Nutrition Plans", desc: "Pre-game, post-game, daily meals and snacks with exact macros, ingredient lists and explanations of why each meal helps your performance.", shortDesc: "Pre-game, post-game and daily meals with exact macros.", points: ["50+ meals with full macros", "Pre-game and post-game specific", "Hydration guides included", "Designed for athletic performance"] },
+            { label: "TRACKING", color: "#F59E0B", icon: "XP", stat: "22", statLabel: "badges", title: "Progress that actually means something", shortTitle: "Progress Tracking", desc: "XP system, skill assessment, stats card, weekly schedule and 22 collectible badges. See yourself improve week over week.", shortDesc: "XP levels, streaks, skill assessment and 22 collectible badges.", points: ["Skill assessment quiz", "XP and level system", "Day streak tracking", "22 achievement badges"] },
+          ];
+          return (
+            <>
+              {/* MOBILE: compact horizontal cards */}
+              <div className="features-mobile" style={{ display: "none", flexDirection: "column", gap: "12px", position: "relative", zIndex: 1 }}>
+                {features.map((f, i) => (
+                  <div key={i} style={{
+                    display: "flex", alignItems: "flex-start", gap: "16px",
+                    background: "rgba(255,255,255,0.03)",
+                    border: `1px solid ${f.color}25`,
+                    borderLeft: `3px solid ${f.color}`,
+                    borderRadius: "14px", padding: "18px 16px",
+                    boxShadow: `0 4px 20px rgba(0,0,0,0.3), 0 0 20px ${f.color}08`,
+                  }}>
+                    <div style={{ width: "44px", height: "44px", borderRadius: "10px", background: `${f.color}18`, border: `1px solid ${f.color}35`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: "11px", fontWeight: 900, color: f.color, letterSpacing: "0.5px" }}>{f.icon}</div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "8px" }}>
+                        <div>
+                          <div style={{ fontSize: "10px", color: f.color, fontWeight: 800, letterSpacing: "2px", marginBottom: "4px" }}>{f.label}</div>
+                          <div style={{ fontSize: "16px", fontWeight: 800, letterSpacing: "-0.5px", lineHeight: 1.2 }}>{f.shortTitle}</div>
+                        </div>
+                        <div style={{ textAlign: "right", flexShrink: 0, marginLeft: "12px" }}>
+                          <div style={{ fontSize: "24px", fontWeight: 900, color: f.color, lineHeight: 1, letterSpacing: "-1px" }}>{f.stat}</div>
+                          <div style={{ fontSize: "10px", color: "var(--text3)", fontWeight: 600 }}>{f.statLabel}</div>
+                        </div>
+                      </div>
+                      <p style={{ fontSize: "13px", color: "var(--text2)", lineHeight: 1.6, marginBottom: "12px" }}>{f.shortDesc}</p>
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                        {f.points.slice(0, 2).map((p, pi) => (
+                          <div key={pi} style={{
+                            display: "flex", alignItems: "center", gap: "5px",
+                            background: `${f.color}10`, border: `1px solid ${f.color}25`,
+                            borderRadius: "6px", padding: "4px 8px",
+                          }}>
+                            <div style={{ width: "4px", height: "4px", borderRadius: "50%", background: f.color, flexShrink: 0 }} />
+                            <span style={{ fontSize: "11px", color: "var(--text2)", fontWeight: 500 }}>{p}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                    {p}
                   </div>
                 ))}
               </div>
-            </div>
-            {/* Glowing mockup card */}
-            <div
-              className="stat-box"
-              style={{
-                direction: "ltr",
-                background: "rgba(255,255,255,0.03)",
-                backdropFilter: "blur(12px)",
-                WebkitBackdropFilter: "blur(12px)",
-                border: `1px solid ${f.color}40`,
-                borderRadius: "16px",
-                padding: "28px 24px",
-                boxShadow: `0 0 30px ${f.color}15, 0 20px 60px rgba(0,0,0,0.4)`,
-                transition: "transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",
-              }}
-              onMouseEnter={e => {
-                const el = e.currentTarget as HTMLDivElement;
-                el.style.transform = "translateY(-8px)";
-                el.style.boxShadow = `0 0 0 1px ${f.color}, 0 0 40px ${f.color}60, 0 0 80px ${f.color}25, 0 20px 60px rgba(0,0,0,0.5)`;
-                el.style.borderColor = f.color;
-              }}
-              onMouseLeave={e => {
-                const el = e.currentTarget as HTMLDivElement;
-                el.style.transform = "translateY(0)";
-                el.style.boxShadow = `0 0 30px ${f.color}15, 0 20px 60px rgba(0,0,0,0.4)`;
-                el.style.borderColor = `${f.color}40`;
-              }}
-            >
-              {mockups[i]}
-            </div>
-          </div>
-        ))}
+
+              {/* DESKTOP: alternating grid */}
+              <div className="features-desktop">
+                {features.map((f, i) => (
+                  <div key={i} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "80px", alignItems: "center", marginBottom: "120px", direction: i % 2 === 1 ? "rtl" : "ltr", position: "relative", zIndex: 1 }} className="feature-row">
+                    <div style={{ direction: "ltr" }}>
+                      <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: `${f.color}15`, border: `1px solid ${f.color}40`, borderRadius: "999px", padding: "5px 14px", marginBottom: "20px" }}>
+                        <div style={{ width: "5px", height: "5px", borderRadius: "50%", background: f.color, boxShadow: `0 0 6px ${f.color}` }} />
+                        <span style={{ color: f.color, fontSize: "10px", fontWeight: 800, letterSpacing: "2px" }}>{f.label}</span>
+                      </div>
+                      <h3 style={{ fontSize: "clamp(24px, 3vw, 38px)", fontWeight: 900, letterSpacing: "-1px", marginBottom: "16px", lineHeight: 1.1 }}>{f.title}</h3>
+                      <p style={{ color: "var(--text2)", fontSize: "15px", lineHeight: 1.8, marginBottom: "28px" }}>{f.desc}</p>
+                      <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                        {f.points.map((p, pi) => (
+                          <div key={pi} style={{ display: "flex", gap: "12px", alignItems: "center", fontSize: "14px", color: "var(--text2)" }}>
+                            <div style={{ width: "16px", height: "16px", borderRadius: "50%", background: `${f.color}20`, border: `1px solid ${f.color}60`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                              <div style={{ width: "5px", height: "5px", borderRadius: "50%", background: f.color }} />
+                            </div>
+                            {p}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="stat-box" style={{ direction: "ltr", background: "rgba(255,255,255,0.03)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: `1px solid ${f.color}40`, borderRadius: "16px", padding: "28px 24px", boxShadow: `0 0 30px ${f.color}15, 0 20px 60px rgba(0,0,0,0.4)`, transition: "transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease" }}
+                      onMouseEnter={e => { const el = e.currentTarget as HTMLDivElement; el.style.transform = "translateY(-8px)"; el.style.boxShadow = `0 0 0 1px ${f.color}, 0 0 40px ${f.color}60, 0 0 80px ${f.color}25, 0 20px 60px rgba(0,0,0,0.5)`; el.style.borderColor = f.color; }}
+                      onMouseLeave={e => { const el = e.currentTarget as HTMLDivElement; el.style.transform = "translateY(0)"; el.style.boxShadow = `0 0 30px ${f.color}15, 0 20px 60px rgba(0,0,0,0.4)`; el.style.borderColor = `${f.color}40`; }}>
+                      {mockups[i]}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          );
+        })()}
       </section>
 
       {/* HOW IT WORKS */}
