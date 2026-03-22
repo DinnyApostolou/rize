@@ -70,26 +70,6 @@ export default function NutritionPage() {
   const [tab, setTab] = useState<keyof typeof MEALS>("Pre-Game");
   const [expanded, setExpanded] = useState<number | null>(null);
   const tabs = Object.keys(MEALS) as (keyof typeof MEALS)[];
-  const [aiLoading, setAiLoading] = useState(false);
-  const [aiResult, setAiResult] = useState<string | null>(null);
-  const [aiError, setAiError] = useState<string | null>(null);
-
-  async function handleAiNutrition() {
-    setAiLoading(true);
-    setAiResult(null);
-    setAiError(null);
-    try {
-      const res = await fetch("/api/ai-nutrition", { method: "POST" });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed");
-      setAiResult(data.result);
-    } catch (e: unknown) {
-      setAiError(e instanceof Error ? e.message : "Something went wrong.");
-    } finally {
-      setAiLoading(false);
-    }
-  }
-
   return (
     <div style={{ display: "flex", minHeight: "100vh", background: "var(--bg)", color: "var(--text)" }}>
       <Sidebar />
@@ -104,107 +84,6 @@ export default function NutritionPage() {
           <div style={{ width: "280px", flexShrink: 0 }}>
             <NutritionBowl3D />
           </div>
-        </div>
-
-        {/* AI Nutrition Tips */}
-        <div style={{ marginBottom: "32px" }}>
-          <button
-            onClick={handleAiNutrition}
-            disabled={aiLoading}
-            style={{
-              padding: "12px 28px",
-              borderRadius: "10px",
-              fontSize: "14px",
-              fontWeight: 700,
-              background: aiLoading ? "var(--bg2)" : "var(--accent)",
-              border: aiLoading ? "1px solid var(--border)" : "none",
-              color: aiLoading ? "var(--text3)" : "#fff",
-              cursor: aiLoading ? "not-allowed" : "pointer",
-              transition: "all 0.2s",
-              opacity: aiLoading ? 0.7 : 1,
-              boxShadow: aiLoading ? "none" : "var(--glow-blue)",
-              marginBottom: aiResult || aiError || aiLoading ? "20px" : "0",
-            }}
-          >
-            {aiLoading ? "Generating tips..." : "Get AI Nutrition Tips"}
-          </button>
-
-          {aiLoading && (
-            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              {[1, 2, 3].map(i => (
-                <div key={i} className="skeleton-shimmer" style={{ height: "60px", borderRadius: "8px" }} />
-              ))}
-            </div>
-          )}
-
-          {aiError && (
-            <div style={{
-              background: "rgba(239,68,68,0.08)",
-              border: "1px solid rgba(239,68,68,0.25)",
-              borderRadius: "10px",
-              padding: "14px 18px",
-              color: "#EF4444",
-              fontSize: "13px",
-            }}>
-              {aiError}
-            </div>
-          )}
-
-          {aiResult && !aiLoading && (
-            <div style={{
-              background: "var(--bg2)",
-              border: "1px solid var(--border)",
-              borderLeft: "3px solid var(--accent)",
-              borderRadius: "12px",
-              padding: "24px 28px",
-              boxShadow: "var(--shadow-md)",
-            }}>
-              <div style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                marginBottom: "16px",
-                paddingBottom: "14px",
-                borderBottom: "1px solid var(--border)",
-              }}>
-                <div style={{
-                  background: "rgba(0,116,255,0.12)",
-                  border: "1px solid rgba(0,116,255,0.25)",
-                  borderRadius: "6px",
-                  padding: "5px 12px",
-                  fontSize: "11px",
-                  fontWeight: 700,
-                  color: "var(--accent)",
-                }}>
-                  AI NUTRITION COACH
-                </div>
-              </div>
-              <div style={{
-                fontSize: "14px",
-                color: "var(--text2)",
-                lineHeight: 1.85,
-                whiteSpace: "pre-wrap",
-              }}>
-                {aiResult}
-              </div>
-              <button
-                onClick={handleAiNutrition}
-                style={{
-                  marginTop: "20px",
-                  padding: "9px 20px",
-                  borderRadius: "8px",
-                  fontSize: "12px",
-                  fontWeight: 600,
-                  background: "var(--bg3)",
-                  border: "1px solid var(--border)",
-                  color: "var(--text2)",
-                  cursor: "pointer",
-                }}
-              >
-                Regenerate
-              </button>
-            </div>
-          )}
         </div>
 
         {/* Tabs */}
