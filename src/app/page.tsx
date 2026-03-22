@@ -235,9 +235,26 @@ export default function Home() {
         padding: "140px 24px 100px", position: "relative", overflow: "hidden",
         background: "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,116,255,0.12) 0%, rgba(10,15,20,0) 60%), #0A0F14",
       }}>
-        {/* Interactive particle background */}
+        {/* YouTube video — bottom layer */}
+        <div className="hero-video-wrap" style={{ position: "absolute", inset: 0, zIndex: 0, overflow: "hidden", pointerEvents: "none" }}>
+          <iframe
+            src="https://www.youtube.com/embed/tWU8CXFLOgk?autoplay=1&mute=1&loop=1&playlist=tWU8CXFLOgk&controls=0&showinfo=0&rel=0&playsinline=1&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0"
+            allow="autoplay; fullscreen"
+            title=" "
+            style={{
+              position: "absolute", top: "50%", left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: "177.78vh", height: "100vh",
+              minWidth: "100vw", minHeight: "56.25vw",
+              border: "none",
+              filter: "brightness(0.4) saturate(1.1)",
+              pointerEvents: "none",
+            }}
+          />
+        </div>
+        {/* Particles on top of video */}
         <ParticleBackground />
-        {/* Animated glowing orbs — follow cursor */}
+        {/* Orbs on top of particles */}
         <OrbLayer />
         {/* Overlay */}
         <div style={{

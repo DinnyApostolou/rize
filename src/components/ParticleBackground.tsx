@@ -170,6 +170,6 @@ export default function ParticleBackground() {
   }, []);
 
   return (
-    <canvas ref={canvasRef} style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none" }} />
+    <canvas ref={canvasRef} style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none" }} />
   );
 }
