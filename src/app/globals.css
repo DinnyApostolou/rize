@@ -179,44 +179,78 @@ input, textarea { font-family: inherit; outline: none; }
 
 /* ── Mobile responsive ─────────────────────── */
 @media (max-width: 768px) {
-  /* Landing page */
+  /* ─ Landing nav ─ */
   .landing-nav { padding: 0 16px !important; }
   .landing-nav-links { display: none !important; }
   .landing-nav-actions { gap: 6px !important; }
-  .landing-nav-actions a button { padding: 6px 12px !important; font-size: 12px !important; }
+  .landing-nav-actions a button { padding: 6px 14px !important; font-size: 12px !important; }
 
-  .hero-section { padding: 110px 20px 70px !important; }
+  /* ─ Hero ─ */
+  .hero-section { padding: 100px 20px 60px !important; }
   .hero-video-wrap { display: none !important; }
   .hero-mobile-bg { display: block !important; opacity: 1 !important; }
-  .stats-bar { gap: 24px !important; margin-top: 56px !important; padding-top: 32px !important; }
 
+  /* ─ Stats bar ─ */
+  .stats-bar {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 20px 32px !important;
+    margin-top: 48px !important;
+    padding-top: 32px !important;
+  }
+
+  /* ─ Features ─ */
   .features-section { padding: 72px 20px !important; }
-  .feature-row { grid-template-columns: 1fr !important; gap: 28px !important; direction: ltr !important; margin-bottom: 64px !important; }
+  .feature-row {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+    direction: ltr !important;
+    margin-bottom: 64px !important;
+  }
   .stat-box { display: none !important; }
 
+  /* ─ How it works ─ */
   .how-it-works-section { padding: 72px 20px !important; }
-  .how-works-grid { grid-template-columns: 1fr 1fr !important; gap: 28px !important; }
+  .how-works-grid { grid-template-columns: 1fr 1fr !important; gap: 12px !important; }
 
+  /* ─ Pricing / testimonials / faq / cta / footer ─ */
   .pricing-section { padding: 72px 20px !important; }
   .testimonials-section { padding: 72px 20px !important; }
   .faq-section { padding: 72px 20px !important; }
-  .cta-section { padding: 72px 20px !important; }
+  .cta-section { padding: 80px 24px !important; }
   .landing-footer { padding: 24px 20px !important; flex-direction: column !important; gap: 8px !important; text-align: center; }
 
-  /* Sidebar — hide on mobile, show bottom nav */
+  /* ─ Sidebar — hide on mobile, show bottom nav ─ */
   .rize-sidebar { display: none !important; }
   .rize-mobile-nav { display: flex !important; }
 
-  /* Prevent layout flash on navigation */
+  /* ─ Prevent layout flash ─ */
   .dash-main, .inner-main { transition: none !important; }
 
-  /* Dashboard & inner pages — full width */
-  .dash-main { margin-left: 0 !important; padding: 20px 16px 100px !important; max-width: 100% !important; width: 100% !important; }
-  .dash-greeting { font-size: 26px !important; letter-spacing: -1px !important; }
-  .dash-stats { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+  /* ─ Dashboard ─ */
+  .dash-main {
+    margin-left: 0 !important;
+    padding: 24px 16px 110px !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  .dash-greeting { font-size: 28px !important; letter-spacing: -1.5px !important; }
+  .dash-stats {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
   .dash-2col { grid-template-columns: 1fr !important; }
   .dash-xp-right { display: none !important; }
 
-  /* Inner pages with shared sidebar */
-  .inner-main { margin-left: 0 !important; padding: 24px 16px 100px !important; max-width: 100% !important; width: 100% !important; }
+  /* ─ Inner pages ─ */
+  .inner-main {
+    margin-left: 0 !important;
+    padding: 24px 16px 110px !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  /* ─ General mobile polish ─ */
+  h1 { letter-spacing: -2px !important; }
+  h2 { letter-spacing: -1px !important; }
 }

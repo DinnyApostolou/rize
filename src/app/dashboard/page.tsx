@@ -216,22 +216,51 @@ export default function Dashboard() {
 
       {/* MOBILE BOTTOM NAV */}
       <nav className="rize-mobile-nav" style={{
-        display: "none", position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 100,
-        background: "var(--bg2)", borderTop: "1px solid var(--border)",
-        padding: "8px 0 20px", justifyContent: "space-around", alignItems: "center",
+        display: "none",
+        position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 100,
+        background: "rgba(8,12,16,0.92)",
+        backdropFilter: "blur(24px) saturate(180%)",
+        WebkitBackdropFilter: "blur(24px) saturate(180%)",
+        borderTop: "1px solid rgba(255,255,255,0.07)",
+        boxShadow: "0 -4px 24px rgba(0,0,0,0.5), 0 -1px 0 rgba(0,116,255,0.12)",
+        padding: "10px 4px",
+        paddingBottom: "calc(10px + env(safe-area-inset-bottom, 12px))",
+        justifyContent: "space-around", alignItems: "center",
       }}>
         {[
-          { href: "/dashboard", icon: "⊞", label: "Home" },
-          { href: "/drills", icon: "🏀", label: "Drills" },
-          { href: "/strength", icon: "⚡", label: "Strength" },
-          { href: "/nutrition", icon: "◈", label: "Nutrition" },
-          { href: "/profile", icon: "○", label: "Profile" },
-        ].map(n => (
-          <Link key={n.href} href={n.href} style={{ textDecoration: "none", display: "flex", flexDirection: "column", alignItems: "center", gap: "3px", color: n.href === "/dashboard" ? "var(--accent)" : "var(--text3)", minWidth: "52px" }}>
-            <span style={{ fontSize: "20px" }}>{n.icon}</span>
-            <span style={{ fontSize: "10px", fontWeight: 600, letterSpacing: "0.3px" }}>{n.label}</span>
-          </Link>
-        ))}
+          { href: "/dashboard", emoji: "🏠", label: "Home" },
+          { href: "/drills", emoji: "🏀", label: "Drills" },
+          { href: "/strength", emoji: "💪", label: "Strength" },
+          { href: "/nutrition", emoji: "🥗", label: "Food" },
+          { href: "/profile", emoji: "👤", label: "Profile" },
+        ].map(n => {
+          const active = n.href === "/dashboard";
+          return (
+            <Link key={n.href} href={n.href} style={{ textDecoration: "none", flex: 1 }}>
+              <div style={{
+                display: "flex", flexDirection: "column", alignItems: "center", gap: "5px",
+                padding: "8px 6px 6px", borderRadius: "14px",
+                background: active ? "rgba(0,116,255,0.14)" : "transparent",
+                border: `1px solid ${active ? "rgba(0,116,255,0.25)" : "transparent"}`,
+                margin: "0 3px",
+                transition: "all 0.2s",
+              }}>
+                <span style={{
+                  fontSize: "22px", lineHeight: 1,
+                  filter: active ? "none" : "saturate(0.4) brightness(0.65)",
+                }}>
+                  {n.emoji}
+                </span>
+                <span style={{
+                  fontSize: "10px", fontWeight: 700, letterSpacing: "0.2px",
+                  color: active ? "var(--accent)" : "var(--text3)",
+                }}>
+                  {n.label}
+                </span>
+              </div>
+            </Link>
+          );
+        })}
       </nav>
 
       {/* MAIN CONTENT */}
