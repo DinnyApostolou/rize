@@ -227,8 +227,9 @@ export default function Home() {
               pointerEvents: "none",
             }}
           >
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-basketball-player-shooting-in-a-gym-42914-large.mp4" type="video/mp4" />
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-basketball-player-dribbles-on-the-court-32692-large.mp4" type="video/mp4" />
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-man-dunking-the-ball-in-a-basketball-hoop-at-night-13734-large.mp4" type="video/mp4" />
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-skilled-basketball-player-shooting-baskets-training-alone-44448-large.mp4" type="video/mp4" />
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-basketball-player-on-a-dark-court-in-3d-33987-large.mp4" type="video/mp4" />
           </video>
         </div>
         {/* Overlay */}
