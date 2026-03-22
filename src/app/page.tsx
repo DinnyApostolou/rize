@@ -189,10 +189,12 @@ export default function Home() {
         background: "#050810",
       }}>
         {/* YouTube video background */}
-        <div style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, zIndex: 0, overflow: "hidden", pointerEvents: "none" }}>
           <iframe
-            src="https://www.youtube.com/embed/tWU8CXFLOgk?autoplay=1&mute=1&loop=1&playlist=tWU8CXFLOgk&controls=0&showinfo=0&rel=0&playsinline=1&modestbranding=1&start=0"
+            src="https://www.youtube.com/embed/tWU8CXFLOgk?autoplay=1&mute=1&loop=1&playlist=tWU8CXFLOgk&controls=0&showinfo=0&rel=0&playsinline=1&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&start=0"
             allow="autoplay; fullscreen"
+            title=" "
+            frameBorder={0}
             style={{
               position: "absolute",
               top: "50%", left: "50%",
@@ -203,8 +205,11 @@ export default function Home() {
               minHeight: "56.25vw",
               border: "none",
               filter: "brightness(0.5) saturate(1.1)",
+              pointerEvents: "none",
             }}
           />
+          {/* Blocks YouTube UI overlays on mobile */}
+          <div style={{ position: "absolute", inset: 0, zIndex: 1, background: "transparent" }} />
         </div>
         {/* Overlay */}
         <div style={{
