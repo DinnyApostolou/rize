@@ -35,6 +35,26 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Outfit', sans-serif;
 }
 
+/* Corner bracket box — WorldQuant style */
+.bracket-box {
+  position: relative;
+  display: inline-block;
+  padding: 8px 16px;
+}
+.bracket-box::before, .bracket-box::after,
+.bracket-box > span::before, .bracket-box > span::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-color: rgba(0,116,255,0.6);
+  border-style: solid;
+}
+.bracket-box::before { top: 0; left: 0; border-width: 1px 0 0 1px; }
+.bracket-box::after  { top: 0; right: 0; border-width: 1px 1px 0 0; }
+.bracket-box > span::before { bottom: 0; left: 0; border-width: 0 0 1px 1px; }
+.bracket-box > span::after  { bottom: 0; right: 0; border-width: 0 1px 1px 0; }
+
 /* Hover lift + glow on feature cards and how-it-works steps */
 .how-step {
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;

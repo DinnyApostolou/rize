@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import ParticleBackground from "@/components/ParticleBackground";
 
 function useCountUp(target: number, duration = 1500, start = false) {
   const [count, setCount] = useState(0);
@@ -188,27 +189,8 @@ export default function Home() {
         padding: "140px 24px 100px", position: "relative", overflow: "hidden",
         background: "#050810",
       }}>
-        {/* YouTube video background — desktop only, hidden on mobile via CSS */}
-        <div className="hero-video-wrap" style={{ position: "absolute", inset: 0, zIndex: 0, overflow: "hidden", pointerEvents: "none" }}>
-          <iframe
-            src="https://www.youtube.com/embed/tWU8CXFLOgk?autoplay=1&mute=1&loop=1&playlist=tWU8CXFLOgk&controls=0&showinfo=0&rel=0&playsinline=1&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&start=0"
-            allow="autoplay; fullscreen"
-            title=" "
-            frameBorder={0}
-            style={{
-              position: "absolute",
-              top: "50%", left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: "177.78vh",
-              height: "100vh",
-              minWidth: "100vw",
-              minHeight: "56.25vw",
-              border: "none",
-              filter: "brightness(0.5) saturate(1.1)",
-              pointerEvents: "none",
-            }}
-          />
-        </div>
+        {/* Interactive particle background */}
+        <ParticleBackground />
         {/* Animated glowing orbs — visible on mobile, layered under video on desktop */}
         <div className="hero-mobile-bg" style={{ position: "absolute", inset: 0, zIndex: 0, overflow: "hidden", pointerEvents: "none" }}>
           {/* Orb 1 — electric blue, top left */}
@@ -244,6 +226,13 @@ export default function Home() {
 
         {/* Hero content */}
         <div style={{ position: "relative", zIndex: 2 }}>
+          {/* Bracket box label */}
+          <div className="bracket-box" style={{ marginBottom: "32px" }}>
+            <span style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "3px", textTransform: "uppercase", color: "var(--accent)" }}>
+              BASKETBALL · GYM · NUTRITION · PROGRESS
+            </span>
+            <span />
+          </div>
           <h1 style={{
             fontSize: "clamp(48px, 8vw, 96px)", fontWeight: 900,
             lineHeight: 0.92, letterSpacing: "-4px", marginBottom: "32px",
