@@ -191,7 +191,7 @@ export default function Home() {
         {/* YouTube video background */}
         <div style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none", overflow: "hidden" }}>
           <iframe
-            src="https://www.youtube.com/embed/oU8LRuA81Aw?autoplay=1&mute=1&loop=1&playlist=oU8LRuA81Aw&controls=0&showinfo=0&rel=0&playsinline=1&modestbranding=1"
+            src="https://www.youtube.com/embed/tWU8CXFLOgk?autoplay=1&mute=1&loop=1&playlist=tWU8CXFLOgk&controls=0&showinfo=0&rel=0&playsinline=1&modestbranding=1&start=0"
             allow="autoplay; fullscreen"
             style={{
               position: "absolute",
