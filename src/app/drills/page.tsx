@@ -3,6 +3,8 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { getSupabase } from "@/lib/supabase";
+import dynamic from "next/dynamic";
+const Basketball3D = dynamic(() => import("@/components/Basketball3D"), { ssr: false });
 import Sidebar from "@/components/Sidebar";
 
 declare global {
@@ -362,9 +364,15 @@ export default function DrillsPage() {
       <Sidebar />
 
       <main className="inner-main" style={{ flex: 1, padding: "48px 52px", maxWidth: "900px" }}>
-        <div style={{ marginBottom: "32px" }}>
-          <p style={{ fontSize: "11px", color: "var(--accent)", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "8px" }}>Basketball</p>
-          <h1 style={{ fontSize: "32px", fontWeight: 900, letterSpacing: "-1.5px", lineHeight: 1 }}>Drills</h1>
+        <div style={{ display: "flex", alignItems: "center", gap: "40px", marginBottom: "36px", flexWrap: "wrap" }}>
+          <div style={{ flex: 1, minWidth: "200px" }}>
+            <p style={{ fontSize: "11px", color: "var(--accent)", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "8px" }}>Basketball</p>
+            <h1 style={{ fontSize: "32px", fontWeight: 900, letterSpacing: "-1.5px", lineHeight: 1 }}>Drills</h1>
+            <p style={{ color: "var(--text2)", fontSize: "14px", marginTop: "10px", lineHeight: 1.6 }}>Structured ball handling, shooting and defence drills. Grab and spin the basketball.</p>
+          </div>
+          <div style={{ width: "260px", flexShrink: 0 }}>
+            <Basketball3D />
+          </div>
         </div>
         {!subscribed && (
           <div style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: "10px", padding: "16px 20px", marginBottom: "28px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px" }}>

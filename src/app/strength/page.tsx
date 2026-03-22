@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import Sidebar from "@/components/Sidebar";
+import dynamic from "next/dynamic";
+const Dumbbell3D = dynamic(() => import("@/components/Dumbbell3D"), { ssr: false });
 
 const PROGRAMS = [
   {
@@ -80,10 +82,15 @@ export default function StrengthPage() {
       <Sidebar />
 
       <main className="inner-main" style={{ flex: 1, padding: "48px 52px", maxWidth: "900px" }}>
-        <div style={{ marginBottom: "40px" }}>
-          <p style={{ fontSize: "11px", color: "var(--accent)", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "8px" }}>Strength</p>
-          <h1 style={{ fontSize: "32px", fontWeight: 900, letterSpacing: "-1.5px", lineHeight: 1, marginBottom: "8px" }}>Athlete Programs</h1>
-          <p style={{ color: "var(--text2)", fontSize: "14px" }}>{PROGRAMS.reduce((a, p) => a + p.exercises.length, 0)} exercises across {PROGRAMS.length} training areas.</p>
+        <div style={{ display: "flex", alignItems: "center", gap: "40px", marginBottom: "40px", flexWrap: "wrap" }}>
+          <div style={{ flex: 1, minWidth: "200px" }}>
+            <p style={{ fontSize: "11px", color: "#8B5CF6", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "8px" }}>Strength</p>
+            <h1 style={{ fontSize: "32px", fontWeight: 900, letterSpacing: "-1.5px", lineHeight: 1, marginBottom: "8px" }}>Athlete Programs</h1>
+            <p style={{ color: "var(--text2)", fontSize: "14px" }}>{PROGRAMS.reduce((a, p) => a + p.exercises.length, 0)} exercises across {PROGRAMS.length} training areas. Grab and spin the dumbbell.</p>
+          </div>
+          <div style={{ width: "280px", flexShrink: 0 }}>
+            <Dumbbell3D />
+          </div>
         </div>
 
         {/* Category tabs */}

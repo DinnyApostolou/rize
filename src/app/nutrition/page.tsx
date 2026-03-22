@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import Sidebar from "@/components/Sidebar";
+import dynamic from "next/dynamic";
+const NutritionBowl3D = dynamic(() => import("@/components/NutritionBowl3D"), { ssr: false });
 
 const MEALS = {
   "Pre-Game": [
@@ -74,10 +76,15 @@ export default function NutritionPage() {
       <Sidebar />
 
       <main className="inner-main" style={{ flex: 1, padding: "48px 52px", maxWidth: "900px" }}>
-        <div style={{ marginBottom: "40px" }}>
-          <p style={{ fontSize: "11px", color: "var(--accent)", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "8px" }}>Nutrition</p>
-          <h1 style={{ fontSize: "32px", fontWeight: 900, letterSpacing: "-1.5px", lineHeight: 1, marginBottom: "8px" }}>Fuel Like An Athlete</h1>
-          <p style={{ color: "var(--text2)", fontSize: "14px" }}>{Object.values(MEALS).flat().length}+ meals across every training need.</p>
+        <div style={{ display: "flex", alignItems: "center", gap: "40px", marginBottom: "40px", flexWrap: "wrap" }}>
+          <div style={{ flex: 1, minWidth: "200px" }}>
+            <p style={{ fontSize: "11px", color: "var(--accent)", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "8px" }}>Nutrition</p>
+            <h1 style={{ fontSize: "32px", fontWeight: 900, letterSpacing: "-1.5px", lineHeight: 1, marginBottom: "8px" }}>Fuel Like An Athlete</h1>
+            <p style={{ color: "var(--text2)", fontSize: "14px" }}>{Object.values(MEALS).flat().length}+ meals across every training need. Spin the bowl.</p>
+          </div>
+          <div style={{ width: "280px", flexShrink: 0 }}>
+            <NutritionBowl3D />
+          </div>
         </div>
 
         {/* Tabs */}
