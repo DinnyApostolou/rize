@@ -18,7 +18,6 @@ const NAV = [
   { href: "/strength", label: "Strength", icon: "⚡" },
   { href: "/nutrition", label: "Nutrition", icon: "◈" },
   { href: "/schedule", label: "Schedule", icon: "▦" },
-  { href: "/stats", label: "My Stats", icon: "↗" },
   { href: "/badges", label: "Badges", icon: "◎" },
   { href: "/assessment", label: "Assessment", icon: "▤" },
   { href: "/profile", label: "Profile", icon: "○" },

@@ -1,103 +1,49 @@
 "use client";
-import { useRef, Suspense } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, Sphere, MeshDistortMaterial, Environment } from "@react-three/drei";
-import * as THREE from "three";
-
-function Ball() {
-  const meshRef = useRef<THREE.Mesh>(null);
-
-  useFrame((state) => {
-    if (!meshRef.current) return;
-    meshRef.current.rotation.y += 0.004;
-    meshRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.3) * 0.15;
-    meshRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.8) * 0.08;
-  });
-
-  return (
-    <mesh ref={meshRef} castShadow>
-      {/* Main ball */}
-      <sphereGeometry args={[1.4, 64, 64]} />
-      <meshStandardMaterial
-        color="#C85A1A"
-        roughness={0.6}
-        metalness={0.05}
-        envMapIntensity={0.8}
-      />
-    </mesh>
-  );
-}
-
-function Seams() {
-  const groupRef = useRef<THREE.Group>(null);
-  useFrame((state) => {
-    if (!groupRef.current) return;
-    groupRef.current.rotation.y += 0.004;
-    groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.3) * 0.15;
-    groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.8) * 0.08;
-  });
-
-  const seamPoints = (count: number, axis: "x" | "y" | "z") => {
-    const pts: THREE.Vector3[] = [];
-    for (let i = 0; i <= count; i++) {
-      const t = (i / count) * Math.PI * 2;
-      const r = 1.42;
-      if (axis === "y") pts.push(new THREE.Vector3(Math.cos(t) * r, 0, Math.sin(t) * r));
-      else if (axis === "x") pts.push(new THREE.Vector3(0, Math.cos(t) * r, Math.sin(t) * r));
-      else pts.push(new THREE.Vector3(Math.cos(t) * r, Math.sin(t) * r, 0));
-    }
-    return pts;
-  };
-
-  const makeCurve = (axis: "x" | "y" | "z") => {
-    const curve = new THREE.CatmullRomCurve3(seamPoints(80, axis));
-    const geo = new THREE.TubeGeometry(curve, 100, 0.022, 8, true);
-    return geo;
-  };
-
-  return (
-    <group ref={groupRef}>
-      {(["y", "x", "z"] as const).map((axis, i) => (
-        <mesh key={i} geometry={makeCurve(axis)}>
-          <meshStandardMaterial color="#1a0800" roughness={0.8} />
-        </mesh>
-      ))}
-    </group>
-  );
-}
-
-function Glow() {
-  const ref = useRef<THREE.Mesh>(null);
-  useFrame((state) => {
-    if (!ref.current) return;
-    const mat = ref.current.material as THREE.MeshBasicMaterial;
-    mat.opacity = 0.08 + Math.sin(state.clock.elapsedTime * 1.2) * 0.03;
-  });
-  return (
-    <mesh ref={ref}>
-      <sphereGeometry args={[1.8, 32, 32]} />
-      <meshBasicMaterial color="#ff6a1a" transparent opacity={0.08} side={THREE.BackSide} />
-    </mesh>
-  );
-}
 
 export default function Basketball3D() {
   return (
-    <div style={{ width: "100%", height: "340px", cursor: "grab" }}>
-      <Canvas camera={{ position: [0, 0, 4.5], fov: 45 }} shadows>
-        <ambientLight intensity={0.4} />
-        <pointLight position={[5, 5, 5]} intensity={2} color="#ffffff" />
-        <pointLight position={[-4, -3, -4]} intensity={0.5} color="#0074FF" />
-        <pointLight position={[0, 4, 0]} intensity={0.8} color="#ff8040" />
-        <Suspense fallback={null}>
-          <Ball />
-          <Seams />
-          <Glow />
-          <Environment preset="night" />
-        </Suspense>
-        <OrbitControls enableZoom={false} enablePan={false} autoRotate={false} />
-      </Canvas>
-      <p style={{ textAlign: "center", fontSize: "11px", color: "var(--text3)", marginTop: "8px", letterSpacing: "1px" }}>DRAG TO ROTATE</p>
+    <div style={{ width: "100%", height: "280px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", position: "relative" }}>
+      <div style={{
+        position: "absolute",
+        width: "200px", height: "200px",
+        borderRadius: "50%",
+        background: "radial-gradient(circle, rgba(249,115,22,0.4) 0%, rgba(234,88,12,0.15) 50%, transparent 70%)",
+        filter: "blur(30px)",
+        pointerEvents: "none",
+      }} />
+
+      <svg
+        width="190" height="190"
+        viewBox="0 0 200 200"
+        style={{ animation: "illustrationFloat 3.8s ease-in-out infinite", filter: "drop-shadow(0 18px 36px rgba(234,88,12,0.5))" }}
+      >
+        <defs>
+          <radialGradient id="bball" cx="36%" cy="30%" r="68%">
+            <stop offset="0%" stopColor="#FFB060" />
+            <stop offset="45%" stopColor="#E8641A" />
+            <stop offset="100%" stopColor="#8C3200" />
+          </radialGradient>
+          <clipPath id="ballClip">
+            <circle cx="100" cy="100" r="88" />
+          </clipPath>
+        </defs>
+
+        <ellipse cx="100" cy="196" rx="58" ry="7" fill="rgba(0,0,0,0.35)" />
+
+        <circle cx="100" cy="100" r="88" fill="url(#bball)" />
+
+        <g clipPath="url(#ballClip)" fill="none" stroke="#3D1200" strokeWidth="3.5" strokeLinecap="round" opacity="0.9">
+          <path d="M 12 100 C 50 86 150 114 188 100" />
+          <path d="M 12 100 C 50 114 150 86 188 100" />
+          <path d="M 100 12 C 68 38 52 70 52 100 C 52 130 68 162 100 188" />
+          <path d="M 100 12 C 132 38 148 70 148 100 C 148 130 132 162 100 188" />
+        </g>
+
+        <ellipse cx="68" cy="58" rx="24" ry="15" fill="rgba(255,255,255,0.28)" transform="rotate(-30 68 58)" />
+        <ellipse cx="79" cy="50" rx="9" ry="5" fill="rgba(255,255,255,0.50)" transform="rotate(-30 79 50)" />
+      </svg>
+
+      <p style={{ fontSize: "11px", color: "var(--text3)", marginTop: "10px", letterSpacing: "1.5px", textTransform: "uppercase", fontWeight: 600 }}>Basketball Training</p>
     </div>
   );
 }
