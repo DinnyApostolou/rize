@@ -62,6 +62,7 @@ export default function SubscribePage() {
     { tag: "CAMERA", title: "Live Drill Camera with Ball Tracking", desc: "Start any drill and the camera activates automatically. Tracks your basketball in real time using colour detection, counts your dribbles and overlays your body position." },
     { tag: "WEEKLY", title: "New Content Added Weekly", desc: "New drills, programs and meal plans added every week to keep training fresh." },
     { tag: "YOUTUBE", title: "Video Tutorials on Every Drill", desc: "Every drill and exercise links directly to a YouTube tutorial so you know exactly what to do." },
+    { tag: "ASSESSMENT", title: "Skill Assessment & Personalisation", desc: "Take the assessment quiz and get a training program tailored to your position, level and goals." },
   ];
 
   return (
