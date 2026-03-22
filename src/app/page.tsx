@@ -188,22 +188,28 @@ export default function Home() {
         padding: "140px 24px 100px", position: "relative", overflow: "hidden",
         background: "#050810",
       }}>
-        {/* Video background */}
-        <video
-          autoPlay muted loop playsInline
-          style={{
-            position: "absolute", inset: 0, width: "100%", height: "100%",
-            objectFit: "cover", zIndex: 0, pointerEvents: "none",
-            filter: "brightness(0.55) saturate(1.1)",
-          }}
-        >
-          <source src="https://assets.mixkit.co/videos/2273/2273-1080.mp4" type="video/mp4" />
-          <source src="https://assets.mixkit.co/videos/44468/44468-1080.mp4" type="video/mp4" />
-        </video>
-        {/* Overlay — dark but keeps color */}
+        {/* YouTube video background */}
+        <div style={{ position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none", overflow: "hidden" }}>
+          <iframe
+            src="https://www.youtube.com/embed/oU8LRuA81Aw?autoplay=1&mute=1&loop=1&playlist=oU8LRuA81Aw&controls=0&showinfo=0&rel=0&playsinline=1&modestbranding=1"
+            allow="autoplay; fullscreen"
+            style={{
+              position: "absolute",
+              top: "50%", left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: "100vw",
+              height: "177.78vw",
+              minHeight: "100vh",
+              minWidth: "56.25vh",
+              border: "none",
+              filter: "brightness(0.5) saturate(1.1)",
+            }}
+          />
+        </div>
+        {/* Overlay */}
         <div style={{
           position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none",
-          background: "linear-gradient(to bottom, rgba(5,8,16,0.45) 0%, rgba(5,8,16,0.25) 40%, rgba(5,8,16,0.75) 100%)",
+          background: "linear-gradient(to bottom, rgba(5,8,16,0.4) 0%, rgba(5,8,16,0.2) 40%, rgba(5,8,16,0.75) 100%)",
         }} />
 
         {/* Hero content */}
