@@ -67,21 +67,6 @@ export default function Sidebar({ username, level, xp, isSubscribed }: {
           );
         })}
 
-        {!isSubscribed && (
-          <Link href="/subscribe">
-            <div style={{
-              padding: "9px 12px", borderRadius: "7px", marginTop: "10px",
-              fontSize: "13px", fontWeight: 600, color: "var(--accent)",
-              background: "rgba(14,165,233,0.07)",
-              border: "1px solid rgba(14,165,233,0.18)",
-              cursor: "pointer", transition: "all 0.15s",
-            }}
-              onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.background = "rgba(14,165,233,0.14)"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = "rgba(14,165,233,0.07)"; }}>
-              Upgrade to Pro
-            </div>
-          </Link>
-        )}
       </nav>
 
       <div style={{ padding: "14px", borderTop: "1px solid var(--border)" }}>
@@ -92,6 +77,20 @@ export default function Sidebar({ username, level, xp, isSubscribed }: {
               {level ? `Level ${level}` : ""}{xp ? ` · ${xp.toLocaleString()} XP` : ""}
             </div>
           </div>
+        )}
+        {!isSubscribed && (
+          <Link href="/subscribe" style={{ textDecoration: "none", display: "block", marginBottom: "10px" }}>
+            <div style={{
+              padding: "8px 12px", borderRadius: "7px",
+              fontSize: "12px", fontWeight: 700, color: "var(--accent)",
+              background: "rgba(14,165,233,0.08)", border: "1px solid rgba(14,165,233,0.2)",
+              cursor: "pointer", transition: "all 0.15s", textAlign: "center",
+            }}
+              onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.background = "rgba(14,165,233,0.15)"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = "rgba(14,165,233,0.08)"; }}>
+              ★ Upgrade to Pro
+            </div>
+          </Link>
         )}
         <button onClick={handleLogout} style={{
           width: "100%", background: "none", border: "1px solid var(--border)",

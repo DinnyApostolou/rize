@@ -153,30 +153,28 @@ export default function Dashboard() {
             </Link>
           ))}
 
-          {!profile?.is_subscribed && (
-            <Link href="/subscribe">
-              <div style={{
-                display: "flex", alignItems: "center", gap: "10px",
-                padding: "9px 12px", borderRadius: "8px", marginTop: "8px",
-                fontSize: "13px", fontWeight: 700, color: "var(--accent)",
-                cursor: "pointer", background: "rgba(14,165,233,0.08)",
-                border: "1px solid rgba(14,165,233,0.2)", transition: "all 0.15s",
-              }}
-                onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.background = "rgba(14,165,233,0.15)"; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = "rgba(14,165,233,0.08)"; }}>
-                <span style={{ fontSize: "13px" }}>★</span>
-                Upgrade to Pro
-              </div>
-            </Link>
-          )}
         </nav>
 
         {/* User info + sign out */}
         <div style={{ padding: "16px", borderTop: "1px solid var(--border)" }}>
-          <div style={{ marginBottom: "12px" }}>
+          <div style={{ marginBottom: "10px" }}>
             <div style={{ fontSize: "13px", fontWeight: 700, marginBottom: "2px" }}>{profile?.username}</div>
             <div style={{ fontSize: "11px", color: "var(--text3)" }}>Level {level} · {xp.toLocaleString()} XP</div>
           </div>
+          {!profile?.is_subscribed && (
+            <Link href="/subscribe" style={{ textDecoration: "none", display: "block", marginBottom: "10px" }}>
+              <div style={{
+                padding: "8px 12px", borderRadius: "7px",
+                fontSize: "12px", fontWeight: 700, color: "var(--accent)",
+                background: "rgba(14,165,233,0.08)", border: "1px solid rgba(14,165,233,0.2)",
+                cursor: "pointer", transition: "all 0.15s", textAlign: "center",
+              }}
+                onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.background = "rgba(14,165,233,0.15)"; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = "rgba(14,165,233,0.08)"; }}>
+                ★ Upgrade to Pro
+              </div>
+            </Link>
+          )}
           <button onClick={handleLogout} style={{
             width: "100%", background: "none", border: "1px solid var(--border)",
             color: "var(--text3)", fontSize: "12px", padding: "7px",
@@ -268,6 +266,27 @@ export default function Dashboard() {
             </div>
           ))}
         </div>
+
+        {/* Upgrade to Pro banner — only for free users */}
+        {!profile?.is_subscribed && (
+          <Link href="/subscribe" style={{ textDecoration: "none", display: "block", marginBottom: "20px" }}>
+            <div style={{
+              background: "linear-gradient(135deg, rgba(14,165,233,0.10), rgba(56,189,248,0.05))",
+              border: "1px solid rgba(14,165,233,0.3)",
+              borderRadius: "12px", padding: "18px 24px",
+              display: "flex", alignItems: "center", justifyContent: "space-between",
+              cursor: "pointer", transition: "border-color 0.15s",
+            }}
+              onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(14,165,233,0.6)"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(14,165,233,0.3)"; }}>
+              <div>
+                <div style={{ fontSize: "13px", fontWeight: 700, color: "var(--accent)", marginBottom: "3px" }}>Upgrade to Pro — $7.99/month</div>
+                <div style={{ fontSize: "12px", color: "var(--text2)" }}>Unlock all 100+ drills, strength programs, nutrition plans, camera tracking and more.</div>
+              </div>
+              <span style={{ color: "var(--accent)", fontSize: "18px", marginLeft: "20px", flexShrink: 0 }}>→</span>
+            </div>
+          </Link>
+        )}
 
         {/* Main 2-col */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "20px" }}>
