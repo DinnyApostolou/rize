@@ -94,6 +94,33 @@ export default function Home() {
     return () => { fadeObserver.disconnect(); statsObserver.disconnect(); };
   }, []);
 
+  // Cursor spotlight effect on cards
+  useEffect(() => {
+    const cards = document.querySelectorAll<HTMLElement>(".spotlight-card");
+    const enter: EventListener[] = [];
+    const move: EventListener[] = [];
+    const leave: EventListener[] = [];
+    cards.forEach((card, i) => {
+      const onMove = (e: Event) => {
+        const me = e as MouseEvent;
+        const rect = card.getBoundingClientRect();
+        const x = me.clientX - rect.left;
+        const y = me.clientY - rect.top;
+        card.style.backgroundImage = `radial-gradient(380px circle at ${x}px ${y}px, rgba(255,255,255,0.055), transparent 65%)`;
+      };
+      const onLeave = () => { card.style.backgroundImage = "none"; };
+      card.addEventListener("mousemove", onMove);
+      card.addEventListener("mouseleave", onLeave);
+      move[i] = onMove; leave[i] = onLeave;
+    });
+    return () => {
+      cards.forEach((card, i) => {
+        card.removeEventListener("mousemove", move[i]);
+        card.removeEventListener("mouseleave", leave[i]);
+      });
+    };
+  }, []);
+
   const faqs = [
     { q: "Who is Rize for?", a: "Rize is built for any athlete who wants to level up their basketball and gym training. Whether you're in middle school, high school or playing at a higher level — if you're serious about improving, Rize is for you." },
     { q: "Do I need a gym membership?", a: "No. Many programs can be done at home or on the court. The gym programs are optional — you can focus purely on basketball if that's your goal." },
@@ -269,13 +296,6 @@ export default function Home() {
 
         {/* Hero content */}
         <div style={{ position: "relative", zIndex: 2 }}>
-          {/* Bracket box label */}
-          <div className="bracket-box" style={{ marginBottom: "32px" }}>
-            <span style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "3px", textTransform: "uppercase", color: "var(--accent)" }}>
-              BASKETBALL · GYM · NUTRITION · PROGRESS
-            </span>
-            <span />
-          </div>
           <h1 style={{
             fontSize: "clamp(48px, 8vw, 96px)", fontWeight: 900,
             lineHeight: 0.92, letterSpacing: "-4px", marginBottom: "32px",
@@ -442,7 +462,7 @@ export default function Home() {
                         ))}
                       </div>
                     </div>
-                    <div className="stat-box" style={{ direction: "ltr", background: "rgba(255,255,255,0.03)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: `1px solid ${f.color}40`, borderRadius: "16px", padding: "28px 24px", boxShadow: `0 0 30px ${f.color}15, 0 20px 60px rgba(0,0,0,0.4)`, transition: "transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease" }}
+                    <div className="stat-box spotlight-card" style={{ direction: "ltr", background: "rgba(255,255,255,0.03)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: `1px solid ${f.color}40`, borderRadius: "16px", padding: "28px 24px", boxShadow: `0 0 30px ${f.color}15, 0 20px 60px rgba(0,0,0,0.4)`, transition: "transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease" }}
                       onMouseEnter={e => { const el = e.currentTarget as HTMLDivElement; el.style.transform = "translateY(-8px)"; el.style.boxShadow = `0 0 0 1px ${f.color}, 0 0 40px ${f.color}60, 0 0 80px ${f.color}25, 0 20px 60px rgba(0,0,0,0.5)`; el.style.borderColor = f.color; }}
                       onMouseLeave={e => { const el = e.currentTarget as HTMLDivElement; el.style.transform = "translateY(0)"; el.style.boxShadow = `0 0 30px ${f.color}15, 0 20px 60px rgba(0,0,0,0.4)`; el.style.borderColor = `${f.color}40`; }}>
                       {mockups[i]}
@@ -471,7 +491,7 @@ export default function Home() {
               { n: "03", title: "Get your program", desc: "Personalised day-by-day training plan built for you.", color: "#10B981" },
               { n: "04", title: "Train and track", desc: "Log sessions, earn XP and measure real progress.", color: "#F59E0B" },
             ].map((s) => (
-              <div key={s.n} style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "16px", padding: "28px 24px", transition: "transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease", cursor: "default" }}
+              <div key={s.n} className="spotlight-card" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "16px", padding: "28px 24px", transition: "transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease", cursor: "default" }}
                 onMouseEnter={e => { const el = e.currentTarget as HTMLDivElement; el.style.transform = "translateY(-6px)"; el.style.boxShadow = `0 0 0 1px ${s.color}, 0 0 30px ${s.color}50, 0 0 60px ${s.color}20`; el.style.borderColor = s.color; }}
                 onMouseLeave={e => { const el = e.currentTarget as HTMLDivElement; el.style.transform = "translateY(0)"; el.style.boxShadow = "none"; el.style.borderColor = "rgba(255,255,255,0.06)"; }}
               >
