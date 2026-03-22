@@ -261,6 +261,11 @@ export default function Home() {
           position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none",
           background: "linear-gradient(to bottom, rgba(8,12,16,0.95) 0%, rgba(8,12,16,0.5) 12%, rgba(10,15,20,0.1) 40%, rgba(10,15,20,0.8) 100%)",
         }} />
+        {/* Hard block over YouTube title area */}
+        <div style={{
+          position: "absolute", top: 0, left: 0, right: 0, height: "80px",
+          background: "#080C10", zIndex: 2, pointerEvents: "none",
+        }} />
 
         {/* Hero content */}
         <div style={{ position: "relative", zIndex: 2 }}>
