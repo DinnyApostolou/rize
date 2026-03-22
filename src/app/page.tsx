@@ -151,16 +151,8 @@ export default function Home() {
         padding: "0 48px", height: "60px",
       }}>
         {/* Logo */}
-        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <div style={{
-            width: "28px", height: "28px", borderRadius: "6px",
-            background: "var(--accent)", display: "flex", alignItems: "center", justifyContent: "center",
-          }}>
-            <span style={{ fontSize: "14px", fontWeight: 900, color: "#fff" }}>R</span>
-          </div>
-          <span style={{ fontSize: "17px", fontWeight: 900, letterSpacing: "-0.5px" }}>
-            RIZE<span style={{ color: "var(--accent)" }}>.</span>
-          </span>
+        <div style={{ fontSize: "18px", fontWeight: 900, letterSpacing: "-0.5px" }}>
+          RIZE<span style={{ color: "var(--accent)" }}>.</span>
         </div>
 
         <div className="landing-nav-links" style={{ display: "flex", gap: "32px", fontSize: "13px", color: "var(--text2)" }}>
@@ -527,11 +519,8 @@ export default function Home() {
 
       {/* FOOTER */}
       <footer className="landing-footer" style={{ borderTop: "1px solid var(--border)", padding: "28px 48px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <div style={{ width: "22px", height: "22px", borderRadius: "5px", background: "var(--accent)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <span style={{ fontSize: "11px", fontWeight: 900, color: "#fff" }}>R</span>
-          </div>
-          <span style={{ fontSize: "14px", fontWeight: 900, letterSpacing: "-0.5px" }}>RIZE<span style={{ color: "var(--accent)" }}>.</span></span>
+        <div style={{ fontSize: "16px", fontWeight: 900, letterSpacing: "-0.5px" }}>
+          RIZE<span style={{ color: "var(--accent)" }}>.</span>
         </div>
         <p style={{ color: "var(--text3)", fontSize: "12px" }}>© 2026 Rize Athletics</p>
       </footer>
