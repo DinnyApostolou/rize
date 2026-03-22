@@ -218,16 +218,6 @@ export default function Home() {
 
         {/* Hero content */}
         <div style={{ position: "relative", zIndex: 2 }}>
-          {/* Badge */}
-          <div style={{
-            display: "inline-flex", alignItems: "center", gap: "8px",
-            background: "rgba(14,165,233,0.1)", border: "1px solid rgba(14,165,233,0.25)",
-            borderRadius: "100px", padding: "6px 16px", marginBottom: "32px",
-          }}>
-            <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#10B981" }} />
-            <span style={{ fontSize: "12px", color: "#38BDF8", fontWeight: 600, letterSpacing: "0.5px" }}>Now accepting members</span>
-          </div>
-
           <h1 style={{
             fontSize: "clamp(48px, 8vw, 96px)", fontWeight: 900,
             lineHeight: 0.92, letterSpacing: "-4px", marginBottom: "32px",

@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import Link from "next/link";
+import Sidebar from "@/components/Sidebar";
 
 const MEALS = {
   "Pre-Game": [
@@ -56,69 +56,79 @@ const MEALS = {
   ],
 };
 
+const TAB_COLORS: Record<string, string> = {
+  "Pre-Game": "#0EA5E9",
+  "Post-Game": "#8B5CF6",
+  "Daily Meals": "#10B981",
+  "Snacks": "#F59E0B",
+  "Hydration": "#06B6D4",
+};
+
 export default function NutritionPage() {
   const [tab, setTab] = useState<keyof typeof MEALS>("Pre-Game");
   const [expanded, setExpanded] = useState<number | null>(null);
   const tabs = Object.keys(MEALS) as (keyof typeof MEALS)[];
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", color: "var(--text)" }}>
-      <nav style={{ background: "var(--bg2)", borderBottom: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 32px", height: "60px", position: "sticky", top: 0, zIndex: 50 }}>
-        <Link href="/dashboard" style={{ fontSize: "18px", fontWeight: 900, letterSpacing: "-0.5px" }}>RZ<span style={{ color: "var(--accent)" }}>.</span></Link>
-        <span style={{ fontWeight: 700, fontSize: "15px" }}>Athlete Nutrition</span>
-        <Link href="/dashboard"><button style={{ background: "none", border: "1px solid var(--border)", color: "var(--text2)", padding: "6px 14px", borderRadius: "6px", fontSize: "13px" }}>← Back</button></Link>
-      </nav>
+    <div style={{ display: "flex", minHeight: "100vh", background: "var(--bg)", color: "var(--text)" }}>
+      <Sidebar />
 
-      <div style={{ maxWidth: "860px", margin: "0 auto", padding: "40px 24px" }}>
-        <div style={{ marginBottom: "32px" }}>
-          <p style={{ fontSize: "11px", color: "var(--text2)", fontWeight: 600, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: "8px" }}>Nutrition</p>
-          <h1 style={{ fontSize: "26px", fontWeight: 800, letterSpacing: "-0.5px", marginBottom: "8px" }}>Fuel Like An Athlete</h1>
-          <p style={{ color: "var(--text2)", fontSize: "14px" }}>What you eat determines how you perform. {Object.values(MEALS).flat().length}+ meals across every training need.</p>
+      <main style={{ marginLeft: "220px", flex: 1, padding: "48px 52px", maxWidth: "900px" }}>
+        <div style={{ marginBottom: "40px" }}>
+          <p style={{ fontSize: "11px", color: "var(--accent)", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "8px" }}>Nutrition</p>
+          <h1 style={{ fontSize: "32px", fontWeight: 900, letterSpacing: "-1.5px", lineHeight: 1, marginBottom: "8px" }}>Fuel Like An Athlete</h1>
+          <p style={{ color: "var(--text2)", fontSize: "14px" }}>{Object.values(MEALS).flat().length}+ meals across every training need.</p>
         </div>
 
         {/* Tabs */}
-        <div style={{ display: "flex", gap: "6px", marginBottom: "28px", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "6px", marginBottom: "32px", flexWrap: "wrap" }}>
           {tabs.map(t => (
             <button key={t} onClick={() => { setTab(t); setExpanded(null); }} style={{
-              padding: "8px 16px", borderRadius: "6px", fontSize: "13px", fontWeight: 600,
-              background: tab === t ? "var(--accent)" : "var(--bg2)",
-              border: `1px solid ${tab === t ? "var(--accent)" : "var(--border)"}`,
+              padding: "8px 16px", borderRadius: "6px", fontSize: "13px", fontWeight: 500,
+              background: tab === t ? TAB_COLORS[t] : "var(--bg2)",
+              border: `1px solid ${tab === t ? TAB_COLORS[t] : "var(--border)"}`,
               color: tab === t ? "#fff" : "var(--text2)",
-            }}>{t} <span style={{ opacity: 0.7, fontWeight: 400 }}>({MEALS[t].length})</span></button>
+              cursor: "pointer", transition: "all 0.15s",
+            }}>{t}</button>
           ))}
         </div>
 
-        <div style={{ fontSize: "13px", color: "var(--text2)", marginBottom: "16px" }}>{MEALS[tab].length} options</div>
+        <div style={{ fontSize: "12px", color: "var(--text3)", marginBottom: "20px", fontWeight: 500 }}>
+          {MEALS[tab].length} options
+        </div>
 
-        {/* Meals */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
           {MEALS[tab].map((meal, i) => {
             const isOpen = expanded === i;
+            const color = TAB_COLORS[tab];
             return (
               <div key={i} onClick={() => setExpanded(isOpen ? null : i)} style={{
-                background: "var(--bg2)", border: `1px solid ${isOpen ? "var(--accent)" : "var(--border)"}`,
-                borderRadius: "10px", padding: "18px 20px", cursor: "pointer", transition: "border-color 0.2s",
+                background: "var(--bg2)",
+                border: `1px solid ${isOpen ? color : "var(--border)"}`,
+                borderLeft: `3px solid ${isOpen ? color : "var(--border)"}`,
+                borderRadius: "8px", padding: "16px 20px", cursor: "pointer", transition: "all 0.15s",
               }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <div>
-                    <div style={{ fontWeight: 700, fontSize: "15px" }}>{meal.name}</div>
-                    <div style={{ display: "flex", gap: "10px", marginTop: "5px", flexWrap: "wrap" }}>
-                      <span style={{ fontSize: "12px", color: "var(--accent)", fontWeight: 600 }}>{meal.time}</span>
-                      <span style={{ fontSize: "12px", color: "var(--text2)" }}>{meal.macros}</span>
+                    <div style={{ fontWeight: 600, fontSize: "14px", marginBottom: "4px" }}>{meal.name}</div>
+                    <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+                      <span style={{ fontSize: "12px", color, fontWeight: 600 }}>{meal.time}</span>
+                      <span style={{ fontSize: "12px", color: "var(--text3)" }}>{meal.macros}</span>
                     </div>
                   </div>
-                  <span style={{ color: "var(--text2)", fontSize: "18px" }}>{isOpen ? "−" : "+"}</span>
+                  <span style={{ color: "var(--text3)", fontSize: "16px", flexShrink: 0, marginLeft: "16px" }}>{isOpen ? "−" : "+"}</span>
                 </div>
                 {isOpen && (
-                  <div style={{ marginTop: "18px", paddingTop: "18px", borderTop: "1px solid var(--border)" }}>
-                    <div style={{ background: "var(--bg3)", borderRadius: "8px", padding: "12px 14px", marginBottom: "14px" }}>
-                      <span style={{ fontSize: "12px", fontWeight: 700, color: "var(--accent)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Why this meal: </span>
+                  <div style={{ marginTop: "16px", paddingTop: "16px", borderTop: "1px solid var(--border)" }}>
+                    <div style={{ background: "var(--bg3)", borderRadius: "6px", padding: "12px 14px", marginBottom: "14px" }}>
+                      <span style={{ fontSize: "11px", fontWeight: 700, color, textTransform: "uppercase", letterSpacing: "0.5px" }}>Why: </span>
                       <span style={{ fontSize: "13px", color: "var(--text2)" }}>{meal.why}</span>
                     </div>
-                    <div style={{ fontWeight: 700, marginBottom: "10px", fontSize: "12px", textTransform: "uppercase", letterSpacing: "0.5px" }}>Ingredients:</div>
+                    <div style={{ fontSize: "11px", fontWeight: 700, color: "var(--text3)", textTransform: "uppercase", letterSpacing: "1px", marginBottom: "10px" }}>Ingredients</div>
                     {meal.ingredients.map((ing, ii) => (
-                      <div key={ii} style={{ display: "flex", gap: "8px", marginBottom: "6px", fontSize: "14px", color: "var(--text2)", alignItems: "flex-start" }}>
-                        <span style={{ color: "var(--green)", flexShrink: 0 }}>✓</span> {ing}
+                      <div key={ii} style={{ display: "flex", gap: "10px", marginBottom: "6px", fontSize: "13px", color: "var(--text2)", alignItems: "center" }}>
+                        <div style={{ width: "4px", height: "4px", borderRadius: "50%", background: color, flexShrink: 0 }} />
+                        {ing}
                       </div>
                     ))}
                   </div>
@@ -127,7 +137,7 @@ export default function NutritionPage() {
             );
           })}
         </div>
-      </div>
+      </main>
     </div>
   );
 }

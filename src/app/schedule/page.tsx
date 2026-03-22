@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import Sidebar from "@/components/Sidebar";
 
 const DAYS = [
   {
@@ -64,31 +65,35 @@ const DAYS = [
   },
 ];
 
+const typeConfig: Record<string, { color: string; label: string }> = {
+  court: { color: "#0EA5E9", label: "Court" },
+  gym: { color: "#8B5CF6", label: "Gym" },
+  recovery: { color: "#10B981", label: "Recovery" },
+};
+
 export default function SchedulePage() {
-  const [activeDay, setActiveDay] = useState(0);
+  const [activeDay, setActiveDay] = useState(new Date().getDay() === 0 ? 6 : new Date().getDay() - 1);
   const day = DAYS[activeDay];
-  const typeColor = (t: string) => t === "court" ? "var(--accent)" : t === "gym" ? "#a855f7" : "var(--green)";
-  const typeLabel = (t: string) => t === "court" ? "🏀 Court" : t === "gym" ? "🏋️ Gym" : "😴 Recovery";
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", color: "var(--text)" }}>
-      <nav style={{ background: "var(--bg2)", borderBottom: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 32px", height: "64px" }}>
-        <Link href="/dashboard" style={{ fontSize: "20px", fontWeight: 900, letterSpacing: "-1px" }}>RZ<span style={{ color: "var(--accent)" }}>.</span></Link>
-        <span style={{ fontWeight: 700 }}>📅 Weekly Schedule</span>
-        <Link href="/dashboard"><button style={{ background: "none", border: "1px solid var(--border)", color: "var(--text2)", padding: "6px 16px", borderRadius: "8px", fontSize: "13px" }}>← Dashboard</button></Link>
-      </nav>
+    <div style={{ display: "flex", minHeight: "100vh", background: "var(--bg)", color: "var(--text)" }}>
+      <Sidebar />
 
-      <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "40px 24px" }}>
-        <h1 style={{ fontSize: "32px", fontWeight: 900, letterSpacing: "-1px", marginBottom: "32px" }}>Your Training Week</h1>
+      <main style={{ marginLeft: "220px", flex: 1, padding: "48px 52px", maxWidth: "900px" }}>
+        <div style={{ marginBottom: "40px" }}>
+          <p style={{ fontSize: "11px", color: "var(--accent)", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "8px" }}>Weekly Schedule</p>
+          <h1 style={{ fontSize: "32px", fontWeight: 900, letterSpacing: "-1.5px", lineHeight: 1 }}>Training Week</h1>
+        </div>
 
         {/* Day selector */}
-        <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "40px" }}>
+        <div style={{ display: "flex", gap: "6px", marginBottom: "40px" }}>
           {DAYS.map((d, i) => (
             <button key={i} onClick={() => setActiveDay(i)} style={{
-              padding: "10px 18px", borderRadius: "12px", fontSize: "14px", fontWeight: 600,
+              padding: "8px 16px", borderRadius: "6px", fontSize: "13px", fontWeight: 500,
               background: activeDay === i ? "var(--accent)" : "var(--bg2)",
               border: `1px solid ${activeDay === i ? "var(--accent)" : "var(--border)"}`,
               color: activeDay === i ? "#fff" : "var(--text2)",
+              cursor: "pointer", transition: "all 0.15s",
             }}>{d.day.slice(0, 3)}</button>
           ))}
         </div>
@@ -96,38 +101,59 @@ export default function SchedulePage() {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }}>
           {/* Sessions */}
           <div>
-            <h2 style={{ fontSize: "22px", fontWeight: 800, marginBottom: "6px", letterSpacing: "-0.5px" }}>{day.day}</h2>
-            <p style={{ color: "var(--accent)", fontSize: "14px", fontWeight: 600, marginBottom: "24px" }}>{day.focus}</p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              {day.sessions.map((s, i) => (
-                <div key={i} style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: "14px", padding: "18px 20px" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
-                    <span style={{ fontSize: "12px", color: "var(--text2)", fontWeight: 600 }}>{s.time}</span>
-                    <span style={{ fontSize: "12px", color: typeColor(s.type), fontWeight: 600 }}>{typeLabel(s.type)}</span>
+            <h2 style={{ fontSize: "20px", fontWeight: 800, letterSpacing: "-0.5px", marginBottom: "4px" }}>{day.day}</h2>
+            <p style={{ color: "var(--accent)", fontSize: "13px", fontWeight: 600, marginBottom: "24px" }}>{day.focus}</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+              {day.sessions.map((s, i) => {
+                const cfg = typeConfig[s.type];
+                return (
+                  <div key={i} style={{
+                    background: "var(--bg2)", border: "1px solid var(--border)",
+                    borderLeft: `3px solid ${cfg.color}`,
+                    borderRadius: "8px", padding: "16px 18px",
+                  }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                      <div>
+                        <div style={{ fontSize: "10px", color: "var(--text3)", fontWeight: 600, letterSpacing: "1px", textTransform: "uppercase", marginBottom: "4px" }}>{s.time}</div>
+                        <div style={{ fontWeight: 700, fontSize: "14px" }}>{s.title}</div>
+                      </div>
+                      <div style={{ textAlign: "right" }}>
+                        <div style={{ fontSize: "11px", color: cfg.color, fontWeight: 600, marginBottom: "2px" }}>{cfg.label}</div>
+                        <div style={{ fontSize: "12px", color: "var(--text3)" }}>{s.duration}</div>
+                      </div>
+                    </div>
                   </div>
-                  <div style={{ fontWeight: 700, fontSize: "16px", marginBottom: "4px" }}>{s.title}</div>
-                  <div style={{ fontSize: "13px", color: "var(--text2)" }}>⏱ {s.duration}</div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
           {/* Nutrition */}
           <div>
-            <h2 style={{ fontSize: "22px", fontWeight: 800, marginBottom: "6px", letterSpacing: "-0.5px" }}>Today's Nutrition</h2>
-            <p style={{ color: "var(--text2)", fontSize: "14px", marginBottom: "24px" }}>Fuel plan for {day.day}</p>
-            <div style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: "14px", padding: "24px" }}>
-              <span style={{ fontSize: "32px" }}>🥗</span>
-              <p style={{ color: "var(--text2)", fontSize: "15px", lineHeight: 1.7, marginTop: "16px" }}>{day.nutrition}</p>
+            <h2 style={{ fontSize: "20px", fontWeight: 800, letterSpacing: "-0.5px", marginBottom: "4px" }}>Nutrition</h2>
+            <p style={{ color: "var(--text2)", fontSize: "13px", marginBottom: "24px" }}>Fuel plan for {day.day}</p>
+            <div style={{
+              background: "var(--bg2)", border: "1px solid var(--border)",
+              borderTop: "2px solid #10B981",
+              borderRadius: "8px", padding: "20px",
+            }}>
+              <p style={{ color: "var(--text2)", fontSize: "14px", lineHeight: 1.8 }}>{day.nutrition}</p>
               <Link href="/nutrition">
-                <button style={{ marginTop: "20px", background: "var(--bg3)", border: "1px solid var(--border)", color: "var(--text)", padding: "10px 20px", borderRadius: "8px", fontSize: "14px", fontWeight: 600 }}>
-                  See Full Meal Plans →
+                <button style={{
+                  marginTop: "20px", background: "transparent",
+                  border: "1px solid var(--border)", color: "var(--text2)",
+                  padding: "9px 18px", borderRadius: "6px", fontSize: "13px",
+                  fontWeight: 600, cursor: "pointer", transition: "all 0.15s",
+                }}
+                  onMouseEnter={e => { const el = e.currentTarget as HTMLButtonElement; el.style.borderColor = "#10B981"; el.style.color = "#10B981"; }}
+                  onMouseLeave={e => { const el = e.currentTarget as HTMLButtonElement; el.style.borderColor = "var(--border)"; el.style.color = "var(--text2)"; }}>
+                  Full meal plans →
                 </button>
               </Link>
             </div>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

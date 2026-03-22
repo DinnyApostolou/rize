@@ -3,6 +3,7 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { getSupabase } from "@/lib/supabase";
+import Sidebar from "@/components/Sidebar";
 
 declare global {
   interface Window { tf: any; poseDetection: any; }
@@ -283,7 +284,7 @@ export default function DrillsPage() {
   const diffColor = (d: string) => d === "Beginner" ? "#00e676" : d === "Intermediate" ? "var(--accent)" : "#a855f7";
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", color: "var(--text)" }}>
+    <div style={{ display: "flex", minHeight: "100vh", background: "var(--bg)", color: "var(--text)" }}>
       {activeCameraDrill && (
         <CameraOverlay
           drill={activeCameraDrill}
@@ -291,13 +292,13 @@ export default function DrillsPage() {
           onComplete={(xp) => { setActiveCameraDrill(null); }}
         />
       )}
-      <nav style={{ background: "var(--bg2)", borderBottom: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 32px", height: "60px", position: "sticky", top: 0, zIndex: 50 }}>
-        <Link href="/dashboard" style={{ fontSize: "18px", fontWeight: 900, letterSpacing: "-0.5px" }}>RZ<span style={{ color: "var(--accent)" }}>.</span></Link>
-        <span style={{ fontWeight: 700, fontSize: "15px" }}>Basketball Drills</span>
-        <Link href="/dashboard"><button style={{ background: "none", border: "1px solid var(--border)", color: "var(--text2)", padding: "6px 14px", borderRadius: "6px", fontSize: "13px" }}>← Back</button></Link>
-      </nav>
+      <Sidebar />
 
-      <div style={{ maxWidth: "860px", margin: "0 auto", padding: "40px 24px" }}>
+      <main style={{ marginLeft: "220px", flex: 1, padding: "48px 52px", maxWidth: "900px" }}>
+        <div style={{ marginBottom: "32px" }}>
+          <p style={{ fontSize: "11px", color: "var(--accent)", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "8px" }}>Basketball</p>
+          <h1 style={{ fontSize: "32px", fontWeight: 900, letterSpacing: "-1.5px", lineHeight: 1 }}>Drills</h1>
+        </div>
         {!subscribed && (
           <div style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: "10px", padding: "16px 20px", marginBottom: "28px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px" }}>
             <div style={{ fontSize: "14px" }}>
@@ -381,7 +382,7 @@ export default function DrillsPage() {
             );
           })}
         </div>
-      </div>
+      </main>
     </div>
   );
 }
