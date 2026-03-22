@@ -351,17 +351,32 @@ export default function Home() {
               </div>
             </div>
             {/* Glowing mockup card */}
-            <div style={{
-              direction: "ltr",
-              background: "rgba(255,255,255,0.03)",
-              backdropFilter: "blur(12px)",
-              WebkitBackdropFilter: "blur(12px)",
-              border: `1px solid ${f.color}30`,
-              borderTop: `2px solid ${f.color}`,
-              borderRadius: "16px",
-              padding: "28px 24px",
-              boxShadow: `0 0 40px ${f.color}18, 0 20px 60px rgba(0,0,0,0.4)`,
-            }} className="stat-box feature-mockup">
+            <div
+              className="stat-box"
+              style={{
+                direction: "ltr",
+                background: "rgba(255,255,255,0.03)",
+                backdropFilter: "blur(12px)",
+                WebkitBackdropFilter: "blur(12px)",
+                border: `1px solid ${f.color}40`,
+                borderRadius: "16px",
+                padding: "28px 24px",
+                boxShadow: `0 0 30px ${f.color}15, 0 20px 60px rgba(0,0,0,0.4)`,
+                transition: "transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease",
+              }}
+              onMouseEnter={e => {
+                const el = e.currentTarget as HTMLDivElement;
+                el.style.transform = "translateY(-8px)";
+                el.style.boxShadow = `0 0 0 1px ${f.color}, 0 0 40px ${f.color}60, 0 0 80px ${f.color}25, 0 20px 60px rgba(0,0,0,0.5)`;
+                el.style.borderColor = f.color;
+              }}
+              onMouseLeave={e => {
+                const el = e.currentTarget as HTMLDivElement;
+                el.style.transform = "translateY(0)";
+                el.style.boxShadow = `0 0 30px ${f.color}15, 0 20px 60px rgba(0,0,0,0.4)`;
+                el.style.borderColor = `${f.color}40`;
+              }}
+            >
               {mockups[i]}
             </div>
           </div>
@@ -384,7 +399,10 @@ export default function Home() {
               { n: "03", title: "Get your program", desc: "Personalised day-by-day training plan built for you.", color: "#10B981" },
               { n: "04", title: "Train and track", desc: "Log sessions, earn XP and measure real progress.", color: "#F59E0B" },
             ].map((s) => (
-              <div key={s.n} className="how-step" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "16px", padding: "28px 24px" }}>
+              <div key={s.n} style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "16px", padding: "28px 24px", transition: "transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease", cursor: "default" }}
+                onMouseEnter={e => { const el = e.currentTarget as HTMLDivElement; el.style.transform = "translateY(-6px)"; el.style.boxShadow = `0 0 0 1px ${s.color}, 0 0 30px ${s.color}50, 0 0 60px ${s.color}20`; el.style.borderColor = s.color; }}
+                onMouseLeave={e => { const el = e.currentTarget as HTMLDivElement; el.style.transform = "translateY(0)"; el.style.boxShadow = "none"; el.style.borderColor = "rgba(255,255,255,0.06)"; }}
+              >
                 <div style={{ fontSize: "28px", fontWeight: 900, color: s.color, textShadow: `0 0 20px ${s.color}80`, marginBottom: "16px", fontVariantNumeric: "tabular-nums" }}>{s.n}</div>
                 <div style={{ width: "24px", height: "2px", background: s.color, boxShadow: `0 0 8px ${s.color}`, marginBottom: "16px", borderRadius: "2px" }} />
                 <div style={{ fontSize: "16px", fontWeight: 700, marginBottom: "10px" }}>{s.title}</div>
