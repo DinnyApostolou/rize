@@ -259,7 +259,7 @@ export default function Home() {
         {/* Overlay */}
         <div style={{
           position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none",
-          background: "linear-gradient(to bottom, rgba(10,15,20,0.5) 0%, rgba(10,15,20,0.1) 40%, rgba(10,15,20,0.8) 100%)",
+          background: "linear-gradient(to bottom, rgba(8,12,16,0.95) 0%, rgba(8,12,16,0.5) 12%, rgba(10,15,20,0.1) 40%, rgba(10,15,20,0.8) 100%)",
         }} />
 
         {/* Hero content */}
