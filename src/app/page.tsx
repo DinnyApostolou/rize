@@ -194,14 +194,16 @@ export default function Home() {
           style={{
             position: "absolute", inset: 0, width: "100%", height: "100%",
             objectFit: "cover", zIndex: 0, pointerEvents: "none",
+            filter: "brightness(0.55) saturate(1.1)",
           }}
         >
-          <source src="https://assets.mixkit.co/videos/44448/44448-1080.mp4" type="video/mp4" />
+          <source src="https://assets.mixkit.co/videos/2273/2273-1080.mp4" type="video/mp4" />
+          <source src="https://assets.mixkit.co/videos/44468/44468-1080.mp4" type="video/mp4" />
         </video>
-        {/* Dark overlay so text stays readable */}
+        {/* Overlay — dark but keeps color */}
         <div style={{
           position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none",
-          background: "linear-gradient(to bottom, rgba(5,8,16,0.75) 0%, rgba(5,8,16,0.6) 40%, rgba(5,8,16,0.88) 100%)",
+          background: "linear-gradient(to bottom, rgba(5,8,16,0.45) 0%, rgba(5,8,16,0.25) 40%, rgba(5,8,16,0.75) 100%)",
         }} />
 
         {/* Hero content */}
