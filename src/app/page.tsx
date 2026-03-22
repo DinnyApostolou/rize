@@ -209,11 +209,28 @@ export default function Home() {
             }}
           />
         </div>
-        {/* Mobile fallback background — no YouTube */}
-        <div className="hero-mobile-bg" style={{
-          display: "none", position: "absolute", inset: 0, zIndex: 0,
-          background: "radial-gradient(ellipse at 50% 40%, rgba(14,165,233,0.12) 0%, #050810 70%)",
-        }} />
+        {/* Mobile video background — HTML5 autoplay (works on iOS/Android) */}
+        <div className="hero-mobile-bg" style={{ display: "none", position: "absolute", inset: 0, zIndex: 0, overflow: "hidden" }}>
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            style={{
+              position: "absolute",
+              top: "50%", left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: "auto", height: "100%",
+              minWidth: "100%", minHeight: "100%",
+              objectFit: "cover",
+              filter: "brightness(0.45) saturate(1.1)",
+              pointerEvents: "none",
+            }}
+          >
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-basketball-player-shooting-in-a-gym-42914-large.mp4" type="video/mp4" />
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-basketball-player-dribbles-on-the-court-32692-large.mp4" type="video/mp4" />
+          </video>
+        </div>
         {/* Overlay */}
         <div style={{
           position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none",
