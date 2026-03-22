@@ -14,6 +14,7 @@ const NAV = [
   { href: "/badges", label: "Badges" },
   { href: "/assessment", label: "Assessment" },
   { href: "/profile", label: "Profile" },
+  { href: "/settings", label: "Settings", icon: "⚙" },
 ];
 
 export default function Sidebar({ username, level, xp, isSubscribed }: {

@@ -74,10 +74,7 @@ export default function SubscribePage() {
 
       <div style={{ maxWidth: "800px", margin: "0 auto", padding: "60px 24px" }}>
         {/* Hero */}
-        <div style={{ textAlign: "center", marginBottom: "64px" }}>
-          <div style={{ display: "inline-block", background: "rgba(14,165,233,0.1)", border: "1px solid rgba(14,165,233,0.3)", borderRadius: "6px", padding: "6px 16px", fontSize: "12px", fontWeight: 700, color: "var(--accent)", marginBottom: "24px", letterSpacing: "1px" }}>
-            RIZE PRO
-          </div>
+        <div style={{ textAlign: "center", marginBottom: "48px" }}>
           <h1 style={{ fontSize: "clamp(36px, 6vw, 64px)", fontWeight: 900, letterSpacing: "-3px", lineHeight: 0.95, marginBottom: "20px" }}>
             Unlock your full{" "}
             <span style={{ background: "linear-gradient(90deg, #0EA5E9, #38BDF8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>potential</span>
@@ -85,11 +82,50 @@ export default function SubscribePage() {
           <p style={{ color: "var(--text2)", fontSize: "18px", maxWidth: "480px", margin: "0 auto 40px", lineHeight: 1.6 }}>
             Everything you need to train like a pro athlete — all for less than a coffee a week.
           </p>
-          <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: "8px", marginBottom: "32px" }}>
-            <span style={{ fontSize: "64px", fontWeight: 900, letterSpacing: "-3px" }}>$7.99</span>
-            <span style={{ color: "var(--text2)", fontSize: "18px" }}>/ month</span>
+        </div>
+
+        {/* Pricing card */}
+        <div style={{ background: "var(--bg2)", border: "1px solid rgba(14,165,233,0.4)", borderRadius: "20px", padding: "40px", maxWidth: "480px", margin: "0 auto 64px", boxShadow: "0 0 60px rgba(14,165,233,0.15)", position: "relative" }}>
+          <div style={{ position: "absolute", top: "-13px", left: "50%", transform: "translateX(-50%)", background: "var(--accent)", color: "#fff", fontSize: "11px", fontWeight: 800, letterSpacing: "2px", padding: "4px 16px", borderRadius: "6px" }}>
+            MOST POPULAR
+          </div>
+          <div style={{ textAlign: "center", marginBottom: "32px" }}>
+            <div style={{ fontSize: "13px", color: "var(--accent)", fontWeight: 700, letterSpacing: "1px", marginBottom: "8px" }}>RIZE PRO</div>
+            <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: "8px", marginBottom: "8px" }}>
+              <span style={{ fontSize: "64px", fontWeight: 900, letterSpacing: "-3px" }}>$7.99</span>
+              <span style={{ color: "var(--text2)", fontSize: "18px" }}>/ month</span>
+            </div>
+            <div style={{ fontSize: "13px", color: "var(--text3)" }}>Cancel anytime. No contracts.</div>
           </div>
           <SubscribeButton />
+        </div>
+
+        {/* Free vs Pro comparison */}
+        <div style={{ marginBottom: "64px" }}>
+          <h2 style={{ fontSize: "20px", fontWeight: 800, marginBottom: "24px", letterSpacing: "-0.5px", textAlign: "center" }}>Free vs Pro</h2>
+          <div style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: "14px", overflow: "hidden" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", background: "var(--bg3)", padding: "12px 20px", fontSize: "12px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1px", color: "var(--text2)" }}>
+              <div>Feature</div>
+              <div style={{ textAlign: "center" }}>Free</div>
+              <div style={{ textAlign: "center", color: "var(--accent)" }}>Pro</div>
+            </div>
+            {[
+              ["Basketball Drills", "5 drills", "20+ drills"],
+              ["Strength Programs", "—", "Full access"],
+              ["Nutrition Plans", "—", "Full access"],
+              ["Weekly Schedule", "—", "Full access"],
+              ["Camera Drill Tracking", "—", "Included"],
+              ["XP & Badges", "Basic", "Full system"],
+              ["Skill Assessment", "Included", "Included"],
+              ["Video Tutorials", "Included", "Included"],
+            ].map(([feature, free, pro], i) => (
+              <div key={i} style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", padding: "14px 20px", borderTop: "1px solid var(--border)", fontSize: "14px" }}>
+                <div style={{ fontWeight: 600 }}>{feature}</div>
+                <div style={{ textAlign: "center", color: free === "—" ? "var(--text3)" : "var(--text2)" }}>{free}</div>
+                <div style={{ textAlign: "center", color: "#10B981", fontWeight: 700 }}>{pro}</div>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Benefits */}

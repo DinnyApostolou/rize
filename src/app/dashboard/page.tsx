@@ -22,6 +22,7 @@ const NAV = [
   { href: "/badges", label: "Badges", icon: "◎" },
   { href: "/assessment", label: "Assessment", icon: "▤" },
   { href: "/profile", label: "Profile", icon: "○" },
+  { href: "/settings", label: "Settings", icon: "⚙" },
 ];
 
 const QUOTES = [
@@ -54,6 +55,7 @@ export default function Dashboard() {
   const [position, setPosition] = useState<string | null>(null);
   const [skillLevel, setSkillLevel] = useState<string | null>(null);
   const [displayName, setDisplayName] = useState<string>("");
+  const [showWelcome, setShowWelcome] = useState(false);
   const quote = QUOTES[new Date().getDay() % QUOTES.length];
   const hour = new Date().getHours();
   const greeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
@@ -70,6 +72,10 @@ export default function Dashboard() {
       if (typeof window !== "undefined" && !localStorage.getItem("rize_onboarded")) {
         router.push("/onboarding");
         return;
+      }
+
+      if (!localStorage.getItem("rize_welcomed")) {
+        setShowWelcome(true);
       }
 
       const today = new Date();
@@ -121,6 +127,26 @@ export default function Dashboard() {
 
   return (
     <div style={{ display: "flex", minHeight: "100vh", background: "var(--bg)", color: "var(--text)" }}>
+
+      {showWelcome && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.85)", zIndex: 999, display: "flex", alignItems: "center", justifyContent: "center", padding: "24px" }}>
+          <div style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: "20px", padding: "48px 40px", maxWidth: "440px", width: "100%", textAlign: "center" }}>
+            <div style={{ fontSize: "48px", marginBottom: "16px" }}>🏀</div>
+            <h1 style={{ fontSize: "28px", fontWeight: 900, letterSpacing: "-1px", marginBottom: "8px" }}>
+              Welcome to RIZE, {displayName || profile?.username}<span style={{ color: "var(--accent)" }}>.</span>
+            </h1>
+            <p style={{ color: "var(--text2)", fontSize: "15px", lineHeight: 1.6, marginBottom: "32px" }}>
+              Your personalised training plan is ready. Start with the drills section or explore your weekly schedule.
+            </p>
+            <button
+              onClick={() => { localStorage.setItem("rize_welcomed", "true"); setShowWelcome(false); }}
+              style={{ width: "100%", background: "var(--accent)", color: "#fff", padding: "14px", borderRadius: "10px", fontSize: "16px", fontWeight: 800, cursor: "pointer" }}
+            >
+              Let&apos;s Train →
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* SIDEBAR */}
       <aside className="rize-sidebar" style={{

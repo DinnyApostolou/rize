@@ -10,7 +10,7 @@ declare global {
 }
 
 // ─── Camera Overlay Component ───────────────────────────────────────────────
-function CameraOverlay({ drill, onClose, onComplete }: { drill: { title: string; xp: number; duration: string } | null; onClose: () => void; onComplete: (xp: number) => void }) {
+function CameraOverlay({ drill, onClose, onComplete }: { drill: { id: number; title: string; xp: number; duration: string } | null; onClose: () => void; onComplete: (xp: number, drillId: number) => void }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animRef = useRef<number>(0);
@@ -197,7 +197,7 @@ function CameraOverlay({ drill, onClose, onComplete }: { drill: { title: string;
               <p style={{ color: "var(--green)", fontSize: "11px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase" }}>Drill Complete</p>
               <div style={{ fontSize: "72px", fontWeight: 900, color: "var(--accent)", letterSpacing: "-3px" }}>{dribbleCount}</div>
               <p style={{ color: "var(--text2)", fontSize: "14px" }}>dribbles in {duration}s — +{drill.xp} XP earned</p>
-              <button onClick={() => { onComplete(drill.xp); onClose(); }} style={{ marginTop: "8px", background: "var(--accent)", color: "#fff", padding: "12px 32px", borderRadius: "8px", fontSize: "15px", fontWeight: 700 }}>
+              <button onClick={() => { onComplete(drill.xp, drill.id); onClose(); }} style={{ marginTop: "8px", background: "var(--accent)", color: "#fff", padding: "12px 32px", borderRadius: "8px", fontSize: "15px", fontWeight: 700 }}>
                 Save & Continue →
               </button>
             </div>
@@ -257,9 +257,13 @@ export default function DrillsPage() {
   const router = useRouter();
   const [subscribed, setSubscribed] = useState(false);
   const [filter, setFilter] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
   const [expanded, setExpanded] = useState<number | null>(null);
   const [lockedMsg, setLockedMsg] = useState(false);
-  const [activeCameraDrill, setActiveCameraDrill] = useState<{ title: string; xp: number; duration: string } | null>(null);
+  const [activeCameraDrill, setActiveCameraDrill] = useState<{ id: number; title: string; xp: number; duration: string } | null>(null);
+  const [completedDrills, setCompletedDrills] = useState<Set<number>>(new Set());
+  const [saveMsg, setSaveMsg] = useState("");
+  const [userProfile, setUserProfile] = useState<any>(null);
 
   useEffect(() => {
     async function load() {
@@ -268,12 +272,26 @@ export default function DrillsPage() {
       if (!user) { router.push("/login"); return; }
       const { data } = await supabase.from("profiles").select("*").eq("id", user.id).single();
       setSubscribed((data as { is_subscribed?: boolean } | null)?.is_subscribed || false);
+      setUserProfile(data);
+
+      // Load completed drills from localStorage
+      try {
+        const stored = localStorage.getItem("rize_completed_drills");
+        if (stored) {
+          const parsed: number[] = JSON.parse(stored);
+          setCompletedDrills(new Set(parsed));
+        }
+      } catch { /* ignore */ }
     }
     load();
   }, [router]);
 
   const categories = ["All", ...Array.from(new Set(DRILLS.map(d => d.category)))];
-  const filtered = filter === "All" ? DRILLS : DRILLS.filter(d => d.category === filter);
+  const filtered = DRILLS.filter(d => {
+    const matchCat = filter === "All" || d.category === filter;
+    const matchSearch = !searchQuery || d.title.toLowerCase().includes(searchQuery.toLowerCase()) || d.category.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchCat && matchSearch;
+  });
 
   function handleDrillClick(index: number) {
     if (!subscribed && index >= FREE_LIMIT) { setLockedMsg(true); return; }
@@ -281,15 +299,64 @@ export default function DrillsPage() {
     setLockedMsg(false);
   }
 
+  async function onComplete(xp: number, drillId: number) {
+    // Mark drill as completed locally
+    const newCompleted = new Set(completedDrills);
+    newCompleted.add(drillId);
+    setCompletedDrills(newCompleted);
+    localStorage.setItem("rize_completed_drills", JSON.stringify(Array.from(newCompleted)));
+
+    // Increment week drills
+    const currentWeekDrills = parseInt(localStorage.getItem("rize_week_drills") || "0");
+    localStorage.setItem("rize_week_drills", String(currentWeekDrills + 1));
+
+    // Update Supabase
+    try {
+      const supabase = getSupabase();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user && userProfile) {
+        const profileData = userProfile;
+        const today = new Date().toDateString();
+        const lastDate = profileData.last_drill_date;
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        let newStreak = profileData.streak || 0;
+        if (lastDate !== today) {
+          newStreak = (lastDate === yesterday.toDateString()) ? newStreak + 1 : 1;
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        await (supabase.from("profiles") as any).update({
+          xp: (profileData.xp || 0) + xp,
+          drills_completed: (profileData.drills_completed || 0) + 1,
+          streak: newStreak,
+          last_drill_date: today,
+        }).eq("id", user.id);
+
+        setUserProfile({ ...profileData, xp: (profileData.xp || 0) + xp, drills_completed: (profileData.drills_completed || 0) + 1, streak: newStreak, last_drill_date: today });
+      }
+    } catch { /* ignore */ }
+
+    setSaveMsg(`+${xp} XP saved! Great work.`);
+    setTimeout(() => setSaveMsg(""), 3000);
+  }
+
   const diffColor = (d: string) => d === "Beginner" ? "#00e676" : d === "Intermediate" ? "var(--accent)" : "#a855f7";
 
   return (
     <div style={{ display: "flex", minHeight: "100vh", background: "var(--bg)", color: "var(--text)" }}>
+      {/* Save toast */}
+      {saveMsg && (
+        <div style={{ position: "fixed", bottom: "32px", left: "50%", transform: "translateX(-50%)", background: "#10B981", color: "#fff", padding: "12px 24px", borderRadius: "10px", fontSize: "14px", fontWeight: 700, zIndex: 300, whiteSpace: "nowrap" }}>
+          {saveMsg}
+        </div>
+      )}
+
       {activeCameraDrill && (
         <CameraOverlay
           drill={activeCameraDrill}
           onClose={() => setActiveCameraDrill(null)}
-          onComplete={(xp) => { setActiveCameraDrill(null); }}
+          onComplete={(xp, drillId) => { onComplete(xp, drillId); setActiveCameraDrill(null); }}
         />
       )}
       <Sidebar />
@@ -316,6 +383,19 @@ export default function DrillsPage() {
           </div>
         )}
 
+        {/* Search bar */}
+        <input
+          type="text"
+          placeholder="Search drills..."
+          value={searchQuery}
+          onChange={e => setSearchQuery(e.target.value)}
+          style={{
+            width: "100%", background: "var(--bg2)", border: "1px solid var(--border)",
+            borderRadius: "10px", padding: "12px 16px", fontSize: "14px",
+            color: "var(--text)", marginBottom: "16px",
+          }}
+        />
+
         {/* Filters */}
         <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "28px" }}>
           {categories.map(c => (
@@ -336,6 +416,7 @@ export default function DrillsPage() {
             const globalIndex = DRILLS.indexOf(drill);
             const locked = !subscribed && globalIndex >= FREE_LIMIT;
             const isOpen = expanded === globalIndex;
+            const isDone = completedDrills.has(drill.id);
             return (
               <div key={drill.id} onClick={() => handleDrillClick(globalIndex)} style={{
                 background: "var(--bg2)", border: `1px solid ${isOpen ? "var(--accent)" : "var(--border)"}`,
@@ -346,7 +427,14 @@ export default function DrillsPage() {
                   <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
                     {locked && <span style={{ fontSize: "14px" }}>🔒</span>}
                     <div>
-                      <div style={{ fontWeight: 700, fontSize: "15px" }}>{drill.title}</div>
+                      <div style={{ fontWeight: 700, fontSize: "15px", display: "flex", alignItems: "center", gap: "8px" }}>
+                        {drill.title}
+                        {isDone && (
+                          <span style={{ fontSize: "11px", background: "rgba(0,230,118,0.15)", border: "1px solid rgba(0,230,118,0.3)", color: "#00e676", borderRadius: "4px", padding: "2px 7px", fontWeight: 700 }}>
+                            ✓ Done
+                          </span>
+                        )}
+                      </div>
                       <div style={{ display: "flex", gap: "10px", marginTop: "5px", flexWrap: "wrap", alignItems: "center" }}>
                         <span style={{ fontSize: "12px", color: "var(--text2)" }}>{drill.category}</span>
                         <span style={{ fontSize: "11px", background: "var(--bg3)", padding: "2px 8px", borderRadius: "4px", color: diffColor(drill.difficulty), fontWeight: 600 }}>{drill.difficulty}</span>
@@ -372,7 +460,7 @@ export default function DrillsPage() {
                           ▶ Watch Tutorial
                         </button>
                       </a>
-                      <button onClick={e => { e.stopPropagation(); setActiveCameraDrill({ title: drill.title, xp: drill.xp, duration: drill.duration }); }} style={{ background: "var(--accent)", color: "#fff", padding: "9px 20px", borderRadius: "6px", fontSize: "13px", fontWeight: 700, display: "flex", alignItems: "center", gap: "7px" }}>
+                      <button onClick={e => { e.stopPropagation(); setActiveCameraDrill({ id: drill.id, title: drill.title, xp: drill.xp, duration: drill.duration }); }} style={{ background: "var(--accent)", color: "#fff", padding: "9px 20px", borderRadius: "6px", fontSize: "13px", fontWeight: 700, display: "flex", alignItems: "center", gap: "7px" }}>
                         📷 Start Drill
                       </button>
                     </div>
