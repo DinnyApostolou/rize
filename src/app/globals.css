@@ -200,14 +200,15 @@ input, textarea { font-family: inherit; outline: none; }
   }
 
   /* ─ Features ─ */
-  .features-section { padding: 72px 20px !important; }
+  .features-section { padding: 56px 20px !important; }
   .feature-row {
     grid-template-columns: 1fr !important;
-    gap: 28px !important;
+    gap: 20px !important;
     direction: ltr !important;
-    margin-bottom: 64px !important;
+    margin-bottom: 40px !important;
   }
   .stat-box { display: none !important; }
+  .feature-bullet-extra { display: none !important; }
 
   /* ─ How it works ─ */
   .how-it-works-section { padding: 72px 20px !important; }

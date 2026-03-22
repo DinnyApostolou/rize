@@ -386,7 +386,7 @@ export default function Home() {
               <p style={{ color: "var(--text2)", fontSize: "15px", lineHeight: 1.8, marginBottom: "28px" }}>{f.desc}</p>
               <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                 {f.points.map((p, pi) => (
-                  <div key={pi} style={{ display: "flex", gap: "12px", alignItems: "center", fontSize: "14px", color: "var(--text2)" }}>
+                  <div key={pi} className={pi >= 2 ? "feature-bullet-extra" : ""} style={{ display: "flex", gap: "12px", alignItems: "center", fontSize: "14px", color: "var(--text2)" }}>
                     <div style={{ width: "16px", height: "16px", borderRadius: "50%", background: `${f.color}20`, border: `1px solid ${f.color}60`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                       <div style={{ width: "5px", height: "5px", borderRadius: "50%", background: f.color }} />
                     </div>
