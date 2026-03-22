@@ -1,9 +1,18 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 
 export default function Home() {
   const [faqOpen, setFaqOpen] = useState<number | null>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("visible"); }),
+      { threshold: 0.15 }
+    );
+    document.querySelectorAll(".fade-up").forEach(el => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
 
   const faqs = [
     { q: "Who is Rize for?", a: "Rize is built for any athlete who wants to level up their basketball and gym training. Whether you're in middle school, high school or playing at a higher level — if you're serious about improving, Rize is for you." },
@@ -136,7 +145,7 @@ export default function Home() {
       </section>
 
       {/* FEATURES */}
-      <section id="features" className="features-section" style={{ padding: "140px 48px", maxWidth: "1100px", margin: "0 auto" }}>
+      <section id="features" className="features-section fade-up" style={{ padding: "140px 48px", maxWidth: "1100px", margin: "0 auto" }}>
         <div style={{ marginBottom: "96px" }}>
           <p style={{ color: "var(--accent)", fontSize: "11px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "16px" }}>Platform</p>
           <h2 style={{ fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 900, letterSpacing: "-2px", maxWidth: "500px" }}>Everything a serious athlete needs</h2>
@@ -221,7 +230,7 @@ export default function Home() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section id="how-it-works" className="how-it-works-section" style={{ padding: "120px 48px", background: "var(--bg2)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)" }}>
+      <section id="how-it-works" className="how-it-works-section fade-up" style={{ padding: "120px 48px", background: "var(--bg2)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)" }}>
         <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
           <p style={{ color: "var(--accent)", fontSize: "11px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "16px" }}>Process</p>
           <h2 style={{ fontSize: "clamp(28px, 4vw, 42px)", fontWeight: 900, letterSpacing: "-2px", marginBottom: "72px", maxWidth: "400px" }}>Up and running in minutes</h2>
@@ -244,7 +253,7 @@ export default function Home() {
       </section>
 
       {/* PRICING */}
-      <section id="pricing" className="pricing-section" style={{ padding: "140px 48px", maxWidth: "860px", margin: "0 auto" }}>
+      <section id="pricing" className="pricing-section fade-up" style={{ padding: "140px 48px", maxWidth: "860px", margin: "0 auto" }}>
         <div style={{ marginBottom: "72px" }}>
           <p style={{ color: "var(--accent)", fontSize: "11px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "16px" }}>Pricing</p>
           <h2 style={{ fontSize: "clamp(28px, 4vw, 42px)", fontWeight: 900, letterSpacing: "-2px" }}>No hidden fees. No BS.</h2>
@@ -304,7 +313,7 @@ export default function Home() {
       </section>
 
       {/* TESTIMONIALS */}
-      <section className="testimonials-section" style={{ padding: "120px 48px", background: "var(--bg2)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)" }}>
+      <section className="testimonials-section fade-up" style={{ padding: "120px 48px", background: "var(--bg2)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)" }}>
         <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
           <p style={{ color: "var(--accent)", fontSize: "11px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "16px" }}>Reviews</p>
           <h2 style={{ fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 900, letterSpacing: "-1px", marginBottom: "56px" }}>What athletes say</h2>
@@ -355,7 +364,7 @@ export default function Home() {
       </section>
 
       {/* FINAL CTA */}
-      <section className="cta-section" style={{ padding: "140px 48px", textAlign: "center", borderTop: "1px solid var(--border)" }}>
+      <section className="cta-section fade-up" style={{ padding: "140px 48px", textAlign: "center", borderTop: "1px solid var(--border)" }}>
         <h2 style={{ fontSize: "clamp(32px, 5vw, 64px)", fontWeight: 900, letterSpacing: "-3px", marginBottom: "20px", lineHeight: 0.95 }}>
           READY TO RIZE?
         </h2>
