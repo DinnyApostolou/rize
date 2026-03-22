@@ -186,34 +186,22 @@ export default function Home() {
         minHeight: "100vh", display: "flex", flexDirection: "column",
         alignItems: "center", justifyContent: "center", textAlign: "center",
         padding: "140px 24px 100px", position: "relative", overflow: "hidden",
-        background: "linear-gradient(180deg, #050810 0%, #0a0f1a 40%, #050810 100%)",
+        background: "#050810",
       }}>
-        {/* Stadium glow from bottom */}
+        {/* Video background */}
+        <video
+          autoPlay muted loop playsInline
+          style={{
+            position: "absolute", inset: 0, width: "100%", height: "100%",
+            objectFit: "cover", zIndex: 0, pointerEvents: "none",
+          }}
+        >
+          <source src="https://assets.mixkit.co/videos/44448/44448-1080.mp4" type="video/mp4" />
+        </video>
+        {/* Dark overlay so text stays readable */}
         <div style={{
-          position: "absolute", bottom: "-100px", left: "50%", transform: "translateX(-50%)",
-          width: "900px", height: "500px",
-          background: "radial-gradient(ellipse, rgba(14,165,233,0.18) 0%, transparent 70%)",
-          pointerEvents: "none", zIndex: 0,
-        }} />
-        {/* Side glows */}
-        <div style={{
-          position: "absolute", top: "30%", left: "-100px",
-          width: "500px", height: "500px",
-          background: "radial-gradient(ellipse, rgba(14,165,233,0.06) 0%, transparent 70%)",
-          pointerEvents: "none", zIndex: 0,
-        }} />
-        <div style={{
-          position: "absolute", top: "20%", right: "-100px",
-          width: "500px", height: "500px",
-          background: "radial-gradient(ellipse, rgba(56,189,248,0.05) 0%, transparent 70%)",
-          pointerEvents: "none", zIndex: 0,
-        }} />
-        {/* Subtle grid lines */}
-        <div style={{
-          position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none",
-          backgroundImage: "linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-          maskImage: "radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%)",
+          position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none",
+          background: "linear-gradient(to bottom, rgba(5,8,16,0.75) 0%, rgba(5,8,16,0.6) 40%, rgba(5,8,16,0.88) 100%)",
         }} />
 
         {/* Hero content */}
