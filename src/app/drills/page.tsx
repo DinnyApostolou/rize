@@ -471,6 +471,11 @@ export default function DrillsPage() {
                       <button onClick={e => { e.stopPropagation(); setActiveCameraDrill({ id: drill.id, title: drill.title, xp: drill.xp, duration: drill.duration }); }} style={{ background: "var(--accent)", color: "#fff", padding: "9px 20px", borderRadius: "6px", fontSize: "13px", fontWeight: 700, display: "flex", alignItems: "center", gap: "7px" }}>
                         📷 Start Drill
                       </button>
+                      {!isDone && (
+                        <button onClick={e => { e.stopPropagation(); onComplete(drill.xp, drill.id); }} style={{ background: "var(--bg3)", color: "var(--text2)", border: "1px solid var(--border)", padding: "9px 18px", borderRadius: "6px", fontSize: "13px", fontWeight: 600 }}>
+                          Mark done
+                        </button>
+                      )}
                     </div>
                   </div>
                 )}

@@ -1,7 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Sidebar from "@/components/Sidebar";
 import dynamic from "next/dynamic";
+import { getSupabase } from "@/lib/supabase";
 const Dumbbell3D = dynamic(() => import("@/components/Dumbbell3D"), { ssr: false });
 
 const PROGRAMS = [
@@ -73,9 +75,60 @@ const PROGRAMS = [
 ];
 
 export default function StrengthPage() {
+  const router = useRouter();
   const [activeCategory, setActiveCategory] = useState(0);
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [userProfile, setUserProfile] = useState<any>(null);
+  const [logMsg, setLogMsg] = useState("");
+  const [logging, setLogging] = useState(false);
+  const [loggedToday, setLoggedToday] = useState(false);
   const prog = PROGRAMS[activeCategory];
+
+  useEffect(() => {
+    async function load() {
+      const supabase = getSupabase();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) { router.push("/login"); return; }
+      const { data } = await supabase.from("profiles").select("*").eq("id", user.id).single();
+      setUserProfile(data);
+      const today = new Date().toDateString();
+      if (data?.last_drill_date === today) setLoggedToday(true);
+    }
+    load();
+  }, [router]);
+
+  async function logWorkout() {
+    if (!userProfile || logging) return;
+    setLogging(true);
+    try {
+      const supabase = getSupabase();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      const today = new Date().toDateString();
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      const lastDate = userProfile.last_drill_date;
+      let newStreak = userProfile.streak || 0;
+      if (lastDate !== today) {
+        newStreak = lastDate === yesterday.toDateString() ? newStreak + 1 : 1;
+      }
+      const XP_REWARD = 150;
+      await supabase.from("profiles").update({
+        xp: (userProfile.xp || 0) + XP_REWARD,
+        drills_completed: (userProfile.drills_completed || 0) + 1,
+        streak: newStreak,
+        last_drill_date: today,
+      }).eq("id", user.id);
+      const currentWeekDrills = parseInt(localStorage.getItem("rize_week_drills") || "0");
+      localStorage.setItem("rize_week_drills", String(currentWeekDrills + 1));
+      setUserProfile({ ...userProfile, xp: (userProfile.xp || 0) + XP_REWARD, drills_completed: (userProfile.drills_completed || 0) + 1, streak: newStreak, last_drill_date: today });
+      setLoggedToday(true);
+      setLogMsg(`+${XP_REWARD} XP saved. Streak: ${newStreak} day${newStreak !== 1 ? "s" : ""}.`);
+    } catch {
+      setLogMsg("Something went wrong. Try again.");
+    }
+    setLogging(false);
+  }
 
   return (
     <div style={{ display: "flex", minHeight: "100vh", background: "var(--bg)", color: "var(--text)" }}>
@@ -113,6 +166,26 @@ export default function StrengthPage() {
           fontSize: "13px", color: "var(--text2)",
         }}>
           {prog.desc}
+        </div>
+
+        {/* Log workout */}
+        <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "20px" }}>
+          <button
+            onClick={logWorkout}
+            disabled={logging || loggedToday}
+            style={{
+              padding: "11px 24px", borderRadius: "8px", fontSize: "13px", fontWeight: 700,
+              background: loggedToday ? "rgba(16,185,129,0.08)" : "var(--accent)",
+              color: loggedToday ? "#10B981" : "#fff",
+              border: loggedToday ? "1px solid rgba(16,185,129,0.25)" : "none",
+              cursor: loggedToday || logging ? "default" : "pointer",
+              opacity: logging ? 0.6 : 1,
+              transition: "all 0.15s",
+            }}
+          >
+            {loggedToday ? "Workout logged ✓" : logging ? "Saving..." : "Log this workout"}
+          </button>
+          {logMsg && <span style={{ fontSize: "13px", color: "var(--text2)" }}>{logMsg}</span>}
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
