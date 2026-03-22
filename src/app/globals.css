@@ -59,6 +59,11 @@ input, textarea { font-family: inherit; outline: none; }
   transform: translateY(0);
 }
 
+/* ── Layout base (desktop) ──────────────────── */
+.rize-mobile-nav { display: none; }
+.dash-main { margin-left: 240px; }
+.inner-main { margin-left: 220px; }
+
 /* ── Mobile responsive ─────────────────────── */
 @media (max-width: 768px) {
   /* Landing page */
@@ -93,12 +98,12 @@ input, textarea { font-family: inherit; outline: none; }
   .dash-main, .inner-main { transition: none !important; }
 
   /* Dashboard & inner pages — full width */
-  .dash-main { margin-left: 0 !important; padding: 24px 16px 100px !important; max-width: 100% !important; }
+  .dash-main { margin-left: 0 !important; padding: 24px 16px 100px !important; max-width: 100% !important; width: 100% !important; }
   .dash-greeting { font-size: 26px !important; letter-spacing: -1px !important; }
   .dash-stats { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
   .dash-2col { grid-template-columns: 1fr !important; }
   .dash-xp-right { display: none !important; }
 
   /* Inner pages with shared sidebar */
-  .inner-main { margin-left: 0 !important; padding: 24px 16px 100px !important; max-width: 100% !important; }
+  .inner-main { margin-left: 0 !important; padding: 24px 16px 100px !important; max-width: 100% !important; width: 100% !important; }
 }

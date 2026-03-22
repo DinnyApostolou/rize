@@ -100,7 +100,7 @@ export default function Dashboard() {
     return (
       <div style={{ display: "flex", minHeight: "100vh", background: "var(--bg)" }}>
         <div className="rize-sidebar" style={{ width: "240px", background: "var(--bg2)", borderRight: "1px solid var(--border)", flexShrink: 0 }} />
-        <div className="dash-main" style={{ flex: 1, padding: "40px 48px", marginLeft: "240px" }}>
+        <div className="dash-main" style={{ flex: 1, padding: "40px 48px", minHeight: "100vh" }}>
           {[1,2,3].map(i => (
             <div key={i} style={{ background: "var(--bg2)", borderRadius: "12px", height: "120px", marginBottom: "16px", animation: "pulse 1.5s ease infinite" }} />
           ))}
@@ -210,7 +210,7 @@ export default function Dashboard() {
       </nav>
 
       {/* MAIN CONTENT */}
-      <main className="dash-main" style={{ marginLeft: "240px", flex: 1, padding: "40px 48px", maxWidth: "1000px" }}>
+      <main className="dash-main" style={{ flex: 1, padding: "40px 48px", maxWidth: "1000px" }}>
 
         {/* Greeting */}
         <div style={{ marginBottom: "40px" }}>
