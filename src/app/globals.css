@@ -35,6 +35,22 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Outfit', sans-serif;
 }
 
+/* Hover lift + glow on feature cards and how-it-works steps */
+.how-step {
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.how-step:hover {
+  transform: translateY(-6px);
+  border-color: rgba(0,116,255,0.3) !important;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 30px rgba(0,116,255,0.15) !important;
+}
+.feature-mockup {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.feature-mockup:hover {
+  transform: translateY(-8px) scale(1.01);
+}
+
 /* Glassmorphism card */
 .glass-card {
   background: rgba(255,255,255,0.04);

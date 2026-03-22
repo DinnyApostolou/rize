@@ -308,66 +308,60 @@ export default function Home() {
       </section>
 
       {/* FEATURES */}
-      <section id="features" className="features-section fade-up" style={{ padding: "140px 48px", maxWidth: "1100px", margin: "0 auto" }}>
-        <div style={{ marginBottom: "96px" }}>
-          <p style={{ color: "var(--accent)", fontSize: "11px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "16px" }}>Platform</p>
-          <h2 style={{ fontSize: "clamp(32px, 4vw, 48px)", fontWeight: 900, letterSpacing: "-2px", maxWidth: "500px" }}>Everything a serious athlete needs</h2>
+      <section id="features" className="features-section fade-up" style={{ padding: "140px 48px", maxWidth: "1100px", margin: "0 auto", position: "relative" }}>
+
+        {/* Section glow orb */}
+        <div style={{ position: "absolute", top: "10%", right: "-20%", width: "500px", height: "500px", borderRadius: "50%", background: "radial-gradient(circle, rgba(0,116,255,0.12) 0%, transparent 70%)", filter: "blur(60px)", pointerEvents: "none", zIndex: 0 }} />
+        <div style={{ position: "absolute", bottom: "20%", left: "-15%", width: "400px", height: "400px", borderRadius: "50%", background: "radial-gradient(circle, rgba(124,58,237,0.1) 0%, transparent 70%)", filter: "blur(60px)", pointerEvents: "none", zIndex: 0 }} />
+
+        <div style={{ marginBottom: "96px", position: "relative", zIndex: 1 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "rgba(0,116,255,0.08)", border: "1px solid rgba(0,116,255,0.2)", borderRadius: "999px", padding: "6px 16px", marginBottom: "20px" }}>
+            <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "var(--accent)", boxShadow: "0 0 8px var(--accent)" }} />
+            <span style={{ color: "var(--accent)", fontSize: "11px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase" }}>Platform</span>
+          </div>
+          <h2 style={{ fontSize: "clamp(32px, 4vw, 52px)", fontWeight: 900, letterSpacing: "-2px", maxWidth: "560px", lineHeight: 1.1 }}>
+            Everything a serious<br />
+            <span style={{ background: "linear-gradient(90deg, #0074FF, #7C3AED, #38BDF8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>athlete needs</span>
+          </h2>
         </div>
 
         {[
-          {
-            label: "BASKETBALL",
-            title: "100+ structured drills",
-            desc: "Ball handling, shooting, finishing, defense and IQ — every drill has coaching cues, difficulty rating and a YouTube tutorial. New drills added every week.",
-            points: ["Beginner to advanced levels", "Categorised by skill area", "YouTube tutorials on every drill", "Track completions and earn XP"],
-          },
-          {
-            label: "STRENGTH",
-            title: "Athlete-specific gym programs",
-            desc: "Periodised lifting programs built for basketball athletes. Explosive power, vertical jump, sprint speed and injury prevention — not generic bodybuilder workouts.",
-            points: ["5 training categories", "30+ exercises with coaching cues", "Sets, reps and rest periods included", "YouTube form guides on every exercise"],
-          },
-          {
-            label: "NUTRITION",
-            title: "Fuel and recovery plans",
-            desc: "Pre-game, post-game, daily meals and snacks with exact macros, ingredient lists and explanations of why each meal helps your performance.",
-            points: ["50+ meals with full macros", "Pre-game and post-game specific", "Hydration guides included", "Designed for athletic performance"],
-          },
-          {
-            label: "TRACKING",
-            title: "Progress that actually means something",
-            desc: "XP system, skill assessment, stats card, weekly schedule and 22 collectible badges. See yourself improve week over week.",
-            points: ["Skill assessment quiz", "XP and level system", "Day streak tracking", "22 achievement badges"],
-          },
+          { label: "BASKETBALL", color: "#0074FF", title: "100+ structured drills", desc: "Ball handling, shooting, finishing, defense and IQ — every drill has coaching cues, difficulty rating and a YouTube tutorial. New drills added every week.", points: ["Beginner to advanced levels", "Categorised by skill area", "YouTube tutorials on every drill", "Track completions and earn XP"] },
+          { label: "STRENGTH", color: "#8B5CF6", title: "Athlete-specific gym programs", desc: "Periodised lifting programs built for basketball athletes. Explosive power, vertical jump, sprint speed and injury prevention — not generic bodybuilder workouts.", points: ["5 training categories", "30+ exercises with coaching cues", "Sets, reps and rest periods included", "YouTube form guides on every exercise"] },
+          { label: "NUTRITION", color: "#10B981", title: "Fuel and recovery plans", desc: "Pre-game, post-game, daily meals and snacks with exact macros, ingredient lists and explanations of why each meal helps your performance.", points: ["50+ meals with full macros", "Pre-game and post-game specific", "Hydration guides included", "Designed for athletic performance"] },
+          { label: "TRACKING", color: "#F59E0B", title: "Progress that actually means something", desc: "XP system, skill assessment, stats card, weekly schedule and 22 collectible badges. See yourself improve week over week.", points: ["Skill assessment quiz", "XP and level system", "Day streak tracking", "22 achievement badges"] },
         ].map((f, i) => (
-          <div key={i} style={{
-            display: "grid", gridTemplateColumns: "1fr 1fr", gap: "80px",
-            alignItems: "center", marginBottom: "120px",
-            direction: i % 2 === 1 ? "rtl" : "ltr",
-          }} className="feature-row">
+          <div key={i} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "80px", alignItems: "center", marginBottom: "120px", direction: i % 2 === 1 ? "rtl" : "ltr", position: "relative", zIndex: 1 }} className="feature-row">
             <div style={{ direction: "ltr" }}>
-              <p style={{ color: "var(--accent)", fontSize: "11px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "16px" }}>{f.label}</p>
-              <h3 style={{ fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 900, letterSpacing: "-1px", marginBottom: "16px" }}>{f.title}</h3>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: `${f.color}15`, border: `1px solid ${f.color}40`, borderRadius: "999px", padding: "5px 14px", marginBottom: "20px" }}>
+                <div style={{ width: "5px", height: "5px", borderRadius: "50%", background: f.color, boxShadow: `0 0 6px ${f.color}` }} />
+                <span style={{ color: f.color, fontSize: "10px", fontWeight: 800, letterSpacing: "2px" }}>{f.label}</span>
+              </div>
+              <h3 style={{ fontSize: "clamp(24px, 3vw, 38px)", fontWeight: 900, letterSpacing: "-1px", marginBottom: "16px", lineHeight: 1.1 }}>{f.title}</h3>
               <p style={{ color: "var(--text2)", fontSize: "15px", lineHeight: 1.8, marginBottom: "28px" }}>{f.desc}</p>
-              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                 {f.points.map((p, pi) => (
-                  <div key={pi} style={{ display: "flex", gap: "10px", alignItems: "center", fontSize: "14px", color: "var(--text2)" }}>
-                    <div style={{ width: "4px", height: "4px", borderRadius: "50%", background: "var(--accent)", flexShrink: 0 }} />
+                  <div key={pi} style={{ display: "flex", gap: "12px", alignItems: "center", fontSize: "14px", color: "var(--text2)" }}>
+                    <div style={{ width: "16px", height: "16px", borderRadius: "50%", background: `${f.color}20`, border: `1px solid ${f.color}60`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                      <div style={{ width: "5px", height: "5px", borderRadius: "50%", background: f.color }} />
+                    </div>
                     {p}
                   </div>
                 ))}
               </div>
             </div>
-            {/* App mockup card */}
+            {/* Glowing mockup card */}
             <div style={{
               direction: "ltr",
-              background: "var(--bg2)",
-              border: "1px solid var(--border)",
-              borderTop: "2px solid var(--accent)",
-              borderRadius: "12px",
+              background: "rgba(255,255,255,0.03)",
+              backdropFilter: "blur(12px)",
+              WebkitBackdropFilter: "blur(12px)",
+              border: `1px solid ${f.color}30`,
+              borderTop: `2px solid ${f.color}`,
+              borderRadius: "16px",
               padding: "28px 24px",
-              boxShadow: "inset 0 0 40px rgba(14,165,233,0.04), 0 0 0 1px rgba(14,165,233,0.04)",
-            }} className="stat-box">
+              boxShadow: `0 0 40px ${f.color}18, 0 20px 60px rgba(0,0,0,0.4)`,
+            }} className="stat-box feature-mockup">
               {mockups[i]}
             </div>
           </div>
@@ -375,20 +369,24 @@ export default function Home() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section id="how-it-works" className="how-it-works-section fade-up" style={{ padding: "120px 48px", background: "var(--bg2)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)" }}>
-        <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
-          <p style={{ color: "var(--accent)", fontSize: "11px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "16px" }}>Process</p>
+      <section id="how-it-works" className="how-it-works-section fade-up" style={{ padding: "120px 48px", background: "linear-gradient(180deg, var(--bg) 0%, var(--bg2) 50%, var(--bg) 100%)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: "600px", height: "300px", borderRadius: "50%", background: "radial-gradient(circle, rgba(0,116,255,0.07) 0%, transparent 70%)", filter: "blur(40px)", pointerEvents: "none" }} />
+        <div style={{ maxWidth: "1000px", margin: "0 auto", position: "relative", zIndex: 1 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "rgba(0,116,255,0.08)", border: "1px solid rgba(0,116,255,0.2)", borderRadius: "999px", padding: "6px 16px", marginBottom: "20px" }}>
+            <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "var(--accent)", boxShadow: "0 0 8px var(--accent)" }} />
+            <span style={{ color: "var(--accent)", fontSize: "11px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase" }}>Process</span>
+          </div>
           <h2 style={{ fontSize: "clamp(28px, 4vw, 42px)", fontWeight: 900, letterSpacing: "-2px", marginBottom: "72px", maxWidth: "400px" }}>Up and running in minutes</h2>
           <div className="how-works-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "48px" }}>
             {[
-              { n: "01", title: "Sign up free", desc: "Create an account — no credit card required." },
-              { n: "02", title: "Take the assessment", desc: "Tell us your position, goals and weaknesses." },
-              { n: "03", title: "Get your program", desc: "Personalised day-by-day training plan built for you." },
-              { n: "04", title: "Train and track", desc: "Log sessions, earn XP and measure real progress." },
+              { n: "01", title: "Sign up free", desc: "Create an account — no credit card required.", color: "#0074FF" },
+              { n: "02", title: "Take the assessment", desc: "Tell us your position, goals and weaknesses.", color: "#8B5CF6" },
+              { n: "03", title: "Get your program", desc: "Personalised day-by-day training plan built for you.", color: "#10B981" },
+              { n: "04", title: "Train and track", desc: "Log sessions, earn XP and measure real progress.", color: "#F59E0B" },
             ].map((s) => (
-              <div key={s.n}>
-                <div style={{ fontSize: "11px", color: "var(--text3)", fontWeight: 700, letterSpacing: "1px", marginBottom: "16px" }}>{s.n}</div>
-                <div style={{ width: "1px", height: "32px", background: "var(--border)", marginBottom: "16px" }} />
+              <div key={s.n} className="how-step" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "16px", padding: "28px 24px" }}>
+                <div style={{ fontSize: "28px", fontWeight: 900, color: s.color, textShadow: `0 0 20px ${s.color}80`, marginBottom: "16px", fontVariantNumeric: "tabular-nums" }}>{s.n}</div>
+                <div style={{ width: "24px", height: "2px", background: s.color, boxShadow: `0 0 8px ${s.color}`, marginBottom: "16px", borderRadius: "2px" }} />
                 <div style={{ fontSize: "16px", fontWeight: 700, marginBottom: "10px" }}>{s.title}</div>
                 <div style={{ fontSize: "13px", color: "var(--text2)", lineHeight: 1.7 }}>{s.desc}</div>
               </div>
