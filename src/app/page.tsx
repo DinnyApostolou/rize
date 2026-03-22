@@ -3,6 +3,50 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import ParticleBackground from "@/components/ParticleBackground";
 
+function Brackets({ color, hovered }: { color: string; hovered: boolean }) {
+  const corners = [
+    { top: -1, left: -1, borderWidth: "2px 0 0 2px", from: "translate(8px,8px)" },
+    { top: -1, right: -1, borderWidth: "2px 2px 0 0", from: "translate(-8px,8px)" },
+    { bottom: -1, left: -1, borderWidth: "0 0 2px 2px", from: "translate(8px,-8px)" },
+    { bottom: -1, right: -1, borderWidth: "0 2px 2px 0", from: "translate(-8px,-8px)" },
+  ];
+  return (
+    <>
+      {corners.map((c, i) => (
+        <div key={i} style={{
+          position: "absolute", width: 15, height: 15,
+          top: c.top, left: (c as any).left, right: (c as any).right, bottom: (c as any).bottom,
+          border: `2px solid ${color}`, borderWidth: c.borderWidth,
+          opacity: hovered ? 1 : 0,
+          transform: hovered ? "translate(0,0)" : c.from,
+          transition: "opacity 0.2s ease, transform 0.2s ease",
+          pointerEvents: "none", zIndex: 10,
+        }} />
+      ))}
+    </>
+  );
+}
+
+function BracketCard({ color, children, className, style, onEnter, onLeave }: {
+  color: string; children: React.ReactNode; className?: string;
+  style?: React.CSSProperties;
+  onEnter?: (el: HTMLDivElement) => void;
+  onLeave?: (el: HTMLDivElement) => void;
+}) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div
+      className={className}
+      style={{ position: "relative", ...style }}
+      onMouseEnter={e => { setHovered(true); onEnter?.(e.currentTarget as HTMLDivElement); }}
+      onMouseLeave={e => { setHovered(false); onLeave?.(e.currentTarget as HTMLDivElement); }}
+    >
+      <Brackets color={color} hovered={hovered} />
+      {children}
+    </div>
+  );
+}
+
 function useCountUp(target: number, duration = 1500, start = false) {
   const [count, setCount] = useState(0);
   useEffect(() => {
@@ -436,12 +480,12 @@ export default function Home() {
                         ))}
                       </div>
                     </div>
-                    <div className="stat-box bracket-hover" style={{ ["--bc" as string]: f.color, position: "relative", direction: "ltr", background: "rgba(255,255,255,0.03)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: `1px solid ${f.color}30`, borderRadius: "16px", padding: "28px 24px", boxShadow: `0 0 30px ${f.color}15, 0 20px 60px rgba(0,0,0,0.4)`, transition: "transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease" } as React.CSSProperties}
-                      onMouseEnter={e => { const el = e.currentTarget as HTMLDivElement; el.style.transform = "translateY(-8px)"; el.style.boxShadow = `0 0 40px ${f.color}40, 0 20px 60px rgba(0,0,0,0.5)`; el.style.borderColor = `${f.color}70`; }}
-                      onMouseLeave={e => { const el = e.currentTarget as HTMLDivElement; el.style.transform = "translateY(0)"; el.style.boxShadow = `0 0 30px ${f.color}15, 0 20px 60px rgba(0,0,0,0.4)`; el.style.borderColor = `${f.color}30`; }}>
-                      <div className="bc-tl" /><div className="bc-tr" /><div className="bc-bl" /><div className="bc-br" />
+                    <BracketCard color={f.color} className="stat-box"
+                      style={{ direction: "ltr", background: "rgba(255,255,255,0.03)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: `1px solid ${f.color}30`, borderRadius: "16px", padding: "28px 24px", boxShadow: `0 0 30px ${f.color}15, 0 20px 60px rgba(0,0,0,0.4)`, transition: "transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease" }}
+                      onEnter={el => { el.style.transform = "translateY(-8px)"; el.style.boxShadow = `0 0 40px ${f.color}40, 0 20px 60px rgba(0,0,0,0.5)`; el.style.borderColor = `${f.color}70`; }}
+                      onLeave={el => { el.style.transform = "translateY(0)"; el.style.boxShadow = `0 0 30px ${f.color}15, 0 20px 60px rgba(0,0,0,0.4)`; el.style.borderColor = `${f.color}30`; }}>
                       {mockups[i]}
-                    </div>
+                    </BracketCard>
                   </div>
                 ))}
               </div>
@@ -466,16 +510,16 @@ export default function Home() {
               { n: "03", title: "Get your program", desc: "Personalised day-by-day training plan built for you.", color: "#10B981" },
               { n: "04", title: "Train and track", desc: "Log sessions, earn XP and measure real progress.", color: "#F59E0B" },
             ].map((s) => (
-              <div key={s.n} className="bracket-hover" style={{ ["--bc" as string]: s.color, position: "relative", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "16px", padding: "28px 24px", transition: "transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease", cursor: "default" } as React.CSSProperties}
-                onMouseEnter={e => { const el = e.currentTarget as HTMLDivElement; el.style.transform = "translateY(-6px)"; el.style.boxShadow = `0 0 30px ${s.color}30, 0 0 60px ${s.color}10`; el.style.borderColor = `${s.color}40`; }}
-                onMouseLeave={e => { const el = e.currentTarget as HTMLDivElement; el.style.transform = "translateY(0)"; el.style.boxShadow = "none"; el.style.borderColor = "rgba(255,255,255,0.06)"; }}
+              <BracketCard key={s.n} color={s.color}
+                style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "16px", padding: "28px 24px", transition: "transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease", cursor: "default" }}
+                onEnter={el => { el.style.transform = "translateY(-6px)"; el.style.boxShadow = `0 0 30px ${s.color}30, 0 0 60px ${s.color}10`; el.style.borderColor = `${s.color}50`; }}
+                onLeave={el => { el.style.transform = "translateY(0)"; el.style.boxShadow = "none"; el.style.borderColor = "rgba(255,255,255,0.06)"; }}
               >
-                <div className="bc-tl" /><div className="bc-tr" /><div className="bc-bl" /><div className="bc-br" />
                 <div style={{ fontSize: "28px", fontWeight: 900, color: s.color, textShadow: `0 0 20px ${s.color}80`, marginBottom: "16px", fontVariantNumeric: "tabular-nums" }}>{s.n}</div>
                 <div style={{ width: "24px", height: "2px", background: s.color, boxShadow: `0 0 8px ${s.color}`, marginBottom: "16px", borderRadius: "2px" }} />
                 <div style={{ fontSize: "16px", fontWeight: 700, marginBottom: "10px" }}>{s.title}</div>
                 <div style={{ fontSize: "13px", color: "var(--text2)", lineHeight: 1.7 }}>{s.desc}</div>
-              </div>
+              </BracketCard>
             ))}
           </div>
         </div>
