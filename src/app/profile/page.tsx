@@ -67,18 +67,19 @@ export default function ProfilePage() {
       setUserId(user.id);
       setEmail(user.email ?? "");
 
-      const { data } = await supabase.from("profiles").select("*").eq("id", user.id).single();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { data } = await supabase.from("profiles").select("*").eq("id", user.id).single() as { data: any };
       const p: Profile = data || {
         username: user.email?.split("@")[0] || "Athlete",
         xp: 0, streak: 0, drills_completed: 0, is_subscribed: false,
       };
       setProfile(p);
 
-      const dn = data?.display_name || localStorage.getItem("rize_display_name") || "";
+      const dn = (data?.display_name as string) || localStorage.getItem("rize_display_name") || "";
       setDisplayName(dn);
       setDisplayNameInput(dn);
 
-      if (data?.avatar_url) setAvatarUrl(data.avatar_url);
+      if (data?.avatar_url) setAvatarUrl(data.avatar_url as string);
 
       setPosition(localStorage.getItem("rize_position") ?? "");
       setSkillLevel(localStorage.getItem("rize_skill_level") ?? "");
@@ -101,7 +102,8 @@ export default function ProfilePage() {
         const { data: urlData } = supabase.storage.from("avatars").getPublicUrl(path);
         const url = urlData.publicUrl + "?t=" + Date.now();
         setAvatarUrl(url);
-        await supabase.from("profiles").update({ avatar_url: url }).eq("id", userId);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        await (supabase.from("profiles") as any).update({ avatar_url: url }).eq("id", userId);
       } else {
         // Fallback: store as base64 in localStorage
         const reader = new FileReader();
@@ -132,7 +134,8 @@ export default function ProfilePage() {
     localStorage.setItem("rize_display_name", name);
     try {
       const supabase = getSupabase();
-      await supabase.from("profiles").update({ display_name: name }).eq("id", userId);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await (supabase.from("profiles") as any).update({ display_name: name }).eq("id", userId);
     } catch { /* non-critical */ }
     setEditingDisplayName(false);
     setSavingName(false);
@@ -175,9 +178,9 @@ export default function ProfilePage() {
 
         {/* Hero identity card */}
         <div style={{
-          background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: "16px",
+          background: "linear-gradient(135deg, #111111 0%, rgba(14,165,233,0.04) 100%)",
+          border: "1px solid var(--border)", borderRadius: "16px",
           padding: "32px", marginBottom: "16px",
-          background: "linear-gradient(135deg, var(--bg2) 0%, rgba(14,165,233,0.03) 100%)",
         }}>
           <div style={{ display: "flex", alignItems: "flex-start", gap: "24px" }}>
 
