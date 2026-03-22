@@ -297,21 +297,27 @@ export default function Home() {
             <Link href="/signup">
               <button style={{
                 background: "var(--accent)", color: "#fff",
-                padding: "14px 36px", borderRadius: "6px",
-                fontSize: "15px", fontWeight: 700,
-                cursor: "pointer", transition: "opacity 0.2s",
+                padding: "16px 40px", borderRadius: "8px",
+                fontSize: "15px", fontWeight: 800,
+                cursor: "pointer", transition: "all 0.2s",
+                boxShadow: "0 0 0 0 rgba(0,116,255,0.5), 0 4px 24px rgba(0,116,255,0.4)",
+                animation: "ctaPulse 2.5s ease-in-out infinite",
+                letterSpacing: "0.3px",
               }}
-                onMouseEnter={e => ((e.currentTarget as HTMLButtonElement).style.opacity = "0.85")}
-                onMouseLeave={e => ((e.currentTarget as HTMLButtonElement).style.opacity = "1")}>
-                Start Free →
+                onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.transform = "translateY(-2px)"; b.style.boxShadow = "0 8px 32px rgba(0,116,255,0.5)"; }}
+                onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.transform = "translateY(0)"; b.style.boxShadow = "0 4px 24px rgba(0,116,255,0.4)"; }}>
+                Start Training Free →
               </button>
             </Link>
             <a href="#features">
               <button style={{
-                background: "transparent", border: "1px solid var(--border)",
-                color: "var(--text2)", padding: "14px 36px", borderRadius: "6px",
+                background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)",
+                color: "var(--text2)", padding: "16px 36px", borderRadius: "8px",
                 fontSize: "15px", fontWeight: 600, cursor: "pointer",
-              }}>
+                backdropFilter: "blur(8px)", transition: "all 0.2s",
+              }}
+                onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.background = "rgba(255,255,255,0.09)"; b.style.color = "#fff"; }}
+                onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.background = "rgba(255,255,255,0.05)"; b.style.color = "var(--text2)"; }}>
                 See What&apos;s Inside
               </button>
             </a>

@@ -285,25 +285,41 @@ export default function Dashboard() {
         {/* Stat cards */}
         <div className="dash-stats" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "12px", marginBottom: "20px" }}>
           {[
-            { label: "Day Streak", value: streak, unit: streak === 1 ? "day" : "days", color: "#F59E0B", badge: streakBadge },
-            { label: "Drills Done", value: profile?.drills_completed || 0, unit: "total", color: "#0074FF", badge: null },
-            { label: "XP Earned", value: xp.toLocaleString(), unit: "points", color: "#8B5CF6", badge: null },
-            { label: "This Week", value: `${weekDrills}/${weekGoal}`, unit: "drills", color: "#00FF85", badge: weekComplete ? "DONE" : null },
+            { label: "Day Streak", value: streak, unit: streak === 1 ? "day" : "days", color: "#F59E0B", icon: "🔥", badge: streakBadge },
+            { label: "Sessions", value: profile?.drills_completed || 0, unit: "completed", color: "#0074FF", icon: "🏀", badge: null },
+            { label: "XP Earned", value: xp.toLocaleString(), unit: "points", color: "#8B5CF6", icon: "⚡", badge: null },
+            { label: "This Week", value: `${weekDrills}/${weekGoal}`, unit: "sessions", color: "#00E676", icon: "📅", badge: weekComplete ? "DONE" : null },
           ].map((s, i) => (
-            <div key={i} className="glass-card" style={{
-              padding: "20px",
-              borderTop: `2px solid ${s.color}`,
-              boxShadow: `0 0 20px ${s.color}22, 0 8px 32px rgba(0,0,0,0.4)`,
-            }}>
-              <div style={{ fontSize: "10px", color: "var(--text3)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: "12px" }}>{s.label}</div>
-              <div style={{ fontSize: "28px", fontWeight: 900, letterSpacing: "-1px", color: s.color, lineHeight: 1, marginBottom: "6px" }}>{s.value}</div>
+            <div key={i} style={{
+              background: "var(--bg2)",
+              border: `1px solid var(--border)`,
+              borderRadius: "var(--radius-md)",
+              padding: "18px 20px",
+              position: "relative",
+              overflow: "hidden",
+              boxShadow: `var(--shadow-md)`,
+              transition: "transform 0.2s, box-shadow 0.2s",
+            }}
+              onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.transform = "translateY(-2px)"; (e.currentTarget as HTMLDivElement).style.boxShadow = `0 8px 32px ${s.color}20, var(--shadow-md)`; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)"; (e.currentTarget as HTMLDivElement).style.boxShadow = "var(--shadow-md)"; }}
+            >
+              {/* Color accent bar */}
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "2px", background: s.color, boxShadow: `0 0 12px ${s.color}80` }} />
+              {/* Background glow */}
+              <div style={{ position: "absolute", bottom: "-20px", right: "-10px", width: "80px", height: "80px", borderRadius: "50%", background: `radial-gradient(circle, ${s.color}12 0%, transparent 70%)`, pointerEvents: "none" }} />
+
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "14px" }}>
+                <span style={{ fontSize: "10px", color: "var(--text3)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.5px" }}>{s.label}</span>
+                <span style={{ fontSize: "18px", opacity: 0.8 }}>{s.icon}</span>
+              </div>
+              <div style={{ fontSize: "26px", fontWeight: 900, letterSpacing: "-0.5px", color: s.color, lineHeight: 1, marginBottom: "6px" }}>{s.value}</div>
               <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                 <span style={{ fontSize: "11px", color: "var(--text3)" }}>{s.unit}</span>
                 {s.badge && (
                   <span style={{
                     fontSize: "9px", fontWeight: 800, letterSpacing: "0.5px",
-                    background: `${s.color}22`, border: `1px solid ${s.color}44`,
-                    borderRadius: "4px", padding: "1px 6px", color: s.color,
+                    background: `${s.color}20`, border: `1px solid ${s.color}50`,
+                    borderRadius: "4px", padding: "2px 6px", color: s.color,
                   }}>{s.badge}</span>
                 )}
               </div>
