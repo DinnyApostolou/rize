@@ -63,6 +63,30 @@ h1, h2, h3, h4, h5, h6 {
 .bracket-box > span::before { bottom: 0; left: 0; border-width: 0 0 1px 1px; }
 .bracket-box > span::after  { bottom: 0; right: 0; border-width: 0 1px 1px 0; }
 
+/* Corner bracket hover effect — WorldQuant style */
+.bc-tl, .bc-tr, .bc-bl, .bc-br {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-style: solid;
+  border-color: var(--bc, rgba(0,116,255,0.75));
+  opacity: 0;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+  pointer-events: none;
+  z-index: 10;
+}
+.bc-tl { top: -1px; left: -1px; border-width: 2px 0 0 2px; transform: translate(7px, 7px); }
+.bc-tr { top: -1px; right: -1px; border-width: 2px 2px 0 0; transform: translate(-7px, 7px); }
+.bc-bl { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; transform: translate(7px, -7px); }
+.bc-br { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; transform: translate(-7px, -7px); }
+.bracket-hover:hover .bc-tl,
+.bracket-hover:hover .bc-tr,
+.bracket-hover:hover .bc-bl,
+.bracket-hover:hover .bc-br {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
 /* Hover lift + glow on feature cards and how-it-works steps */
 .how-step {
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;

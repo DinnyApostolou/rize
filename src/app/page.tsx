@@ -94,32 +94,6 @@ export default function Home() {
     return () => { fadeObserver.disconnect(); statsObserver.disconnect(); };
   }, []);
 
-  // Cursor spotlight effect on cards
-  useEffect(() => {
-    const cards = document.querySelectorAll<HTMLElement>(".spotlight-card");
-    const enter: EventListener[] = [];
-    const move: EventListener[] = [];
-    const leave: EventListener[] = [];
-    cards.forEach((card, i) => {
-      const onMove = (e: Event) => {
-        const me = e as MouseEvent;
-        const rect = card.getBoundingClientRect();
-        const x = me.clientX - rect.left;
-        const y = me.clientY - rect.top;
-        card.style.backgroundImage = `radial-gradient(380px circle at ${x}px ${y}px, rgba(255,255,255,0.055), transparent 65%)`;
-      };
-      const onLeave = () => { card.style.backgroundImage = "none"; };
-      card.addEventListener("mousemove", onMove);
-      card.addEventListener("mouseleave", onLeave);
-      move[i] = onMove; leave[i] = onLeave;
-    });
-    return () => {
-      cards.forEach((card, i) => {
-        card.removeEventListener("mousemove", move[i]);
-        card.removeEventListener("mouseleave", leave[i]);
-      });
-    };
-  }, []);
 
   const faqs = [
     { q: "Who is Rize for?", a: "Rize is built for any athlete who wants to level up their basketball and gym training. Whether you're in middle school, high school or playing at a higher level — if you're serious about improving, Rize is for you." },
@@ -462,9 +436,10 @@ export default function Home() {
                         ))}
                       </div>
                     </div>
-                    <div className="stat-box spotlight-card" style={{ direction: "ltr", background: "rgba(255,255,255,0.03)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: `1px solid ${f.color}40`, borderRadius: "16px", padding: "28px 24px", boxShadow: `0 0 30px ${f.color}15, 0 20px 60px rgba(0,0,0,0.4)`, transition: "transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease" }}
-                      onMouseEnter={e => { const el = e.currentTarget as HTMLDivElement; el.style.transform = "translateY(-8px)"; el.style.boxShadow = `0 0 0 1px ${f.color}, 0 0 40px ${f.color}60, 0 0 80px ${f.color}25, 0 20px 60px rgba(0,0,0,0.5)`; el.style.borderColor = f.color; }}
-                      onMouseLeave={e => { const el = e.currentTarget as HTMLDivElement; el.style.transform = "translateY(0)"; el.style.boxShadow = `0 0 30px ${f.color}15, 0 20px 60px rgba(0,0,0,0.4)`; el.style.borderColor = `${f.color}40`; }}>
+                    <div className="stat-box bracket-hover" style={{ ["--bc" as string]: f.color, position: "relative", direction: "ltr", background: "rgba(255,255,255,0.03)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: `1px solid ${f.color}30`, borderRadius: "16px", padding: "28px 24px", boxShadow: `0 0 30px ${f.color}15, 0 20px 60px rgba(0,0,0,0.4)`, transition: "transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease" } as React.CSSProperties}
+                      onMouseEnter={e => { const el = e.currentTarget as HTMLDivElement; el.style.transform = "translateY(-8px)"; el.style.boxShadow = `0 0 40px ${f.color}40, 0 20px 60px rgba(0,0,0,0.5)`; el.style.borderColor = `${f.color}70`; }}
+                      onMouseLeave={e => { const el = e.currentTarget as HTMLDivElement; el.style.transform = "translateY(0)"; el.style.boxShadow = `0 0 30px ${f.color}15, 0 20px 60px rgba(0,0,0,0.4)`; el.style.borderColor = `${f.color}30`; }}>
+                      <div className="bc-tl" /><div className="bc-tr" /><div className="bc-bl" /><div className="bc-br" />
                       {mockups[i]}
                     </div>
                   </div>
@@ -491,10 +466,11 @@ export default function Home() {
               { n: "03", title: "Get your program", desc: "Personalised day-by-day training plan built for you.", color: "#10B981" },
               { n: "04", title: "Train and track", desc: "Log sessions, earn XP and measure real progress.", color: "#F59E0B" },
             ].map((s) => (
-              <div key={s.n} className="spotlight-card" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "16px", padding: "28px 24px", transition: "transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease", cursor: "default" }}
-                onMouseEnter={e => { const el = e.currentTarget as HTMLDivElement; el.style.transform = "translateY(-6px)"; el.style.boxShadow = `0 0 0 1px ${s.color}, 0 0 30px ${s.color}50, 0 0 60px ${s.color}20`; el.style.borderColor = s.color; }}
+              <div key={s.n} className="bracket-hover" style={{ ["--bc" as string]: s.color, position: "relative", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "16px", padding: "28px 24px", transition: "transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease", cursor: "default" } as React.CSSProperties}
+                onMouseEnter={e => { const el = e.currentTarget as HTMLDivElement; el.style.transform = "translateY(-6px)"; el.style.boxShadow = `0 0 30px ${s.color}30, 0 0 60px ${s.color}10`; el.style.borderColor = `${s.color}40`; }}
                 onMouseLeave={e => { const el = e.currentTarget as HTMLDivElement; el.style.transform = "translateY(0)"; el.style.boxShadow = "none"; el.style.borderColor = "rgba(255,255,255,0.06)"; }}
               >
+                <div className="bc-tl" /><div className="bc-tr" /><div className="bc-bl" /><div className="bc-br" />
                 <div style={{ fontSize: "28px", fontWeight: 900, color: s.color, textShadow: `0 0 20px ${s.color}80`, marginBottom: "16px", fontVariantNumeric: "tabular-nums" }}>{s.n}</div>
                 <div style={{ width: "24px", height: "2px", background: s.color, boxShadow: `0 0 8px ${s.color}`, marginBottom: "16px", borderRadius: "2px" }} />
                 <div style={{ fontSize: "16px", fontWeight: 700, marginBottom: "10px" }}>{s.title}</div>
