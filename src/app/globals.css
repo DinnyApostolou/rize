@@ -64,6 +64,10 @@ input, textarea { font-family: inherit; outline: none; }
 .dash-main { margin-left: 240px; }
 .inner-main { margin-left: 220px; }
 
+/* Hero video: desktop shows YouTube, mobile shows HTML5 video */
+.hero-video-wrap { display: block; }
+.hero-mobile-bg { display: none; }
+
 /* ── Mobile responsive ─────────────────────── */
 @media (max-width: 768px) {
   /* Landing page */
