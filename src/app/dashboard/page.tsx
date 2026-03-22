@@ -287,14 +287,14 @@ export default function Dashboard() {
         <div className="dash-stats" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "12px", marginBottom: "20px" }}>
           {[
             { label: "Day Streak", value: streak, unit: streak === 1 ? "day" : "days", color: "#F59E0B", badge: streakBadge },
-            { label: "Drills Done", value: profile?.drills_completed || 0, unit: "total", color: "#0EA5E9", badge: null },
+            { label: "Drills Done", value: profile?.drills_completed || 0, unit: "total", color: "#0074FF", badge: null },
             { label: "XP Earned", value: xp.toLocaleString(), unit: "points", color: "#8B5CF6", badge: null },
-            { label: "This Week", value: `${weekDrills}/${weekGoal}`, unit: "drills", color: "#10B981", badge: weekComplete ? "DONE" : null },
+            { label: "This Week", value: `${weekDrills}/${weekGoal}`, unit: "drills", color: "#00FF85", badge: weekComplete ? "DONE" : null },
           ].map((s, i) => (
-            <div key={i} style={{
-              background: "var(--bg2)", border: "1px solid var(--border)",
-              borderRadius: "12px", padding: "20px",
+            <div key={i} className="glass-card" style={{
+              padding: "20px",
               borderTop: `2px solid ${s.color}`,
+              boxShadow: `0 0 20px ${s.color}22, 0 8px 32px rgba(0,0,0,0.4)`,
             }}>
               <div style={{ fontSize: "10px", color: "var(--text3)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: "12px" }}>{s.label}</div>
               <div style={{ fontSize: "28px", fontWeight: 900, letterSpacing: "-1px", color: s.color, lineHeight: 1, marginBottom: "6px" }}>{s.value}</div>

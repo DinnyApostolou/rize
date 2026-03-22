@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800&family=Barlow:wght@300;400;500;600;700&display=swap');
+
 * {
   margin: 0;
   padding: 0;
@@ -5,33 +7,57 @@
 }
 
 :root {
-  --bg: #0a0a0a;
-  --bg2: #111111;
-  --bg3: #1a1a1a;
-  --border: #222222;
-  --text: #ffffff;
-  --text2: #a0a0a0;
-  --text3: #555555;
-  --accent: #0EA5E9;
+  --bg: #0A0F14;
+  --bg2: #0f1923;
+  --bg3: #172033;
+  --border: #1E3A5F;
+  --text: #F8FAFC;
+  --text2: #94A3B8;
+  --text3: #4a6080;
+  --accent: #0074FF;
   --accent2: #38BDF8;
-  --green: #00e676;
+  --green: #00FF85;
+  --gold: #FFDD00;
+  --glow-blue: 0 0 25px rgba(0,116,255,0.4), 0 0 60px rgba(0,116,255,0.15);
+  --glow-gold: 0 0 20px rgba(255,221,0,0.4), 0 0 50px rgba(255,221,0,0.15);
 }
 
 html, body {
   background: var(--bg);
   color: var(--text);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'Barlow', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+}
+
+/* Headings use Barlow Condensed */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.02em;
+}
+
+/* Glassmorphism card */
+.glass-card {
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+.glass-card:hover {
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4), var(--glow-blue);
+  transform: translateY(-2px);
 }
 
 a { color: inherit; text-decoration: none; }
 button { cursor: pointer; border: none; outline: none; font-family: inherit; }
 input, textarea { font-family: inherit; outline: none; }
 
-::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; opacity: 0.5; }
 
 @keyframes flowGradient {
   0% { background-position: 0% 50%; }
