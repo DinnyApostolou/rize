@@ -89,6 +89,9 @@ input, textarea { font-family: inherit; outline: none; }
   .rize-sidebar { display: none !important; }
   .rize-mobile-nav { display: flex !important; }
 
+  /* Prevent layout flash on navigation */
+  .dash-main, .inner-main { transition: none !important; }
+
   /* Dashboard & inner pages — full width */
   .dash-main { margin-left: 0 !important; padding: 24px 16px 100px !important; max-width: 100% !important; }
   .dash-greeting { font-size: 26px !important; letter-spacing: -1px !important; }
