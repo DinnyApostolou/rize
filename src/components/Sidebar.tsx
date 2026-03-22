@@ -31,7 +31,8 @@ export default function Sidebar({ username, level, xp, isSubscribed }: {
   }
 
   return (
-    <aside style={{
+    <>
+    <aside className="rize-sidebar" style={{
       width: "220px", flexShrink: 0,
       background: "var(--bg2)", borderRight: "1px solid var(--border)",
       position: "fixed", top: 0, left: 0, bottom: 0,
@@ -103,5 +104,26 @@ export default function Sidebar({ username, level, xp, isSubscribed }: {
         </button>
       </div>
     </aside>
+
+    {/* Mobile bottom nav */}
+    <nav className="rize-mobile-nav" style={{
+      display: "none", position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 100,
+      background: "var(--bg2)", borderTop: "1px solid var(--border)",
+      padding: "8px 0 20px", justifyContent: "space-around", alignItems: "center",
+    }}>
+      {[
+        { href: "/dashboard", icon: "⊞", label: "Home" },
+        { href: "/drills", icon: "🏀", label: "Drills" },
+        { href: "/strength", icon: "⚡", label: "Strength" },
+        { href: "/nutrition", icon: "◈", label: "Nutrition" },
+        { href: "/profile", icon: "○", label: "Profile" },
+      ].map(n => (
+        <Link key={n.href} href={n.href} style={{ textDecoration: "none", display: "flex", flexDirection: "column", alignItems: "center", gap: "3px", color: pathname === n.href ? "var(--accent)" : "var(--text3)", minWidth: "52px" }}>
+          <span style={{ fontSize: "20px" }}>{n.icon}</span>
+          <span style={{ fontSize: "10px", fontWeight: 600 }}>{n.label}</span>
+        </Link>
+      ))}
+    </nav>
+    </>
   );
 }

@@ -188,8 +188,8 @@ export default function Home() {
         padding: "140px 24px 100px", position: "relative", overflow: "hidden",
         background: "#050810",
       }}>
-        {/* YouTube video background */}
-        <div style={{ position: "absolute", inset: 0, zIndex: 0, overflow: "hidden", pointerEvents: "none" }}>
+        {/* YouTube video background — desktop only */}
+        <div className="hero-video-wrap" style={{ position: "absolute", inset: 0, zIndex: 0, overflow: "hidden", pointerEvents: "none" }}>
           <iframe
             src="https://www.youtube.com/embed/tWU8CXFLOgk?autoplay=1&mute=1&loop=1&playlist=tWU8CXFLOgk&controls=0&showinfo=0&rel=0&playsinline=1&modestbranding=1&iv_load_policy=3&disablekb=1&fs=0&start=0"
             allow="autoplay; fullscreen"
@@ -208,9 +208,12 @@ export default function Home() {
               pointerEvents: "none",
             }}
           />
-          {/* Blocks YouTube UI overlays on mobile */}
-          <div style={{ position: "absolute", inset: 0, zIndex: 1, background: "transparent" }} />
         </div>
+        {/* Mobile fallback background — no YouTube */}
+        <div className="hero-mobile-bg" style={{
+          display: "none", position: "absolute", inset: 0, zIndex: 0,
+          background: "radial-gradient(ellipse at 50% 40%, rgba(14,165,233,0.12) 0%, #050810 70%)",
+        }} />
         {/* Overlay */}
         <div style={{
           position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none",

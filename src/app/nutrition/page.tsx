@@ -73,7 +73,7 @@ export default function NutritionPage() {
     <div style={{ display: "flex", minHeight: "100vh", background: "var(--bg)", color: "var(--text)" }}>
       <Sidebar />
 
-      <main style={{ marginLeft: "220px", flex: 1, padding: "48px 52px", maxWidth: "900px" }}>
+      <main className="inner-main" style={{ marginLeft: "220px", flex: 1, padding: "48px 52px", maxWidth: "900px" }}>
         <div style={{ marginBottom: "40px" }}>
           <p style={{ fontSize: "11px", color: "var(--accent)", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "8px" }}>Nutrition</p>
           <h1 style={{ fontSize: "32px", fontWeight: 900, letterSpacing: "-1.5px", lineHeight: 1, marginBottom: "8px" }}>Fuel Like An Athlete</h1>

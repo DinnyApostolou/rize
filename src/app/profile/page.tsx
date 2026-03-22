@@ -168,7 +168,7 @@ export default function ProfilePage() {
     <div style={{ display: "flex", minHeight: "100vh", background: "var(--bg)", color: "var(--text)" }}>
       <Sidebar username={displayedName} level={level} xp={xp} isSubscribed={profile.is_subscribed} />
 
-      <main style={{ marginLeft: "220px", flex: 1, padding: "48px 52px 80px", maxWidth: "760px" }}>
+      <main className="inner-main" style={{ marginLeft: "220px", flex: 1, padding: "48px 52px 80px", maxWidth: "760px" }}>
 
         {/* Header */}
         <div style={{ marginBottom: "32px" }}>

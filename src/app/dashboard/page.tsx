@@ -123,7 +123,7 @@ export default function Dashboard() {
     <div style={{ display: "flex", minHeight: "100vh", background: "var(--bg)", color: "var(--text)" }}>
 
       {/* SIDEBAR */}
-      <aside style={{
+      <aside className="rize-sidebar" style={{
         width: "240px", flexShrink: 0,
         background: "var(--bg2)", borderRight: "1px solid var(--border)",
         position: "fixed", top: 0, left: 0, bottom: 0,
@@ -189,12 +189,32 @@ export default function Dashboard() {
         </div>
       </aside>
 
+      {/* MOBILE BOTTOM NAV */}
+      <nav className="rize-mobile-nav" style={{
+        display: "none", position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 100,
+        background: "var(--bg2)", borderTop: "1px solid var(--border)",
+        padding: "8px 0 20px", justifyContent: "space-around", alignItems: "center",
+      }}>
+        {[
+          { href: "/dashboard", icon: "⊞", label: "Home" },
+          { href: "/drills", icon: "🏀", label: "Drills" },
+          { href: "/strength", icon: "⚡", label: "Strength" },
+          { href: "/nutrition", icon: "◈", label: "Nutrition" },
+          { href: "/profile", icon: "○", label: "Profile" },
+        ].map(n => (
+          <Link key={n.href} href={n.href} style={{ textDecoration: "none", display: "flex", flexDirection: "column", alignItems: "center", gap: "3px", color: n.href === "/dashboard" ? "var(--accent)" : "var(--text3)", minWidth: "52px" }}>
+            <span style={{ fontSize: "20px" }}>{n.icon}</span>
+            <span style={{ fontSize: "10px", fontWeight: 600, letterSpacing: "0.3px" }}>{n.label}</span>
+          </Link>
+        ))}
+      </nav>
+
       {/* MAIN CONTENT */}
-      <main style={{ marginLeft: "240px", flex: 1, padding: "40px 48px", maxWidth: "1000px" }}>
+      <main className="dash-main" style={{ marginLeft: "240px", flex: 1, padding: "40px 48px", maxWidth: "1000px" }}>
 
         {/* Greeting */}
         <div style={{ marginBottom: "40px" }}>
-          <h1 style={{ fontSize: "36px", fontWeight: 900, letterSpacing: "-2px", lineHeight: 1, marginBottom: "8px" }}>
+          <h1 className="dash-greeting" style={{ fontSize: "36px", fontWeight: 900, letterSpacing: "-2px", lineHeight: 1, marginBottom: "8px" }}>
             {greeting}, {displayName || profile?.username}<span style={{ color: "var(--accent)" }}>.</span>
           </h1>
           {(position || skillLevel) && (
@@ -220,7 +240,7 @@ export default function Dashboard() {
                 {xpInLevel.toLocaleString()} / 1,000 XP
               </span>
             </div>
-            <span style={{ fontSize: "12px", color: "var(--accent)", fontWeight: 700 }}>
+            <span className="dash-xp-right" style={{ fontSize: "12px", color: "var(--accent)", fontWeight: 700 }}>
               {(1000 - xpInLevel).toLocaleString()} XP to Level {level + 1}
             </span>
           </div>
@@ -238,7 +258,7 @@ export default function Dashboard() {
         </div>
 
         {/* Stat cards */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "12px", marginBottom: "20px" }}>
+        <div className="dash-stats" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "12px", marginBottom: "20px" }}>
           {[
             { label: "Day Streak", value: streak, unit: streak === 1 ? "day" : "days", color: "#F59E0B", badge: streakBadge },
             { label: "Drills Done", value: profile?.drills_completed || 0, unit: "total", color: "#0EA5E9", badge: null },
@@ -288,7 +308,7 @@ export default function Dashboard() {
         )}
 
         {/* Main 2-col */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "20px" }}>
+        <div className="dash-2col" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "20px" }}>
 
           {/* Today's Plan */}
           <div style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: "12px", overflow: "hidden" }}>
@@ -360,7 +380,7 @@ export default function Dashboard() {
         </div>
 
         {/* Streak + Quote */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "20px" }}>
+        <div className="dash-2col" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "20px" }}>
 
           {/* Streak */}
           <div style={{
