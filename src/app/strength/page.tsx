@@ -92,7 +92,7 @@ export default function StrengthPage() {
       const { data } = await supabase.from("profiles").select("*").eq("id", user.id).single();
       setUserProfile(data);
       const today = new Date().toDateString();
-      if (data?.last_drill_date === today) setLoggedToday(true);
+      if ((data as any)?.last_drill_date === today) setLoggedToday(true);
     }
     load();
   }, [router]);
@@ -113,7 +113,8 @@ export default function StrengthPage() {
         newStreak = lastDate === yesterday.toDateString() ? newStreak + 1 : 1;
       }
       const XP_REWARD = 150;
-      await supabase.from("profiles").update({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await (supabase.from("profiles") as any).update({
         xp: (userProfile.xp || 0) + XP_REWARD,
         drills_completed: (userProfile.drills_completed || 0) + 1,
         streak: newStreak,
