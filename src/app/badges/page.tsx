@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import Link from "next/link";
+import Sidebar from "@/components/Sidebar";
 
 const BADGES = [
   { id: 1, name: "First Step", icon: "👟", desc: "Complete your first drill", rarity: "Common", earned: true },
@@ -46,14 +46,10 @@ export default function BadgesPage() {
   const earned = BADGES.filter(b => b.earned).length;
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", color: "var(--text)" }}>
-      <nav style={{ background: "var(--bg2)", borderBottom: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 32px", height: "64px" }}>
-        <Link href="/dashboard" style={{ fontSize: "20px", fontWeight: 900, letterSpacing: "-1px" }}>RZ<span style={{ color: "var(--accent)" }}>.</span></Link>
-        <span style={{ fontWeight: 700 }}>🏆 Badges</span>
-        <Link href="/dashboard"><button style={{ background: "none", border: "1px solid var(--border)", color: "var(--text2)", padding: "6px 16px", borderRadius: "8px", fontSize: "13px" }}>← Dashboard</button></Link>
-      </nav>
+    <div style={{ display: "flex", minHeight: "100vh", background: "var(--bg)", color: "var(--text)" }}>
+      <Sidebar />
 
-      <div style={{ maxWidth: "900px", margin: "0 auto", padding: "40px 24px" }}>
+      <main className="inner-main" style={{ flex: 1, padding: "48px 52px", maxWidth: "900px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "32px" }}>
           <div>
             <h1 style={{ fontSize: "32px", fontWeight: 900, letterSpacing: "-1px" }}>Badge Collection</h1>
@@ -98,7 +94,7 @@ export default function BadgesPage() {
             </div>
           ))}
         </div>
-      </div>
+      </main>
     </div>
   );
 }
