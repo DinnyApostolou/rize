@@ -520,21 +520,29 @@ export default function Home() {
           <h2 style={{ fontSize: "clamp(24px, 3vw, 36px)", fontWeight: 900, letterSpacing: "-1px", marginBottom: "56px" }}>What athletes say</h2>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "20px" }}>
             {[
-              { name: "Marcus T.", age: 19, text: "The drill programs are actually structured. Not random videos — it tells me exactly what to do each day. My handles improved noticeably in 3 weeks." },
-              { name: "Jordan L.", age: 21, text: "The gym program is built for basketball, not just for looks. I'm jumping higher and moving faster. Worth every dollar." },
-              { name: "Aiden K.", age: 17, text: "YouTube has no structure. Rize gave me an actual plan. I know exactly what to train every single day." },
+              { name: "Marcus T.", age: 19, text: "The drill programs are actually structured. Not random videos — it tells me exactly what to do each day. My handles improved noticeably in 3 weeks.", tag: "Ball Handling" },
+              { name: "Jordan L.", age: 21, text: "The gym program is built for basketball, not just for looks. I'm jumping higher and moving faster. Worth every dollar.", tag: "Strength" },
+              { name: "Aiden K.", age: 17, text: "YouTube has no structure. Rize gave me an actual plan. I know exactly what to train every single day.", tag: "Programming" },
             ].map((t, i) => (
               <div key={i} style={{
-                background: "var(--bg3)", border: "1px solid var(--border)",
-                borderRadius: "12px", padding: "28px 24px",
-              }}>
-                <div style={{ display: "flex", gap: "4px", marginBottom: "16px" }}>
-                  {[1,2,3,4,5].map(s => (
-                    <span key={s} style={{ color: "#FBBF24", fontSize: "14px" }}>&#9733;</span>
-                  ))}
+                background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)",
+                borderRadius: "16px", padding: "28px 24px",
+                transition: "transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease",
+                cursor: "default",
+              }}
+                onMouseEnter={e => { const el = e.currentTarget as HTMLDivElement; el.style.transform = "translateY(-4px)"; el.style.boxShadow = "0 12px 40px rgba(0,0,0,0.4), 0 0 30px rgba(0,116,255,0.1)"; el.style.borderColor = "rgba(0,116,255,0.25)"; }}
+                onMouseLeave={e => { const el = e.currentTarget as HTMLDivElement; el.style.transform = "translateY(0)"; el.style.boxShadow = "none"; el.style.borderColor = "rgba(255,255,255,0.06)"; }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>
+                  <div style={{ display: "flex", gap: "3px" }}>
+                    {[1,2,3,4,5].map(s => (
+                      <span key={s} style={{ color: "#FBBF24", fontSize: "13px" }}>&#9733;</span>
+                    ))}
+                  </div>
+                  <span style={{ fontSize: "10px", color: "var(--accent)", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase", background: "rgba(0,116,255,0.1)", border: "1px solid rgba(0,116,255,0.2)", padding: "3px 8px", borderRadius: "4px" }}>{t.tag}</span>
                 </div>
                 <p style={{ fontSize: "14px", color: "var(--text2)", lineHeight: 1.8, marginBottom: "20px" }}>&ldquo;{t.text}&rdquo;</p>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid rgba(255,255,255,0.05)", paddingTop: "16px" }}>
                   <span style={{ fontWeight: 700, fontSize: "13px" }}>{t.name}</span>
                   <span style={{ color: "var(--text3)", fontSize: "12px" }}>Age {t.age}</span>
                 </div>
@@ -565,28 +573,63 @@ export default function Home() {
 
       {/* FINAL CTA */}
       <section className="cta-section fade-up" style={{
-        padding: "140px 48px", textAlign: "center", borderTop: "1px solid var(--border)",
+        padding: "160px 48px", textAlign: "center", borderTop: "1px solid var(--border)",
         position: "relative", overflow: "hidden",
+        background: "radial-gradient(ellipse 80% 60% at 50% 100%, rgba(0,116,255,0.1) 0%, transparent 70%)",
       }}>
-        <div style={{
-          position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)",
-          width: "600px", height: "400px",
-          background: "radial-gradient(ellipse, rgba(14,165,233,0.08) 0%, transparent 70%)",
-          pointerEvents: "none",
-        }} />
-        <h2 style={{ fontSize: "clamp(32px, 5vw, 64px)", fontWeight: 900, letterSpacing: "-3px", marginBottom: "20px", lineHeight: 0.95, position: "relative" }}>
-          READY TO RIZE?
-        </h2>
-        <p style={{ color: "var(--text2)", fontSize: "16px", maxWidth: "380px", margin: "0 auto 40px", lineHeight: 1.7, position: "relative" }}>
-          Start free. No credit card. Cancel anytime.
-        </p>
-        <Link href="/signup" style={{ position: "relative" }}>
-          <button style={{ background: "var(--accent)", color: "#fff", padding: "14px 40px", borderRadius: "6px", fontSize: "15px", fontWeight: 700, cursor: "pointer", transition: "opacity 0.2s" }}
-            onMouseEnter={e => ((e.currentTarget as HTMLButtonElement).style.opacity = "0.85")}
-            onMouseLeave={e => ((e.currentTarget as HTMLButtonElement).style.opacity = "1")}>
-            Get Started Free →
-          </button>
-        </Link>
+        {/* Animated glow orbs */}
+        <div style={{ position: "absolute", top: "20%", left: "15%", width: "400px", height: "400px", borderRadius: "50%", background: "radial-gradient(circle, rgba(0,116,255,0.12) 0%, transparent 70%)", filter: "blur(60px)", pointerEvents: "none", animation: "orbFloat1 12s ease-in-out infinite" }} />
+        <div style={{ position: "absolute", bottom: "10%", right: "10%", width: "350px", height: "350px", borderRadius: "50%", background: "radial-gradient(circle, rgba(124,58,237,0.1) 0%, transparent 70%)", filter: "blur(60px)", pointerEvents: "none", animation: "orbFloat2 14s ease-in-out infinite" }} />
+
+        <div style={{ position: "relative", zIndex: 1 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", background: "rgba(0,116,255,0.08)", border: "1px solid rgba(0,116,255,0.2)", borderRadius: "999px", padding: "6px 16px", marginBottom: "28px" }}>
+            <div style={{ width: "6px", height: "6px", borderRadius: "50%", background: "var(--accent)", boxShadow: "0 0 8px var(--accent)", animation: "pulse 2s ease-in-out infinite" }} />
+            <span style={{ color: "var(--accent)", fontSize: "11px", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase" }}>Join 500+ Athletes</span>
+          </div>
+          <h2 style={{ fontSize: "clamp(36px, 6vw, 80px)", fontWeight: 900, letterSpacing: "-3px", marginBottom: "20px", lineHeight: 0.9 }}>
+            READY TO<br />
+            <span style={{
+              background: "linear-gradient(90deg, #0074FF 0%, #7C3AED 40%, #38BDF8 80%, #0074FF 100%)",
+              backgroundSize: "200% auto",
+              WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+              animation: "flowGradient 4s linear infinite",
+              display: "inline-block",
+            }}>RIZE?</span>
+          </h2>
+          <p style={{ color: "var(--text2)", fontSize: "17px", maxWidth: "400px", margin: "0 auto 48px", lineHeight: 1.7 }}>
+            Start free. No credit card required. Cancel anytime.
+          </p>
+          <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
+            <Link href="/signup">
+              <button style={{
+                background: "var(--accent)", color: "#fff",
+                padding: "16px 44px", borderRadius: "8px",
+                fontSize: "15px", fontWeight: 800,
+                cursor: "pointer", transition: "all 0.2s",
+                boxShadow: "0 0 0 0 rgba(0,116,255,0.5), 0 4px 24px rgba(0,116,255,0.4)",
+                animation: "ctaPulse 2.5s ease-in-out infinite",
+                letterSpacing: "0.3px",
+              }}
+                onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.transform = "translateY(-2px)"; b.style.boxShadow = "0 8px 32px rgba(0,116,255,0.5)"; }}
+                onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.transform = "translateY(0)"; b.style.boxShadow = "0 4px 24px rgba(0,116,255,0.4)"; }}>
+                Start Training Free →
+              </button>
+            </Link>
+            <a href="#pricing">
+              <button style={{
+                background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)",
+                color: "var(--text2)", padding: "16px 32px", borderRadius: "8px",
+                fontSize: "15px", fontWeight: 600, cursor: "pointer",
+                backdropFilter: "blur(8px)", transition: "all 0.2s",
+              }}
+                onMouseEnter={e => { const b = e.currentTarget as HTMLButtonElement; b.style.background = "rgba(255,255,255,0.09)"; b.style.color = "#fff"; }}
+                onMouseLeave={e => { const b = e.currentTarget as HTMLButtonElement; b.style.background = "rgba(255,255,255,0.05)"; b.style.color = "var(--text2)"; }}>
+                View Pricing
+              </button>
+            </a>
+          </div>
+        </div>
       </section>
 
       {/* FOOTER */}
