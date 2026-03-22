@@ -53,6 +53,7 @@ export default function Dashboard() {
   const [weekDrills, setWeekDrills] = useState(0);
   const [position, setPosition] = useState<string | null>(null);
   const [skillLevel, setSkillLevel] = useState<string | null>(null);
+  const [displayName, setDisplayName] = useState<string>("");
   const quote = QUOTES[new Date().getDay() % QUOTES.length];
   const hour = new Date().getHours();
   const greeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
@@ -85,6 +86,7 @@ export default function Dashboard() {
       setWeekDrills(parseInt(localStorage.getItem("rize_week_drills") || "0"));
       setPosition(localStorage.getItem("rize_position"));
       setSkillLevel(localStorage.getItem("rize_skill_level"));
+      setDisplayName(localStorage.getItem("rize_display_name") || "");
     }
     load();
   }, [router]);
@@ -192,11 +194,8 @@ export default function Dashboard() {
 
         {/* Greeting */}
         <div style={{ marginBottom: "40px" }}>
-          <p style={{ fontSize: "12px", color: "var(--accent)", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "8px" }}>
-            {greeting}
-          </p>
           <h1 style={{ fontSize: "36px", fontWeight: 900, letterSpacing: "-2px", lineHeight: 1, marginBottom: "8px" }}>
-            {profile?.username}<span style={{ color: "var(--accent)" }}>.</span>
+            {greeting}, {displayName || profile?.username}<span style={{ color: "var(--accent)" }}>.</span>
           </h1>
           {(position || skillLevel) && (
             <div style={{ fontSize: "13px", color: "var(--text2)" }}>
