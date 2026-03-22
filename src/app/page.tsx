@@ -187,7 +187,7 @@ export default function Home() {
         minHeight: "100vh", display: "flex", flexDirection: "column",
         alignItems: "center", justifyContent: "center", textAlign: "center",
         padding: "140px 24px 100px", position: "relative", overflow: "hidden",
-        background: "#050810",
+        background: "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,116,255,0.12) 0%, rgba(10,15,20,0) 60%), #0A0F14",
       }}>
         {/* Interactive particle background */}
         <ParticleBackground />
@@ -239,7 +239,14 @@ export default function Home() {
             maxWidth: "860px",
           }}>
             THE TRAINING APP<br />
-            <span style={{ background: "linear-gradient(90deg, #0EA5E9, #38BDF8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+            <span style={{
+              background: "linear-gradient(90deg, #0074FF 0%, #7C3AED 40%, #38BDF8 80%, #0074FF 100%)",
+              backgroundSize: "200% auto",
+              WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+              animation: "flowGradient 4s linear infinite",
+              display: "inline-block",
+            }}>
               BUILT FOR ATHLETES
             </span>
           </h1>
