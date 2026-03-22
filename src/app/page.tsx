@@ -209,33 +209,37 @@ export default function Home() {
             }}
           />
         </div>
-        {/* Mobile video background — HTML5 autoplay (works on iOS/Android) */}
-        <div className="hero-mobile-bg" style={{ position: "absolute", inset: 0, zIndex: 0, overflow: "hidden" }}>
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            style={{
-              position: "absolute",
-              top: "50%", left: "50%",
-              transform: "translate(-50%, -50%)",
-              width: "auto", height: "100%",
-              minWidth: "100%", minHeight: "100%",
-              objectFit: "cover",
-              filter: "brightness(0.45) saturate(1.1)",
-              pointerEvents: "none",
-            }}
-          >
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-man-dunking-the-ball-in-a-basketball-hoop-at-night-13734-large.mp4" type="video/mp4" />
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-skilled-basketball-player-shooting-baskets-training-alone-44448-large.mp4" type="video/mp4" />
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-basketball-player-on-a-dark-court-in-3d-33987-large.mp4" type="video/mp4" />
-          </video>
+        {/* Animated glowing orbs — visible on mobile, layered under video on desktop */}
+        <div className="hero-mobile-bg" style={{ position: "absolute", inset: 0, zIndex: 0, overflow: "hidden", pointerEvents: "none" }}>
+          {/* Orb 1 — electric blue, top left */}
+          <div style={{
+            position: "absolute", top: "-10%", left: "-5%",
+            width: "600px", height: "600px", borderRadius: "50%",
+            background: "radial-gradient(circle, rgba(0,116,255,0.55) 0%, rgba(0,116,255,0.15) 50%, transparent 70%)",
+            filter: "blur(60px)",
+            animation: "orbFloat1 12s ease-in-out infinite",
+          }} />
+          {/* Orb 2 — purple, top right */}
+          <div style={{
+            position: "absolute", top: "-15%", right: "-10%",
+            width: "700px", height: "700px", borderRadius: "50%",
+            background: "radial-gradient(circle, rgba(124,58,237,0.45) 0%, rgba(124,58,237,0.12) 50%, transparent 70%)",
+            filter: "blur(70px)",
+            animation: "orbFloat2 15s ease-in-out infinite",
+          }} />
+          {/* Orb 3 — cyan, bottom center */}
+          <div style={{
+            position: "absolute", bottom: "-20%", left: "30%",
+            width: "500px", height: "500px", borderRadius: "50%",
+            background: "radial-gradient(circle, rgba(0,212,255,0.3) 0%, rgba(0,116,255,0.08) 50%, transparent 70%)",
+            filter: "blur(80px)",
+            animation: "orbFloat3 18s ease-in-out infinite",
+          }} />
         </div>
         {/* Overlay */}
         <div style={{
           position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none",
-          background: "linear-gradient(to bottom, rgba(5,8,16,0.4) 0%, rgba(5,8,16,0.2) 40%, rgba(5,8,16,0.75) 100%)",
+          background: "linear-gradient(to bottom, rgba(10,15,20,0.5) 0%, rgba(10,15,20,0.1) 40%, rgba(10,15,20,0.8) 100%)",
         }} />
 
         {/* Hero content */}

@@ -74,6 +74,24 @@ input, textarea { font-family: inherit; outline: none; }
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes orbFloat1 {
+  0%, 100% { transform: translate(0px, 0px) scale(1); }
+  25% { transform: translate(40px, -30px) scale(1.06); }
+  50% { transform: translate(20px, 40px) scale(0.94); }
+  75% { transform: translate(-30px, 20px) scale(1.03); }
+}
+@keyframes orbFloat2 {
+  0%, 100% { transform: translate(0px, 0px) scale(1); }
+  25% { transform: translate(-35px, 25px) scale(0.96); }
+  50% { transform: translate(25px, -35px) scale(1.07); }
+  75% { transform: translate(30px, 30px) scale(0.97); }
+}
+@keyframes orbFloat3 {
+  0%, 100% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(20px, 30px) scale(1.04); }
+  66% { transform: translate(-25px, -20px) scale(0.96); }
+}
+
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
@@ -101,9 +119,9 @@ input, textarea { font-family: inherit; outline: none; }
 .dash-main { margin-left: 240px; }
 .inner-main { margin-left: 220px; }
 
-/* Hero video: desktop shows YouTube, mobile shows HTML5 video */
+/* Hero: orbs always visible, YouTube video layered on top on desktop */
 .hero-video-wrap { display: block; }
-.hero-mobile-bg { display: none; }
+.hero-mobile-bg { display: block; }
 
 /* ── Mobile responsive ─────────────────────── */
 @media (max-width: 768px) {
@@ -115,7 +133,7 @@ input, textarea { font-family: inherit; outline: none; }
 
   .hero-section { padding: 110px 20px 70px !important; }
   .hero-video-wrap { display: none !important; }
-  .hero-mobile-bg { display: block !important; }
+  .hero-mobile-bg { display: block !important; opacity: 1 !important; }
   .stats-bar { gap: 24px !important; margin-top: 56px !important; padding-top: 32px !important; }
 
   .features-section { padding: 72px 20px !important; }
