@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import ParticleBackground from "@/components/ParticleBackground";
 
@@ -19,6 +19,52 @@ function useCountUp(target: number, duration = 1500, start = false) {
     return () => clearInterval(timer);
   }, [start, target, duration]);
   return count;
+}
+
+function OrbLayer() {
+  const orb1Ref = useRef<HTMLDivElement>(null);
+  const orb2Ref = useRef<HTMLDivElement>(null);
+  const orb3Ref = useRef<HTMLDivElement>(null);
+  const mouse = useRef({ x: 0, y: 0 });
+  const pos = useRef({ x1: -100, y1: -150, x2: 600, y2: -200, x3: 400, y3: 400 });
+
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => { mouse.current = { x: e.clientX, y: e.clientY }; };
+    window.addEventListener("mousemove", onMove);
+    let raf: number;
+    const animate = () => {
+      const mx = mouse.current.x;
+      const my = mouse.current.y;
+      const lerp = 0.04;
+      pos.current.x1 += (mx * 0.3 - 150 - pos.current.x1) * lerp;
+      pos.current.y1 += (my * 0.2 - 200 - pos.current.y1) * lerp;
+      pos.current.x2 += (window.innerWidth - mx * 0.4 - 300 - pos.current.x2) * lerp;
+      pos.current.y2 += (my * 0.15 - 250 - pos.current.y2) * lerp;
+      pos.current.x3 += (mx * 0.25 + 100 - pos.current.x3) * (lerp * 0.7);
+      pos.current.y3 += (window.innerHeight * 0.6 + my * 0.1 - pos.current.y3) * (lerp * 0.7);
+      if (orb1Ref.current) { orb1Ref.current.style.left = pos.current.x1 + "px"; orb1Ref.current.style.top = pos.current.y1 + "px"; }
+      if (orb2Ref.current) { orb2Ref.current.style.left = pos.current.x2 + "px"; orb2Ref.current.style.top = pos.current.y2 + "px"; }
+      if (orb3Ref.current) { orb3Ref.current.style.left = pos.current.x3 + "px"; orb3Ref.current.style.top = pos.current.y3 + "px"; }
+      raf = requestAnimationFrame(animate);
+    };
+    animate();
+    return () => { window.removeEventListener("mousemove", onMove); cancelAnimationFrame(raf); };
+  }, []);
+
+  const orbStyle = (color: string, size: number, blur: number): React.CSSProperties => ({
+    position: "absolute", width: size, height: size, borderRadius: "50%",
+    background: `radial-gradient(circle, ${color} 0%, transparent 70%)`,
+    filter: `blur(${blur}px)`, pointerEvents: "none", transform: "translate(-50%, -50%)",
+    transition: "none",
+  });
+
+  return (
+    <div style={{ position: "absolute", inset: 0, zIndex: 0, overflow: "hidden", pointerEvents: "none" }}>
+      <div ref={orb1Ref} style={orbStyle("rgba(0,116,255,0.6)", 700, 60)} />
+      <div ref={orb2Ref} style={orbStyle("rgba(124,58,237,0.5)", 800, 70)} />
+      <div ref={orb3Ref} style={orbStyle("rgba(0,212,255,0.35)", 500, 80)} />
+    </div>
+  );
 }
 
 export default function Home() {
@@ -191,33 +237,8 @@ export default function Home() {
       }}>
         {/* Interactive particle background */}
         <ParticleBackground />
-        {/* Animated glowing orbs — visible on mobile, layered under video on desktop */}
-        <div className="hero-mobile-bg" style={{ position: "absolute", inset: 0, zIndex: 0, overflow: "hidden", pointerEvents: "none" }}>
-          {/* Orb 1 — electric blue, top left */}
-          <div style={{
-            position: "absolute", top: "-10%", left: "-5%",
-            width: "600px", height: "600px", borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(0,116,255,0.55) 0%, rgba(0,116,255,0.15) 50%, transparent 70%)",
-            filter: "blur(60px)",
-            animation: "orbFloat1 12s ease-in-out infinite",
-          }} />
-          {/* Orb 2 — purple, top right */}
-          <div style={{
-            position: "absolute", top: "-15%", right: "-10%",
-            width: "700px", height: "700px", borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(124,58,237,0.45) 0%, rgba(124,58,237,0.12) 50%, transparent 70%)",
-            filter: "blur(70px)",
-            animation: "orbFloat2 15s ease-in-out infinite",
-          }} />
-          {/* Orb 3 — cyan, bottom center */}
-          <div style={{
-            position: "absolute", bottom: "-20%", left: "30%",
-            width: "500px", height: "500px", borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(0,212,255,0.3) 0%, rgba(0,116,255,0.08) 50%, transparent 70%)",
-            filter: "blur(80px)",
-            animation: "orbFloat3 18s ease-in-out infinite",
-          }} />
-        </div>
+        {/* Animated glowing orbs — follow cursor */}
+        <OrbLayer />
         {/* Overlay */}
         <div style={{
           position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none",
