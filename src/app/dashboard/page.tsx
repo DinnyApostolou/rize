@@ -13,24 +13,15 @@ interface Profile {
 }
 
 const NAV = [
-  { href: "/drills", label: "Drills" },
-  { href: "/strength", label: "Strength" },
-  { href: "/nutrition", label: "Nutrition" },
-  { href: "/schedule", label: "Schedule" },
-  { href: "/assessment", label: "Assessment" },
-  { href: "/stats", label: "My Stats" },
-  { href: "/badges", label: "Badges" },
-  { href: "/profile", label: "Profile" },
-  { href: "/subscribe", label: "Upgrade" },
-];
-
-const QUICK = [
-  { href: "/drills", label: "Basketball Drills", desc: "100+ drills with camera tracking" },
-  { href: "/strength", label: "Strength", desc: "Explosive power & gym programs" },
-  { href: "/nutrition", label: "Nutrition", desc: "Athlete meal plans & timing" },
-  { href: "/schedule", label: "Schedule", desc: "Your weekly training plan" },
-  { href: "/stats", label: "My Stats", desc: "Progress over time" },
-  { href: "/badges", label: "Badges", desc: "Achievements & milestones" },
+  { href: "/dashboard", label: "Home", icon: "⊞" },
+  { href: "/drills", label: "Drills", icon: "🏀" },
+  { href: "/strength", label: "Strength", icon: "⚡" },
+  { href: "/nutrition", label: "Nutrition", icon: "◈" },
+  { href: "/schedule", label: "Schedule", icon: "▦" },
+  { href: "/stats", label: "My Stats", icon: "↗" },
+  { href: "/badges", label: "Badges", icon: "◎" },
+  { href: "/assessment", label: "Assessment", icon: "▤" },
+  { href: "/profile", label: "Profile", icon: "○" },
 ];
 
 const QUOTES = [
@@ -43,9 +34,9 @@ const QUOTES = [
 ];
 
 const TODAY = [
-  { category: "Court", title: "Crossover Series", duration: "20 min", type: "drills" },
-  { category: "Gym", title: "Lower Body Power", duration: "45 min", type: "strength" },
-  { category: "Nutrition", title: "Pre-workout meal", duration: "30 min before", type: "nutrition" },
+  { category: "Court", title: "Crossover Series", duration: "20 min", href: "/drills", color: "#0EA5E9" },
+  { category: "Gym", title: "Lower Body Power", duration: "45 min", href: "/strength", color: "#8B5CF6" },
+  { category: "Nutrition", title: "Pre-workout meal", duration: "30 min before", href: "/nutrition", color: "#10B981" },
 ];
 
 function getStreakBadge(streak: number): string | null {
@@ -80,7 +71,6 @@ export default function Dashboard() {
         return;
       }
 
-      // Weekly challenge tracking
       const today = new Date();
       const dayOfWeek = today.getDay();
       const monday = new Date(today);
@@ -92,10 +82,7 @@ export default function Dashboard() {
         localStorage.setItem("rize_week_key", weekKey);
         localStorage.setItem("rize_week_drills", "0");
       }
-      const wd = parseInt(localStorage.getItem("rize_week_drills") || "0");
-      setWeekDrills(wd);
-
-      // Personalized position / skill level
+      setWeekDrills(parseInt(localStorage.getItem("rize_week_drills") || "0"));
       setPosition(localStorage.getItem("rize_position"));
       setSkillLevel(localStorage.getItem("rize_skill_level"));
     }
@@ -108,34 +95,13 @@ export default function Dashboard() {
   }
 
   if (loading) {
-    const skeletonStyle = {
-      background: "var(--bg2)" as const,
-      animation: "pulse 1.5s ease infinite",
-    };
     return (
-      <div style={{ minHeight: "100vh", background: "var(--bg)" }}>
-        {/* Fake nav */}
-        <div style={{ ...skeletonStyle, height: "60px", borderRadius: 0 }} />
-
-        <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "48px 40px 32px" }}>
-          {/* Fake hero */}
-          <div style={{ marginBottom: "40px" }}>
-            <div style={{ ...skeletonStyle, height: "48px", width: "200px", borderRadius: "8px", marginBottom: "16px" }} />
-            <div style={{ ...skeletonStyle, height: "300px", width: "100%", borderRadius: "12px" }} />
-          </div>
-
-          {/* Fake stat cards */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "12px", marginBottom: "24px" }}>
-            {[0, 1, 2, 3].map(i => (
-              <div key={i} style={{ ...skeletonStyle, height: "120px", borderRadius: "10px" }} />
-            ))}
-          </div>
-
-          {/* Fake cards row */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
-            <div style={{ ...skeletonStyle, height: "220px", borderRadius: "12px" }} />
-            <div style={{ ...skeletonStyle, height: "220px", borderRadius: "12px" }} />
-          </div>
+      <div style={{ display: "flex", minHeight: "100vh", background: "var(--bg)" }}>
+        <div style={{ width: "240px", background: "var(--bg2)", borderRight: "1px solid var(--border)", flexShrink: 0 }} />
+        <div style={{ flex: 1, padding: "40px" }}>
+          {[1,2,3].map(i => (
+            <div key={i} style={{ background: "var(--bg2)", borderRadius: "12px", height: "120px", marginBottom: "16px", animation: "pulse 1.5s ease infinite" }} />
+          ))}
         </div>
       </div>
     );
@@ -143,8 +109,8 @@ export default function Dashboard() {
 
   const xp = profile?.xp || 0;
   const level = Math.floor(xp / 1000) + 1;
-  const xpProgress = (xp % 1000) / 1000 * 100;
   const xpInLevel = xp % 1000;
+  const xpProgress = (xpInLevel / 1000) * 100;
   const streak = profile?.streak || 0;
   const streakBadge = getStreakBadge(streak);
   const weekGoal = 5;
@@ -152,278 +118,286 @@ export default function Dashboard() {
   const weekComplete = weekDrills >= weekGoal;
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", color: "var(--text)" }}>
+    <div style={{ display: "flex", minHeight: "100vh", background: "var(--bg)", color: "var(--text)" }}>
 
-      {/* NAV */}
-      <nav style={{
-        background: "rgba(10,10,10,0.95)", backdropFilter: "blur(16px)",
-        borderBottom: "1px solid var(--border)",
-        display: "flex", alignItems: "center", justifyContent: "space-between",
-        padding: "0 40px", height: "60px", position: "sticky", top: 0, zIndex: 50,
+      {/* SIDEBAR */}
+      <aside style={{
+        width: "240px", flexShrink: 0,
+        background: "var(--bg2)", borderRight: "1px solid var(--border)",
+        position: "fixed", top: 0, left: 0, bottom: 0,
+        display: "flex", flexDirection: "column",
+        zIndex: 50,
       }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "40px" }}>
-          <div style={{ fontSize: "18px", fontWeight: 900, letterSpacing: "-0.5px" }}>RZ<span style={{ color: "var(--accent)" }}>.</span></div>
-          <div style={{ display: "flex", gap: "2px" }}>
-            {NAV.slice(0, 6).map(n => (
-              <Link key={n.href} href={n.href}>
-                <button style={{ background: "none", color: "var(--text2)", fontSize: "13px", padding: "6px 12px", borderRadius: "6px", fontWeight: 500 }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = "var(--bg3)"; (e.currentTarget as HTMLButtonElement).style.color = "#fff"; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = "none"; (e.currentTarget as HTMLButtonElement).style.color = "var(--text2)"; }}>
-                  {n.label}
-                </button>
-              </Link>
-            ))}
+        {/* Logo */}
+        <div style={{ padding: "20px 24px", borderBottom: "1px solid var(--border)" }}>
+          <div style={{ fontSize: "18px", fontWeight: 900, letterSpacing: "-0.5px" }}>
+            RIZE<span style={{ color: "var(--accent)" }}>.</span>
           </div>
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+
+        {/* Nav */}
+        <nav style={{ padding: "12px", flex: 1, overflowY: "auto" }}>
+          {NAV.map(n => (
+            <Link key={n.href} href={n.href}>
+              <div style={{
+                display: "flex", alignItems: "center", gap: "10px",
+                padding: "9px 12px", borderRadius: "8px", marginBottom: "2px",
+                fontSize: "14px", fontWeight: 500, color: "var(--text2)",
+                cursor: "pointer", transition: "all 0.15s",
+              }}
+                onMouseEnter={e => { const el = e.currentTarget as HTMLDivElement; el.style.background = "var(--bg3)"; el.style.color = "#fff"; }}
+                onMouseLeave={e => { const el = e.currentTarget as HTMLDivElement; el.style.background = "transparent"; el.style.color = "var(--text2)"; }}>
+                <span style={{ fontSize: "13px", width: "18px", textAlign: "center" }}>{n.icon}</span>
+                {n.label}
+              </div>
+            </Link>
+          ))}
+
           {!profile?.is_subscribed && (
             <Link href="/subscribe">
-              <button style={{ background: "var(--accent)", color: "#fff", fontSize: "12px", fontWeight: 700, padding: "6px 14px", borderRadius: "6px", letterSpacing: "0.5px" }}>
-                UPGRADE TO PRO
-              </button>
+              <div style={{
+                display: "flex", alignItems: "center", gap: "10px",
+                padding: "9px 12px", borderRadius: "8px", marginTop: "8px",
+                fontSize: "13px", fontWeight: 700, color: "var(--accent)",
+                cursor: "pointer", background: "rgba(14,165,233,0.08)",
+                border: "1px solid rgba(14,165,233,0.2)", transition: "all 0.15s",
+              }}
+                onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.background = "rgba(14,165,233,0.15)"; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = "rgba(14,165,233,0.08)"; }}>
+                <span style={{ fontSize: "13px" }}>★</span>
+                Upgrade to Pro
+              </div>
             </Link>
           )}
-          <button onClick={handleLogout} style={{ background: "none", color: "var(--text2)", fontSize: "13px", padding: "6px 12px", border: "1px solid var(--border)", borderRadius: "6px" }}>
+        </nav>
+
+        {/* User info + sign out */}
+        <div style={{ padding: "16px", borderTop: "1px solid var(--border)" }}>
+          <div style={{ marginBottom: "12px" }}>
+            <div style={{ fontSize: "13px", fontWeight: 700, marginBottom: "2px" }}>{profile?.username}</div>
+            <div style={{ fontSize: "11px", color: "var(--text3)" }}>Level {level} · {xp.toLocaleString()} XP</div>
+          </div>
+          <button onClick={handleLogout} style={{
+            width: "100%", background: "none", border: "1px solid var(--border)",
+            color: "var(--text3)", fontSize: "12px", padding: "7px",
+            borderRadius: "6px", cursor: "pointer", transition: "all 0.15s",
+          }}
+            onMouseEnter={e => { const el = e.currentTarget as HTMLButtonElement; el.style.borderColor = "#555"; el.style.color = "#fff"; }}
+            onMouseLeave={e => { const el = e.currentTarget as HTMLButtonElement; el.style.borderColor = "var(--border)"; el.style.color = "var(--text3)"; }}>
             Sign out
           </button>
         </div>
-      </nav>
+      </aside>
 
-      {/* HERO BANNER */}
-      <div style={{
-        background: "linear-gradient(135deg, #0a0a0a 0%, #0f1a24 50%, #0a0a0a 100%)",
-        borderBottom: "1px solid var(--border)",
-        padding: "48px 40px",
-        position: "relative", overflow: "hidden",
-      }}>
-        {/* Background accent */}
-        <div style={{
-          position: "absolute", top: "-60px", right: "-60px",
-          width: "400px", height: "400px",
-          background: "radial-gradient(circle, rgba(14,165,233,0.08) 0%, transparent 70%)",
-          pointerEvents: "none",
-        }} />
-        <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: "24px" }}>
-          <div>
-            <p style={{ fontSize: "11px", color: "var(--accent)", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "10px" }}>
-              {greeting}
-            </p>
-            <h1 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 900, letterSpacing: "-2px", lineHeight: 1, marginBottom: "16px" }}>
-              {profile?.username || "Athlete"}<span style={{ color: "var(--accent)" }}>.</span>
-            </h1>
-            {(position || skillLevel) && (
-              <div style={{ color: "var(--text2)", fontSize: "13px", marginTop: "8px", marginBottom: "12px" }}>
-                {[position, skillLevel].filter(Boolean).join(" · ")}
-              </div>
-            )}
-            <p style={{ color: "var(--text2)", fontSize: "14px", maxWidth: "480px", lineHeight: 1.6, fontStyle: "italic" }}>
-              &ldquo;{quote}&rdquo;
-            </p>
-          </div>
+      {/* MAIN CONTENT */}
+      <main style={{ marginLeft: "240px", flex: 1, padding: "40px 48px", maxWidth: "1000px" }}>
 
-          {/* Level badge */}
-          <div style={{
-            background: "rgba(14,165,233,0.08)", border: "1px solid rgba(14,165,233,0.25)",
-            borderRadius: "12px", padding: "20px 28px", textAlign: "center", minWidth: "140px",
-          }}>
-            <div style={{ fontSize: "10px", color: "var(--accent)", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "6px" }}>Current Level</div>
-            <div style={{ fontSize: "52px", fontWeight: 900, letterSpacing: "-3px", color: "var(--accent)", lineHeight: 1 }}>{level}</div>
-            <div style={{ fontSize: "11px", color: "var(--text2)", marginTop: "4px" }}>{xp.toLocaleString()} XP total</div>
-          </div>
-        </div>
-      </div>
-
-      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "32px 40px" }}>
-
-        {/* XP Progress */}
-        <div style={{ marginBottom: "32px" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-            <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
-              <span style={{ fontSize: "12px", fontWeight: 700, color: "var(--text2)", textTransform: "uppercase", letterSpacing: "1px" }}>Level {level}</span>
-              <span style={{ fontSize: "12px", color: "var(--text3)" }}>→</span>
-              <span style={{ fontSize: "12px", fontWeight: 700, color: "var(--accent)", textTransform: "uppercase", letterSpacing: "1px" }}>Level {level + 1}</span>
+        {/* Greeting */}
+        <div style={{ marginBottom: "40px" }}>
+          <p style={{ fontSize: "12px", color: "var(--accent)", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "8px" }}>
+            {greeting}
+          </p>
+          <h1 style={{ fontSize: "36px", fontWeight: 900, letterSpacing: "-2px", lineHeight: 1, marginBottom: "8px" }}>
+            {profile?.username}<span style={{ color: "var(--accent)" }}>.</span>
+          </h1>
+          {(position || skillLevel) && (
+            <div style={{ fontSize: "13px", color: "var(--text2)" }}>
+              {[position, skillLevel].filter(Boolean).join(" · ")}
             </div>
-            <span style={{ fontSize: "12px", color: "var(--text2)" }}>{xpInLevel} / 1000 XP — <span style={{ color: "var(--accent)", fontWeight: 700 }}>{1000 - xpInLevel} to go</span></span>
+          )}
+        </div>
+
+        {/* XP Bar */}
+        <div style={{
+          background: "var(--bg2)", border: "1px solid var(--border)",
+          borderRadius: "12px", padding: "20px 24px", marginBottom: "20px",
+        }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+              <div style={{
+                background: "rgba(14,165,233,0.1)", border: "1px solid rgba(14,165,233,0.25)",
+                borderRadius: "8px", padding: "4px 12px",
+                fontSize: "13px", fontWeight: 900, color: "var(--accent)",
+              }}>LVL {level}</div>
+              <span style={{ fontSize: "13px", color: "var(--text2)" }}>
+                {xpInLevel.toLocaleString()} / 1,000 XP
+              </span>
+            </div>
+            <span style={{ fontSize: "12px", color: "var(--accent)", fontWeight: 700 }}>
+              {(1000 - xpInLevel).toLocaleString()} XP to Level {level + 1}
+            </span>
           </div>
-          <div style={{ background: "var(--bg2)", borderRadius: "8px", height: "14px", position: "relative", overflow: "hidden" }}>
+          <div style={{ background: "var(--bg3)", borderRadius: "8px", height: "10px", overflow: "hidden" }}>
             <div style={{
-              background: "linear-gradient(90deg, #7C3AED, #6366F1, #3B82F6, #0EA5E9, #38BDF8)",
+              background: "linear-gradient(90deg, #7C3AED, #6366F1, #0EA5E9, #38BDF8)",
               backgroundSize: "200% 100%",
               animation: "flowGradient 3s ease infinite",
               height: "100%", borderRadius: "8px",
               width: `${xpProgress}%`,
               transition: "width 1.2s cubic-bezier(0.4,0,0.2,1)",
-              boxShadow: "0 0 16px rgba(99,102,241,0.6), 0 0 32px rgba(14,165,233,0.3)",
+              boxShadow: "0 0 12px rgba(99,102,241,0.5)",
             }} />
           </div>
         </div>
 
-        {/* Stats row */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "12px", marginBottom: "32px" }}>
+        {/* Stat cards */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "12px", marginBottom: "20px" }}>
           {[
-            { label: "Day Streak", value: streak, unit: "days", accent: false },
-            { label: "Drills Done", value: profile?.drills_completed || 0, unit: "total", accent: false },
-            { label: "XP Earned", value: xp.toLocaleString(), unit: "points", accent: true },
-            { label: "Next Level", value: 1000 - xpInLevel, unit: "XP away", accent: false },
+            { label: "Day Streak", value: streak, unit: streak === 1 ? "day" : "days", color: "#F59E0B", badge: streakBadge },
+            { label: "Drills Done", value: profile?.drills_completed || 0, unit: "total", color: "#0EA5E9", badge: null },
+            { label: "XP Earned", value: xp.toLocaleString(), unit: "points", color: "#8B5CF6", badge: null },
+            { label: "This Week", value: `${weekDrills}/${weekGoal}`, unit: "drills", color: "#10B981", badge: weekComplete ? "DONE" : null },
           ].map((s, i) => (
             <div key={i} style={{
-              background: "var(--bg2)", border: `1px solid ${s.accent ? "rgba(14,165,233,0.3)" : "var(--border)"}`,
-              borderRadius: "10px", padding: "20px",
-              borderTop: `2px solid ${s.accent ? "var(--accent)" : "var(--border)"}`,
+              background: "var(--bg2)", border: "1px solid var(--border)",
+              borderRadius: "12px", padding: "20px",
+              borderTop: `2px solid ${s.color}`,
             }}>
-              <div style={{ fontSize: "10px", color: "var(--text3)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: "10px" }}>{s.label}</div>
-              <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
-                <div style={{ fontSize: "30px", fontWeight: 900, letterSpacing: "-1px", color: s.accent ? "var(--accent)" : "var(--text)", lineHeight: 1 }}>{s.value}</div>
-                {i === 0 && streakBadge && (
+              <div style={{ fontSize: "10px", color: "var(--text3)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: "12px" }}>{s.label}</div>
+              <div style={{ fontSize: "28px", fontWeight: 900, letterSpacing: "-1px", color: s.color, lineHeight: 1, marginBottom: "6px" }}>{s.value}</div>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                <span style={{ fontSize: "11px", color: "var(--text3)" }}>{s.unit}</span>
+                {s.badge && (
                   <span style={{
-                    fontSize: "9px", fontWeight: 800, letterSpacing: "1px",
-                    background: "rgba(14,165,233,0.15)", border: "1px solid rgba(14,165,233,0.3)",
-                    borderRadius: "4px", padding: "2px 8px", color: "var(--accent)",
-                  }}>{streakBadge}</span>
+                    fontSize: "9px", fontWeight: 800, letterSpacing: "0.5px",
+                    background: `${s.color}22`, border: `1px solid ${s.color}44`,
+                    borderRadius: "4px", padding: "1px 6px", color: s.color,
+                  }}>{s.badge}</span>
                 )}
               </div>
-              <div style={{ fontSize: "11px", color: "var(--text3)", marginTop: "6px" }}>{s.unit}</div>
             </div>
           ))}
         </div>
 
-        {/* Weekly Challenge */}
-        <div style={{
-          background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: "12px",
-          padding: "20px 24px", marginBottom: "24px",
-        }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px" }}>
-            <div>
-              <div style={{ fontSize: "10px", color: "var(--accent)", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "4px" }}>Weekly Challenge</div>
-              <div style={{ fontSize: "16px", fontWeight: 800 }}>Complete 5 drills this week</div>
-            </div>
-            <div style={{ textAlign: "right" }}>
-              {weekComplete ? (
-                <div style={{ fontSize: "13px", fontWeight: 700, color: "var(--accent)" }}>Challenge complete!</div>
-              ) : (
-                <div style={{ fontSize: "13px", color: "var(--text2)" }}>{weekDrills} / {weekGoal} drills</div>
-              )}
-            </div>
-          </div>
-          <div style={{ background: "var(--bg3)", borderRadius: "6px", height: "6px", overflow: "hidden" }}>
-            <div style={{
-              height: "100%", borderRadius: "6px",
-              background: weekComplete ? "var(--accent)" : "linear-gradient(90deg, var(--accent), var(--accent2))",
-              width: `${(weekProgress / weekGoal) * 100}%`,
-              transition: "width 0.6s cubic-bezier(0.4,0,0.2,1)",
-            }} />
-          </div>
-        </div>
-
-        {/* Main grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: "20px", marginBottom: "24px" }}>
+        {/* Main 2-col */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "20px" }}>
 
           {/* Today's Plan */}
           <div style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: "12px", overflow: "hidden" }}>
-            <div style={{ padding: "20px 24px", borderBottom: "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <div style={{ padding: "18px 20px", borderBottom: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <div>
                 <p style={{ fontSize: "10px", color: "var(--accent)", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "2px" }}>Today</p>
-                <h2 style={{ fontSize: "16px", fontWeight: 800, letterSpacing: "-0.5px" }}>Your Training Plan</h2>
+                <h2 style={{ fontSize: "15px", fontWeight: 800 }}>Training Plan</h2>
               </div>
-              <div style={{ fontSize: "11px", color: "var(--text3)", fontWeight: 600 }}>3 sessions</div>
+              <span style={{ fontSize: "11px", color: "var(--text3)" }}>3 sessions</span>
             </div>
-            <div style={{ padding: "12px" }}>
+            <div style={{ padding: "8px" }}>
               {TODAY.map((t, i) => (
-                <Link key={i} href={"/" + t.type}>
+                <Link key={i} href={t.href}>
                   <div style={{
                     display: "flex", alignItems: "center", justifyContent: "space-between",
-                    padding: "16px", borderRadius: "8px", cursor: "pointer",
-                    marginBottom: i < TODAY.length - 1 ? "4px" : "0",
-                    border: "1px solid transparent", transition: "all 0.15s",
+                    padding: "14px 12px", borderRadius: "8px", cursor: "pointer",
+                    marginBottom: "2px", transition: "background 0.15s",
                   }}
-                    onMouseEnter={e => { const el = e.currentTarget as HTMLDivElement; el.style.background = "var(--bg3)"; el.style.borderColor = "var(--border)"; }}
-                    onMouseLeave={e => { const el = e.currentTarget as HTMLDivElement; el.style.background = "transparent"; el.style.borderColor = "transparent"; }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
-                      <div style={{ width: "3px", height: "36px", background: "var(--accent)", borderRadius: "2px", flexShrink: 0 }} />
+                    onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.background = "var(--bg3)"; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = "transparent"; }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                      <div style={{ width: "3px", height: "32px", background: t.color, borderRadius: "2px", flexShrink: 0 }} />
                       <div>
-                        <div style={{ fontSize: "10px", color: "var(--accent)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "1px", marginBottom: "3px" }}>{t.category}</div>
-                        <div style={{ fontSize: "14px", fontWeight: 700 }}>{t.title}</div>
+                        <div style={{ fontSize: "10px", color: t.color, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "2px" }}>{t.category}</div>
+                        <div style={{ fontSize: "13px", fontWeight: 700 }}>{t.title}</div>
                       </div>
                     </div>
-                    <div style={{ fontSize: "12px", color: "var(--text2)", fontWeight: 500 }}>{t.duration}</div>
+                    <span style={{ fontSize: "11px", color: "var(--text3)" }}>{t.duration}</span>
                   </div>
                 </Link>
               ))}
             </div>
           </div>
 
-          {/* Streak + Badges CTA */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-            {/* Streak */}
-            <div style={{
-              background: streak ? "rgba(14,165,233,0.06)" : "var(--bg2)",
-              border: `1px solid ${streak ? "rgba(14,165,233,0.2)" : "var(--border)"}`,
-              borderRadius: "12px", padding: "24px", flex: 1,
-            }}>
-              <div style={{ fontSize: "10px", color: "var(--text3)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "2px", marginBottom: "12px" }}>Training Streak</div>
-              <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "6px", flexWrap: "wrap" }}>
-                <div style={{ fontSize: "48px", fontWeight: 900, letterSpacing: "-2px", color: streak ? "var(--accent)" : "var(--text3)", lineHeight: 1 }}>
-                  {streak}
-                </div>
-                {streakBadge && (
+          {/* Weekly Challenge */}
+          <div style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: "12px", padding: "20px" }}>
+            <p style={{ fontSize: "10px", color: "var(--accent)", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "4px" }}>Weekly Challenge</p>
+            <h2 style={{ fontSize: "15px", fontWeight: 800, marginBottom: "20px" }}>Complete 5 drills this week</h2>
+
+            {/* Progress dots */}
+            <div style={{ display: "flex", gap: "8px", marginBottom: "20px" }}>
+              {Array.from({ length: weekGoal }).map((_, i) => (
+                <div key={i} style={{
+                  flex: 1, height: "8px", borderRadius: "4px",
+                  background: i < weekProgress ? "var(--accent)" : "var(--bg3)",
+                  transition: "background 0.3s",
+                  boxShadow: i < weekProgress ? "0 0 8px rgba(14,165,233,0.4)" : "none",
+                }} />
+              ))}
+            </div>
+
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{ fontSize: "12px", color: "var(--text2)" }}>
+                {weekComplete ? "Challenge complete! 🎉" : `${weekDrills} of ${weekGoal} done`}
+              </span>
+              <Link href="/drills">
+                <button style={{
+                  background: weekComplete ? "rgba(16,185,129,0.1)" : "var(--accent)",
+                  color: weekComplete ? "#10B981" : "#fff",
+                  border: weekComplete ? "1px solid rgba(16,185,129,0.3)" : "none",
+                  padding: "7px 14px", borderRadius: "6px", fontSize: "12px",
+                  fontWeight: 700, cursor: "pointer",
+                }}>
+                  {weekComplete ? "View drills" : "Train now →"}
+                </button>
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Streak + Quote */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "20px" }}>
+
+          {/* Streak */}
+          <div style={{
+            background: streak ? "rgba(14,165,233,0.05)" : "var(--bg2)",
+            border: `1px solid ${streak ? "rgba(14,165,233,0.2)" : "var(--border)"}`,
+            borderRadius: "12px", padding: "24px",
+          }}>
+            <div style={{ fontSize: "10px", color: "var(--text3)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "2px", marginBottom: "12px" }}>Training Streak</div>
+            <div style={{ display: "flex", alignItems: "flex-end", gap: "10px", marginBottom: "8px" }}>
+              <div style={{ fontSize: "52px", fontWeight: 900, letterSpacing: "-3px", color: streak ? "var(--accent)" : "var(--text3)", lineHeight: 1 }}>
+                {streak}
+              </div>
+              <div style={{ paddingBottom: "8px" }}>
+                {streakBadge ? (
                   <span style={{
                     fontSize: "9px", fontWeight: 800, letterSpacing: "1px",
                     background: "rgba(14,165,233,0.15)", border: "1px solid rgba(14,165,233,0.3)",
-                    borderRadius: "4px", padding: "2px 8px", color: "var(--accent)",
+                    borderRadius: "4px", padding: "2px 8px", color: "var(--accent)", display: "block",
                   }}>{streakBadge}</span>
+                ) : (
+                  <span style={{ fontSize: "13px", color: "var(--text3)" }}>days</span>
                 )}
               </div>
-              <div style={{ fontSize: "13px", color: "var(--text2)" }}>
-                {streak ? `${streak} day${streak > 1 ? "s" : ""} in a row — keep it up` : "Start training to build your streak"}
-              </div>
             </div>
+            <div style={{ fontSize: "13px", color: "var(--text2)", lineHeight: 1.5 }}>
+              {streak ? `${streak} day${streak > 1 ? "s" : ""} in a row — keep it up` : "Start training to build your streak"}
+            </div>
+          </div>
 
-            {/* Badges CTA */}
-            <Link href="/badges">
+          {/* Quote */}
+          <div style={{
+            background: "var(--bg2)", border: "1px solid var(--border)",
+            borderRadius: "12px", padding: "24px",
+            display: "flex", flexDirection: "column", justifyContent: "space-between",
+          }}>
+            <div style={{ fontSize: "10px", color: "var(--text3)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "2px", marginBottom: "16px" }}>Today&apos;s Mindset</div>
+            <p style={{ fontSize: "14px", color: "var(--text2)", lineHeight: 1.7, fontStyle: "italic", flex: 1 }}>
+              &ldquo;{quote}&rdquo;
+            </p>
+            <Link href="/badges" style={{ marginTop: "20px" }}>
               <div style={{
-                background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: "12px",
-                padding: "20px 24px", cursor: "pointer", transition: "border-color 0.2s",
-                display: "flex", alignItems: "center", justifyContent: "space-between",
+                display: "flex", justifyContent: "space-between", alignItems: "center",
+                padding: "10px 14px", background: "var(--bg3)", borderRadius: "8px",
+                cursor: "pointer", border: "1px solid var(--border)", transition: "border-color 0.15s",
               }}
-                onMouseEnter={e => (e.currentTarget as HTMLDivElement).style.borderColor = "var(--accent)"}
-                onMouseLeave={e => (e.currentTarget as HTMLDivElement).style.borderColor = "var(--border)"}>
-                <div>
-                  <div style={{ fontSize: "10px", color: "var(--text3)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "2px", marginBottom: "4px" }}>Achievements</div>
-                  <div style={{ fontSize: "15px", fontWeight: 800 }}>View your badges</div>
-                  <div style={{ fontSize: "12px", color: "var(--text2)", marginTop: "2px" }}>22 badges to unlock</div>
-                </div>
-                <div style={{ fontSize: "18px", color: "var(--accent)", fontWeight: 900 }}>→</div>
+                onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.borderColor = "var(--accent)"; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.borderColor = "var(--border)"; }}>
+                <span style={{ fontSize: "13px", fontWeight: 700 }}>View Badges</span>
+                <span style={{ color: "var(--accent)", fontSize: "14px" }}>→</span>
               </div>
             </Link>
           </div>
         </div>
 
-        {/* Quick Access */}
-        <div style={{ background: "var(--bg2)", border: "1px solid var(--border)", borderRadius: "12px", overflow: "hidden" }}>
-          <div style={{ padding: "20px 24px", borderBottom: "1px solid var(--border)" }}>
-            <p style={{ fontSize: "10px", color: "var(--accent)", fontWeight: 700, letterSpacing: "2px", textTransform: "uppercase", marginBottom: "2px" }}>Navigate</p>
-            <h2 style={{ fontSize: "16px", fontWeight: 800, letterSpacing: "-0.5px" }}>All Sections</h2>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)" }}>
-            {QUICK.map((n, i) => (
-              <Link key={i} href={n.href}>
-                <div style={{
-                  padding: "20px 24px", cursor: "pointer",
-                  borderRight: i % 3 !== 2 ? "1px solid var(--border)" : "none",
-                  borderBottom: i < 3 ? "1px solid var(--border)" : "none",
-                  transition: "background 0.15s",
-                }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.background = "var(--bg3)"; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = "transparent"; }}>
-                  <div style={{ fontSize: "14px", fontWeight: 800, marginBottom: "4px" }}>{n.label}</div>
-                  <div style={{ fontSize: "12px", color: "var(--text2)", lineHeight: 1.4 }}>{n.desc}</div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-
-      </div>
+      </main>
     </div>
   );
 }
