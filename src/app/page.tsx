@@ -27,6 +27,18 @@ function Brackets({ color, hovered }: { color: string; hovered: boolean }) {
   );
 }
 
+function BracketNavLink({ href, label }: { href: string; label: string }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <a href={href} style={{ position: "relative", padding: "6px 10px", color: hovered ? "#fff" : "var(--text2)", transition: "color 0.2s", textDecoration: "none" }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}>
+      <Brackets color="rgba(0,116,255,0.8)" hovered={hovered} />
+      {label}
+    </a>
+  );
+}
+
 function BracketCard({ color, children, className, style, onEnter, onLeave }: {
   color: string; children: React.ReactNode; className?: string;
   style?: React.CSSProperties;
@@ -247,15 +259,13 @@ export default function Home() {
           RIZE<span style={{ color: "var(--accent)" }}>.</span>
         </div>
 
-        <div className="landing-nav-links" style={{ display: "flex", gap: "32px", fontSize: "13px", color: "var(--text2)" }}>
-          {["#features", "#how-it-works", "#pricing", "#faq"].map((href, i) => (
-            <a key={i} href={href}
-              style={{ transition: "color 0.2s" }}
-              onMouseEnter={e => (e.currentTarget.style.color = "#fff")}
-              onMouseLeave={e => (e.currentTarget.style.color = "var(--text2)")}>
-              {["Features", "How it works", "Pricing", "FAQ"][i]}
-            </a>
-          ))}
+        <div className="landing-nav-links" style={{ display: "flex", gap: "20px", fontSize: "13px" }}>
+          {[
+            { href: "#features", label: "Features" },
+            { href: "#how-it-works", label: "How it works" },
+            { href: "#pricing", label: "Pricing" },
+            { href: "#faq", label: "FAQ" },
+          ].map(n => <BracketNavLink key={n.href} href={n.href} label={n.label} />)}
         </div>
         <div className="landing-nav-actions" style={{ display: "flex", gap: "10px" }}>
           <Link href="/login">
