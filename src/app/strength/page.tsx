@@ -74,6 +74,13 @@ const PROGRAMS = [
   },
 ];
 
+const WORKOUT_GOALS = [
+  "Build Muscle",
+  "Improve Explosiveness",
+  "Increase Stamina",
+  "Recovery",
+];
+
 export default function StrengthPage() {
   const router = useRouter();
   const [activeCategory, setActiveCategory] = useState(0);
@@ -83,6 +90,32 @@ export default function StrengthPage() {
   const [logging, setLogging] = useState(false);
   const [loggedToday, setLoggedToday] = useState(false);
   const prog = PROGRAMS[activeCategory];
+
+  // AI Workout Plan state
+  const [workoutGoal, setWorkoutGoal] = useState(WORKOUT_GOALS[0]);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiResult, setAiResult] = useState<string | null>(null);
+  const [aiError, setAiError] = useState<string | null>(null);
+
+  async function handleAiWorkout() {
+    setAiLoading(true);
+    setAiResult(null);
+    setAiError(null);
+    try {
+      const res = await fetch("/api/ai-workout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ goal: workoutGoal }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed");
+      setAiResult(data.result);
+    } catch (e: unknown) {
+      setAiError(e instanceof Error ? e.message : "Something went wrong.");
+    } finally {
+      setAiLoading(false);
+    }
+  }
 
   useEffect(() => {
     async function load() {
@@ -187,6 +220,137 @@ export default function StrengthPage() {
             {loggedToday ? "Workout logged ✓" : logging ? "Saving..." : "Log this workout"}
           </button>
           {logMsg && <span style={{ fontSize: "13px", color: "var(--text2)" }}>{logMsg}</span>}
+        </div>
+
+        {/* AI Workout Plan */}
+        <div style={{
+          background: "var(--bg2)",
+          border: "1px solid var(--border)",
+          borderRadius: "12px",
+          padding: "24px",
+          marginBottom: "28px",
+        }}>
+          <div style={{ fontSize: "11px", fontWeight: 700, color: "var(--accent)", textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: "12px" }}>
+            AI Workout Plan
+          </div>
+          <p style={{ fontSize: "13px", color: "var(--text2)", marginBottom: "16px" }}>
+            Generate a full 7-day personalized training plan based on your goal.
+          </p>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
+            <select
+              value={workoutGoal}
+              onChange={e => setWorkoutGoal(e.target.value)}
+              style={{
+                padding: "10px 16px",
+                borderRadius: "8px",
+                fontSize: "13px",
+                fontWeight: 600,
+                background: "var(--bg3)",
+                border: "1px solid var(--border)",
+                color: "var(--text)",
+                cursor: "pointer",
+                outline: "none",
+                minWidth: "200px",
+              }}
+            >
+              {WORKOUT_GOALS.map(g => (
+                <option key={g} value={g}>{g}</option>
+              ))}
+            </select>
+            <button
+              onClick={handleAiWorkout}
+              disabled={aiLoading}
+              style={{
+                padding: "10px 24px",
+                borderRadius: "8px",
+                fontSize: "13px",
+                fontWeight: 700,
+                background: aiLoading ? "var(--bg3)" : "var(--accent)",
+                border: aiLoading ? "1px solid var(--border)" : "none",
+                color: aiLoading ? "var(--text3)" : "#fff",
+                cursor: aiLoading ? "not-allowed" : "pointer",
+                transition: "all 0.2s",
+                opacity: aiLoading ? 0.7 : 1,
+                boxShadow: aiLoading ? "none" : "var(--glow-blue)",
+              }}
+            >
+              {aiLoading ? "Generating plan..." : "Generate AI Workout Plan"}
+            </button>
+          </div>
+
+          {aiLoading && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginTop: "20px" }}>
+              {[1, 2, 3, 4, 5, 6, 7].map(i => (
+                <div key={i} className="skeleton-shimmer" style={{ height: "56px", borderRadius: "8px" }} />
+              ))}
+            </div>
+          )}
+
+          {aiError && (
+            <div style={{
+              marginTop: "16px",
+              background: "rgba(239,68,68,0.08)",
+              border: "1px solid rgba(239,68,68,0.25)",
+              borderRadius: "10px",
+              padding: "14px 18px",
+              color: "#EF4444",
+              fontSize: "13px",
+            }}>
+              {aiError}
+            </div>
+          )}
+
+          {aiResult && !aiLoading && (
+            <div style={{
+              marginTop: "20px",
+              borderTop: "1px solid var(--border)",
+              paddingTop: "20px",
+            }}>
+              <div style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                marginBottom: "16px",
+              }}>
+                <div style={{
+                  background: "rgba(0,116,255,0.12)",
+                  border: "1px solid rgba(0,116,255,0.25)",
+                  borderRadius: "6px",
+                  padding: "5px 12px",
+                  fontSize: "11px",
+                  fontWeight: 700,
+                  color: "var(--accent)",
+                }}>
+                  7-DAY PLAN
+                </div>
+                <span style={{ fontSize: "13px", color: "var(--text2)" }}>Goal: {workoutGoal}</span>
+              </div>
+              <div style={{
+                fontSize: "13px",
+                color: "var(--text2)",
+                lineHeight: 1.9,
+                whiteSpace: "pre-wrap",
+              }}>
+                {aiResult}
+              </div>
+              <button
+                onClick={handleAiWorkout}
+                style={{
+                  marginTop: "20px",
+                  padding: "9px 20px",
+                  borderRadius: "8px",
+                  fontSize: "12px",
+                  fontWeight: 600,
+                  background: "var(--bg3)",
+                  border: "1px solid var(--border)",
+                  color: "var(--text2)",
+                  cursor: "pointer",
+                }}
+              >
+                Regenerate
+              </button>
+            </div>
+          )}
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
