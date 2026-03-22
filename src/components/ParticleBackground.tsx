@@ -44,17 +44,17 @@ export default function ParticleBackground() {
     };
 
     const init = () => {
-      const COUNT = Math.min(Math.floor((canvas.width * canvas.height) / 4500), 320);
+      const COUNT = Math.min(Math.floor((canvas.width * canvas.height) / 9000), 150);
       particlesRef.current = Array.from({ length: COUNT }, () => {
         const x = Math.random() * canvas.width;
         const y = Math.random() * canvas.height;
-        const isLarge = Math.random() < 0.15;
+        const isLarge = Math.random() < 0.1;
         return {
           x, y,
           originX: x, originY: y,
           vx: 0, vy: 0,
-          size: isLarge ? Math.random() * 1.2 + 1.8 : Math.random() * 1.8 + 0.5,
-          opacity: isLarge ? 0.55 + Math.random() * 0.25 : 0.3 + Math.random() * 0.5,
+          size: isLarge ? Math.random() * 0.8 + 1.2 : Math.random() * 1.2 + 0.3,
+          opacity: isLarge ? 0.25 + Math.random() * 0.15 : 0.1 + Math.random() * 0.2,
           color: COLORS[Math.floor(Math.random() * COLORS.length)],
           pulse: Math.random() * Math.PI * 2,
           pulseSpeed: 0.012 + Math.random() * 0.02,
@@ -127,11 +127,10 @@ export default function ParticleBackground() {
         const finalOp = baseOp * pFactor;
 
         // Outer glow
-        const glowR = p.size * 6;
+        const glowR = p.size * 4;
         const grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, glowR);
-        grd.addColorStop(0,   `rgba(${p.color}, ${finalOp * 0.8})`);
-        grd.addColorStop(0.25, `rgba(${p.color}, ${finalOp * 0.35})`);
-        grd.addColorStop(0.6,  `rgba(${p.color}, ${finalOp * 0.1})`);
+        grd.addColorStop(0,   `rgba(${p.color}, ${finalOp * 0.5})`);
+        grd.addColorStop(0.4, `rgba(${p.color}, ${finalOp * 0.15})`);
         grd.addColorStop(1,    `rgba(${p.color}, 0)`);
         ctx.beginPath();
         ctx.arc(p.x, p.y, glowR, 0, Math.PI * 2);
